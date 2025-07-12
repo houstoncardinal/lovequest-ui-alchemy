@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import LikeYou from "./pages/LikeYou";
 import ForYou from "./pages/ForYou";
 import Chat from "./pages/Chat";
+import Community from "./pages/Community";
 import Account from "./pages/Account";
 import ProfileDetail from "./pages/ProfileDetail";
 import Welcome from "./pages/Welcome";
@@ -43,6 +44,7 @@ const App = () => (
           <Route path="/home" element={<Home />} />
           <Route path="/like-you" element={<LikeYou />} />
           <Route path="/for-you" element={<ForYou />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/account" element={<Account />} />
           <Route path="/profile/:id" element={<ProfileDetail />} />

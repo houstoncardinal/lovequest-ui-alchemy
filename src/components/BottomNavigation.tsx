@@ -1,10 +1,10 @@
-import { Home, Users, Heart, MessageCircle, User } from "lucide-react";
+import { Home, Users, Heart, MessageCircle, User, Sparkles } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 const BottomNavigation = () => {
   const navItems = [
     { icon: Home, label: "Home", path: "/", count: 0 },
-    { icon: Users, label: "For You", path: "/for-you", count: 0 },
+    { icon: Sparkles, label: "Community", path: "/community", count: 0 },
     { icon: Heart, label: "Like You", path: "/like-you", count: 54 },
     { icon: MessageCircle, label: "Chat", path: "/chat", count: 12 },
     { icon: User, label: "Account", path: "/account", count: 0 },
