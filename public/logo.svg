@@ -1,0 +1,40 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle with gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a365d;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2d3748;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f6e05e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d69e2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b7791f;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="32" cy="32" r="30" fill="url(#bgGradient)" stroke="#4a5568" stroke-width="1"/>
+  
+  <!-- Crescent Moon -->
+  <path d="M32 8 A24 24 0 0 1 32 56 A24 24 0 0 1 32 8 M32 12 A20 20 0 0 0 32 52 A20 20 0 0 0 32 12" 
+        fill="url(#goldGradient)" filter="url(#glow)"/>
+  
+  <!-- Stylized J -->
+  <path d="M20 16 L20 40 Q20 48 28 48 L36 48 Q44 48 44 40 L44 36 Q44 32 40 32 L36 32" 
+        stroke="url(#goldGradient)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="24" cy="20" r="2" fill="#f6e05e" opacity="0.8"/>
+  <circle cx="40" cy="24" r="1.5" fill="#d69e2e" opacity="0.6"/>
+  <circle cx="28" cy="44" r="1" fill="#b7791f" opacity="0.7"/>
+  
+  <!-- Inner glow ring -->
+  <circle cx="32" cy="32" r="26" stroke="url(#goldGradient)" stroke-width="0.5" opacity="0.3" fill="none"/>
+</svg> 

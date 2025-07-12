@@ -1,0 +1,289 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Premium Emerald Green Theme */
+    --primary: 158 64% 52%; /* Emerald */
+    --primary-foreground: 0 0% 100%;
+    --accent: 158 64% 52%;
+    --accent-foreground: 0 0% 100%;
+    --secondary: 220 26% 96%;
+    --secondary-foreground: 220 26% 14%;
+    --muted: 220 26% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 26% 91%;
+    --input: 220 26% 91%;
+    --ring: 158 64% 52%;
+    --radius: 1rem;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(158, 64%, 40%));
+    --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)));
+    --component-inactive-color: var(--muted-foreground);
+    --component-bg: var(--card);
+    --component-shadow: var(--border);
+    --component-active-bg: var(--secondary);
+    --component-line-inactive-color: var(--border);
+    --component-active-color-default: var(--accent-foreground);
+  }
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 158 64% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 158 64% 52%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 158 64% 52%;
+    --component-inactive-color: var(--muted-foreground);
+    --component-bg: var(--card);
+    --component-shadow: var(--border);
+    --component-active-bg: var(--secondary);
+    --component-line-inactive-color: var(--muted-foreground);
+    --component-active-color-default: var(--accent-foreground);
+  }
+  .theme {
+    --color-chart-2: var(--color-chart-2);
+    --color-chart-3: var(--color-chart-3);
+    --color-chart-4: var(--color-chart-4);
+    --color-chart-5: var(--color-chart-5);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@layer components {
+  /* Enhanced Heart Flutter Animations */
+  @keyframes heartFlutter0 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(-15px, -25px) scale(1.1) rotate(-10deg); opacity: 0.9; }
+    50% { transform: translate(-25px, -40px) scale(0.9) rotate(-20deg); opacity: 0.6; }
+    75% { transform: translate(-30px, -55px) scale(0.6) rotate(-30deg); opacity: 0.3; }
+    100% { transform: translate(-35px, -70px) scale(0.2) rotate(-45deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter1 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(20px, -20px) scale(1.2) rotate(15deg); opacity: 0.9; }
+    50% { transform: translate(35px, -35px) scale(0.8) rotate(25deg); opacity: 0.6; }
+    75% { transform: translate(45px, -50px) scale(0.5) rotate(40deg); opacity: 0.3; }
+    100% { transform: translate(55px, -65px) scale(0.1) rotate(60deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter2 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(-25px, -15px) scale(1.0) rotate(-25deg); opacity: 0.9; }
+    50% { transform: translate(-40px, -25px) scale(0.7) rotate(-35deg); opacity: 0.6; }
+    75% { transform: translate(-50px, -35px) scale(0.4) rotate(-50deg); opacity: 0.3; }
+    100% { transform: translate(-60px, -45px) scale(0.1) rotate(-70deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter3 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(30px, -10px) scale(1.3) rotate(20deg); opacity: 0.9; }
+    50% { transform: translate(50px, -20px) scale(1.0) rotate(35deg); opacity: 0.6; }
+    75% { transform: translate(65px, -30px) scale(0.6) rotate(50deg); opacity: 0.3; }
+    100% { transform: translate(80px, -40px) scale(0.2) rotate(70deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter4 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(-10px, -30px) scale(0.9) rotate(-15deg); opacity: 0.9; }
+    50% { transform: translate(-15px, -50px) scale(1.1) rotate(-25deg); opacity: 0.6; }
+    75% { transform: translate(-20px, -70px) scale(0.7) rotate(-40deg); opacity: 0.3; }
+    100% { transform: translate(-25px, -90px) scale(0.3) rotate(-60deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter5 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(15px, -35px) scale(1.1) rotate(25deg); opacity: 0.9; }
+    50% { transform: translate(25px, -55px) scale(0.8) rotate(40deg); opacity: 0.6; }
+    75% { transform: translate(35px, -75px) scale(0.5) rotate(60deg); opacity: 0.3; }
+    100% { transform: translate(45px, -95px) scale(0.2) rotate(80deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter6 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(-35px, -5px) scale(1.2) rotate(-30deg); opacity: 0.9; }
+    50% { transform: translate(-55px, -10px) scale(0.9) rotate(-45deg); opacity: 0.6; }
+    75% { transform: translate(-70px, -15px) scale(0.6) rotate(-65deg); opacity: 0.3; }
+    100% { transform: translate(-85px, -20px) scale(0.2) rotate(-90deg); opacity: 0; }
+  }
+
+  @keyframes heartFlutter7 {
+    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
+    25% { transform: translate(40px, -5px) scale(1.4) rotate(30deg); opacity: 0.9; }
+    50% { transform: translate(65px, -10px) scale(1.1) rotate(50deg); opacity: 0.6; }
+    75% { transform: translate(85px, -15px) scale(0.7) rotate(75deg); opacity: 0.3; }
+    100% { transform: translate(105px, -20px) scale(0.3) rotate(100deg); opacity: 0; }
+  }
+}
+
+/* ---break---
+*/
+
+@theme inline {
+  @keyframes iconBounce {
+  0%, 100% {
+    transform: translateY(0);
+    }
+  20% {
+    transform: translateY(-0.3em);
+    }
+  40% {
+    transform: translateY(0);
+    }
+  60% {
+    transform: translateY(-0.1em);
+    }
+  80% {
+    transform: translateY(0);
+    }
+  }
+  @keyframes iconBounce {
+  0%, 100% {
+    transform: translateY(0);
+    }
+  20% {
+    transform: translateY(-0.3em);
+    }
+  40% {
+    transform: translateY(0);
+    }
+  60% {
+    transform: translateY(-0.1em);
+    }
+  80% {
+    transform: translateY(0);
+    }
+  }
+}
+
+/* Modern Mobile Menu Premium Styles */
+.menu {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: hsl(var(--card));
+  border-top: 1px solid hsl(var(--border));
+  box-shadow: 0 -2px 16px 0 rgba(0,0,0,0.04);
+  padding: 0.5rem 0;
+  min-height: 64px;
+}
+.menu__item {
+  background: none;
+  border: none;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 0%;
+  padding: 0.25rem 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  position: relative;
+  min-width: 0;
+  min-height: 56px;
+}
+.menu__item.active {
+  color: var(--component-active-color, hsl(158, 64%, 52%));
+}
+.menu__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.1rem;
+}
+.menu__item .icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--component-inactive-color, hsl(var(--muted-foreground)));
+  transition: color 0.2s;
+}
+.menu__item.active .icon {
+  color: var(--component-active-color, hsl(158, 64%, 52%));
+  animation: iconBounce 0.5s;
+}
+.menu__text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--component-inactive-color, hsl(var(--muted-foreground)));
+  transition: color 0.2s;
+  position: relative;
+  display: block;
+  line-height: 1.1;
+}
+.menu__text.active {
+  color: var(--component-active-color, hsl(158, 64%, 52%));
+}
+.menu__item.active::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  bottom: 0.2rem;
+  transform: translateX(-50%);
+  width: var(--lineWidth, 24px);
+  height: 2px;
+  background: var(--component-active-color, hsl(158, 64%, 52%));
+  border-radius: 1px;
+  transition: width 0.2s;
+}
+@media (max-width: 480px) {
+  .menu {
+    min-height: 56px;
+    padding: 0.25rem 0;
+  }
+  .menu__item {
+    min-height: 48px;
+  }
+}
