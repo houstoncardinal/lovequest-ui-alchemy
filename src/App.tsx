@@ -27,6 +27,7 @@ import Settings from "./pages/Settings";
 import AdvancedFilters from "./pages/AdvancedFilters";
 import BlockReport from "./pages/BlockReport";
 import TermsOfService from "./pages/TermsOfService";
+import IslamicFeatures from "./pages/IslamicFeatures";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -63,6 +64,7 @@ function App() {
           <Route path="/advanced-filters" element={<ProtectedRoute><AdvancedFilters /></ProtectedRoute>} />
           <Route path="/block-report/:id" element={<ProtectedRoute><BlockReport /></ProtectedRoute>} />
           <Route path="/terms-of-service" element={<ProtectedRoute><TermsOfService /></ProtectedRoute>} />
+          <Route path="/islamic-features" element={<ProtectedRoute><IslamicFeatures /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
