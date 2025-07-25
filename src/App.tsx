@@ -36,6 +36,8 @@ import FamilyFeatures from "./pages/FamilyFeatures";
 import MatchInsights from "./pages/MatchInsights";
 import EnhancedMatching from "./pages/EnhancedMatching";
 import AdminDashboard from "./pages/AdminDashboard";
+import Messages from "./pages/Messages";
+import PhotoManager from "./pages/PhotoManager";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -59,8 +61,10 @@ const AppWithNavigation = () => {
           <Route path="/like-you" element={<ProtectedRoute><LikeYou /></ProtectedRoute>} />
           <Route path="/for-you" element={<ProtectedRoute><ForYou /></ProtectedRoute>} />
           <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
-          <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
-          <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
+           <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
+           <Route path="/messages" element={<ProtectedRoute><Messages /></ProtectedRoute>} />
+           <Route path="/photo-manager" element={<ProtectedRoute><PhotoManager /></ProtectedRoute>} />
+           <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
           <Route path="/profile/:id" element={<ProtectedRoute><ProfileDetail /></ProtectedRoute>} />
           <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
           <Route path="/manage-photos" element={<ProtectedRoute><ManagePhotos /></ProtectedRoute>} />
