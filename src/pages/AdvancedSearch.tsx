@@ -43,6 +43,10 @@ interface SearchFilters {
   wantsChildren: boolean | null;
   isVerified: boolean;
   lastActiveWithin: string;
+  smokingStatus: string[];
+  maritalStatus: string[];
+  hasChildren: boolean | null;
+  childrenPreference: string[];
 }
 
 interface Profile {
@@ -79,7 +83,11 @@ const AdvancedSearch = () => {
     previousMarriage: null,
     wantsChildren: null,
     isVerified: false,
-    lastActiveWithin: '30'
+    lastActiveWithin: '30',
+    smokingStatus: [],
+    maritalStatus: [],
+    hasChildren: null,
+    childrenPreference: []
   });
   const [results, setResults] = useState<Profile[]>([]);
   const [loading, setLoading] = useState(false);
@@ -115,6 +123,19 @@ const AdvancedSearch = () => {
   const hijabStatuses = [
     'Wears Hijab', 'Sometimes Wears Hijab', 'Doesn\'t Wear Hijab', 
     'Plans to Wear', 'Prefer not to say'
+  ];
+
+  const smokingStatuses = [
+    'never', 'occasionally', 'socially', 'regularly', 'prefer_not_to_say'
+  ];
+
+  const maritalStatuses = [
+    'never_married', 'divorced', 'widowed', 'separated'
+  ];
+
+  const childrenPreferences = [
+    'wants_children', 'doesnt_want_children', 'open_to_children', 
+    'already_has_enough', 'prefer_not_to_say'
   ];
 
   const marriageTimelines = [
@@ -174,12 +195,28 @@ const AdvancedSearch = () => {
         query = query.in('marriage_timeline', filters.marriageTimeline);
       }
 
+      if (filters.smokingStatus.length > 0) {
+        query = query.in('smoking_status', filters.smokingStatus);
+      }
+
+      if (filters.maritalStatus.length > 0) {
+        query = query.in('marital_status', filters.maritalStatus);
+      }
+
+      if (filters.childrenPreference.length > 0) {
+        query = query.in('children_preference', filters.childrenPreference);
+      }
+
       if (filters.previousMarriage !== null) {
         query = query.eq('previous_marriage', filters.previousMarriage);
       }
 
       if (filters.wantsChildren !== null) {
         query = query.eq('wants_children', filters.wantsChildren);
+      }
+
+      if (filters.hasChildren !== null) {
+        query = query.eq('has_children', filters.hasChildren);
       }
 
       if (filters.isVerified) {
@@ -465,6 +502,69 @@ const AdvancedSearch = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
+                {/* Marital Status */}
+                <div className="space-y-3">
+                  <Label>Marital Status</Label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {maritalStatuses.map((status) => (
+                      <div key={status} className="flex items-center space-x-2">
+                        <Switch
+                          checked={filters.maritalStatus.includes(status)}
+                          onCheckedChange={(checked) => updateMultiSelect('maritalStatus', status, checked)}
+                        />
+                        <Label className="text-sm capitalize">{status.replace('_', ' ')}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Smoking Status */}
+                <div className="space-y-3">
+                  <Label>Smoking Status</Label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {smokingStatuses.map((status) => (
+                      <div key={status} className="flex items-center space-x-2">
+                        <Switch
+                          checked={filters.smokingStatus.includes(status)}
+                          onCheckedChange={(checked) => updateMultiSelect('smokingStatus', status, checked)}
+                        />
+                        <Label className="text-sm capitalize">{status.replace('_', ' ')}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Children Preference */}
+                <div className="space-y-3">
+                  <Label>Children Preference</Label>
+                  <div className="grid grid-cols-1 gap-2">
+                    {childrenPreferences.map((preference) => (
+                      <div key={preference} className="flex items-center space-x-2">
+                        <Switch
+                          checked={filters.childrenPreference.includes(preference)}
+                          onCheckedChange={(checked) => updateMultiSelect('childrenPreference', preference, checked)}
+                        />
+                        <Label className="text-sm capitalize">{preference.replace('_', ' ')}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Has Children */}
+                <div className="space-y-3">
+                  <Label>Has Children</Label>
+                  <Select value={filters.hasChildren?.toString() || 'any'} onValueChange={(value) => setFilters(prev => ({ ...prev, hasChildren: value === 'any' ? null : value === 'true' }))}>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="any">Any</SelectItem>
+                      <SelectItem value="true">Has Children</SelectItem>
+                      <SelectItem value="false">No Children</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 {/* Marriage Timeline */}
                 <div className="space-y-3">
                   <Label>Marriage Timeline</Label>
@@ -479,36 +579,6 @@ const AdvancedSearch = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-
-                {/* Previous Marriage */}
-                <div className="space-y-3">
-                  <Label>Previous Marriage</Label>
-                  <Select value={filters.previousMarriage?.toString() || 'any'} onValueChange={(value) => setFilters(prev => ({ ...prev, previousMarriage: value === 'any' ? null : value === 'true' }))}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="false">Never Married</SelectItem>
-                      <SelectItem value="true">Previously Married</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Wants Children */}
-                <div className="space-y-3">
-                  <Label>Wants Children</Label>
-                  <Select value={filters.wantsChildren?.toString() || 'any'} onValueChange={(value) => setFilters(prev => ({ ...prev, wantsChildren: value === 'any' ? null : value === 'true' }))}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="true">Yes</SelectItem>
-                      <SelectItem value="false">No</SelectItem>
-                    </SelectContent>
-                  </Select>
                 </div>
 
                 {/* Verification Status */}

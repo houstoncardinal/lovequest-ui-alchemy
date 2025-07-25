@@ -1,0 +1,27 @@
+{
+  "appId": "app.lovable.028f224ef54d4dbc80d996b50706374e",
+  "appName": "Jaan - Islamic Dating App",
+  "webDir": "dist",
+  "server": {
+    "url": "https://028f224e-f54d-4dbc-80d9-96b50706374e.lovableproject.com?forceHideBadge=true",
+    "cleartext": true
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2000,
+      "backgroundColor": "#8B5CF6",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": true,
+      "spinnerColor": "#FFFFFF"
+    },
+    "StatusBar": {
+      "style": "LIGHT"
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "DARK",
+      "resizeOnFullScreen": true
+    }
+  }
+}

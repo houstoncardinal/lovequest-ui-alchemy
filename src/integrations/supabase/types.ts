@@ -245,16 +245,23 @@ export type Database = {
           age: number | null
           avatar_url: string | null
           bio: string | null
+          body_type: string | null
           career_field: string | null
+          children_preference: string | null
           community_involvement_level: string | null
           created_at: string
+          dietary_preferences: string[] | null
           display_name: string | null
           education_level: string | null
+          exercise_frequency: string | null
           family_size_preference: string | null
           financial_readiness: string | null
           first_name: string | null
           hajj_umrah_experience: boolean | null
+          has_children: boolean | null
+          height_cm: number | null
           hijab_status: string | null
+          hobbies_interests: string[] | null
           id: string
           income_range: string | null
           is_verified: boolean | null
@@ -264,12 +271,17 @@ export type Database = {
           last_name: string | null
           location: string | null
           madhab: string | null
+          marital_status: string | null
           marriage_timeline: string | null
+          number_of_children: number | null
           number_of_children_wanted: number | null
+          personality_traits: string[] | null
           prayer_frequency: string | null
           previous_marriage: boolean | null
           profile_boost_expires: string | null
+          relationship_goals: string[] | null
           religion_level: string | null
+          smoking_status: string | null
           updated_at: string
           user_id: string
           verification_level: string | null
@@ -280,16 +292,23 @@ export type Database = {
           age?: number | null
           avatar_url?: string | null
           bio?: string | null
+          body_type?: string | null
           career_field?: string | null
+          children_preference?: string | null
           community_involvement_level?: string | null
           created_at?: string
+          dietary_preferences?: string[] | null
           display_name?: string | null
           education_level?: string | null
+          exercise_frequency?: string | null
           family_size_preference?: string | null
           financial_readiness?: string | null
           first_name?: string | null
           hajj_umrah_experience?: boolean | null
+          has_children?: boolean | null
+          height_cm?: number | null
           hijab_status?: string | null
+          hobbies_interests?: string[] | null
           id?: string
           income_range?: string | null
           is_verified?: boolean | null
@@ -299,12 +318,17 @@ export type Database = {
           last_name?: string | null
           location?: string | null
           madhab?: string | null
+          marital_status?: string | null
           marriage_timeline?: string | null
+          number_of_children?: number | null
           number_of_children_wanted?: number | null
+          personality_traits?: string[] | null
           prayer_frequency?: string | null
           previous_marriage?: boolean | null
           profile_boost_expires?: string | null
+          relationship_goals?: string[] | null
           religion_level?: string | null
+          smoking_status?: string | null
           updated_at?: string
           user_id: string
           verification_level?: string | null
@@ -315,16 +339,23 @@ export type Database = {
           age?: number | null
           avatar_url?: string | null
           bio?: string | null
+          body_type?: string | null
           career_field?: string | null
+          children_preference?: string | null
           community_involvement_level?: string | null
           created_at?: string
+          dietary_preferences?: string[] | null
           display_name?: string | null
           education_level?: string | null
+          exercise_frequency?: string | null
           family_size_preference?: string | null
           financial_readiness?: string | null
           first_name?: string | null
           hajj_umrah_experience?: boolean | null
+          has_children?: boolean | null
+          height_cm?: number | null
           hijab_status?: string | null
+          hobbies_interests?: string[] | null
           id?: string
           income_range?: string | null
           is_verified?: boolean | null
@@ -334,12 +365,17 @@ export type Database = {
           last_name?: string | null
           location?: string | null
           madhab?: string | null
+          marital_status?: string | null
           marriage_timeline?: string | null
+          number_of_children?: number | null
           number_of_children_wanted?: number | null
+          personality_traits?: string[] | null
           prayer_frequency?: string | null
           previous_marriage?: boolean | null
           profile_boost_expires?: string | null
+          relationship_goals?: string[] | null
           religion_level?: string | null
+          smoking_status?: string | null
           updated_at?: string
           user_id?: string
           verification_level?: string | null
@@ -446,9 +482,46 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_enhanced_match_score: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: number
+      }
       calculate_match_score: {
         Args: { user1_id: string; user2_id: string }
         Returns: number
+      }
+      get_compatibility_insights: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: {
+          category: string
+          score: number
+          insight: string
+          compatibility_level: string
+        }[]
+      }
+      get_enhanced_match_recommendations: {
+        Args: { target_user_id: string; limit_count?: number }
+        Returns: {
+          user_id: string
+          first_name: string
+          last_name: string
+          display_name: string
+          age: number
+          location: string
+          bio: string
+          avatar_url: string
+          religion_level: string
+          prayer_frequency: string
+          hijab_status: string
+          education_level: string
+          career_field: string
+          marital_status: string
+          smoking_status: string
+          has_children: boolean
+          children_preference: string
+          is_verified: boolean
+          match_score: number
+        }[]
       }
       get_match_recommendations: {
         Args: { target_user_id: string; limit_count?: number }
