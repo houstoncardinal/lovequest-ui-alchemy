@@ -41,6 +41,39 @@ export type Database = {
         }
         Relationships: []
       }
+      match_conversations: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string | null
+          last_message_id: string | null
+          match_id: string
+          unread_count_user1: number | null
+          unread_count_user2: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          last_message_id?: string | null
+          match_id: string
+          unread_count_user1?: number | null
+          unread_count_user2?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string | null
+          last_message_id?: string | null
+          match_id?: string
+          unread_count_user1?: number | null
+          unread_count_user2?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       match_insights: {
         Row: {
           compatibility_score: number
@@ -101,6 +134,129 @@ export type Database = {
           id?: string
           user1_id?: string
           user2_id?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          attachment_url: string | null
+          content: string
+          created_at: string
+          id: string
+          is_deleted: boolean
+          is_read: boolean
+          message_type: string
+          receiver_id: string
+          sender_id: string
+          updated_at: string
+        }
+        Insert: {
+          attachment_url?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          is_deleted?: boolean
+          is_read?: boolean
+          message_type?: string
+          receiver_id: string
+          sender_id: string
+          updated_at?: string
+        }
+        Update: {
+          attachment_url?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          is_deleted?: boolean
+          is_read?: boolean
+          message_type?: string
+          receiver_id?: string
+          sender_id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notification_preferences: {
+        Row: {
+          created_at: string
+          email_enabled: boolean | null
+          id: string
+          marketing_emails: boolean | null
+          new_matches: boolean | null
+          new_messages: boolean | null
+          profile_views: boolean | null
+          push_enabled: boolean | null
+          super_likes: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email_enabled?: boolean | null
+          id?: string
+          marketing_emails?: boolean | null
+          new_matches?: boolean | null
+          new_messages?: boolean | null
+          profile_views?: boolean | null
+          push_enabled?: boolean | null
+          super_likes?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email_enabled?: boolean | null
+          id?: string
+          marketing_emails?: boolean | null
+          new_matches?: boolean | null
+          new_messages?: boolean | null
+          profile_views?: boolean | null
+          push_enabled?: boolean | null
+          super_likes?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      photo_uploads: {
+        Row: {
+          created_at: string
+          file_path: string
+          file_size: number | null
+          file_type: string | null
+          file_url: string
+          id: string
+          is_primary: boolean | null
+          is_verified: boolean | null
+          updated_at: string
+          upload_status: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url: string
+          id?: string
+          is_primary?: boolean | null
+          is_verified?: boolean | null
+          updated_at?: string
+          upload_status?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          file_size?: number | null
+          file_type?: string | null
+          file_url?: string
+          id?: string
+          is_primary?: boolean | null
+          is_verified?: boolean | null
+          updated_at?: string
+          upload_status?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -426,6 +582,60 @@ export type Database = {
         }
         Relationships: []
       }
+      push_notification_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean | null
+          platform: string
+          token: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          platform: string
+          token: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean | null
+          platform?: string
+          token?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_blocks: {
+        Row: {
+          blocked_id: string
+          blocker_id: string
+          created_at: string
+          id: string
+          reason: string | null
+        }
+        Insert: {
+          blocked_id: string
+          blocker_id: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+        }
+        Update: {
+          blocked_id?: string
+          blocker_id?: string
+          created_at?: string
+          id?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
       user_likes: {
         Row: {
           created_at: string
@@ -483,6 +693,54 @@ export type Database = {
           show_me?: string | null
           updated_at?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      user_reports: {
+        Row: {
+          admin_notes: string | null
+          created_at: string
+          id: string
+          reason: string | null
+          report_type: string
+          reported_message_id: string | null
+          reported_post_id: string | null
+          reported_user_id: string | null
+          reporter_id: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          reason?: string | null
+          report_type: string
+          reported_message_id?: string | null
+          reported_post_id?: string | null
+          reported_user_id?: string | null
+          reporter_id: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_notes?: string | null
+          created_at?: string
+          id?: string
+          reason?: string | null
+          report_type?: string
+          reported_message_id?: string | null
+          reported_post_id?: string | null
+          reported_user_id?: string | null
+          reporter_id?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -665,6 +923,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      are_users_matched: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: boolean
+      }
       calculate_distance: {
         Args: { lat1: number; lon1: number; lat2: number; lon2: number }
         Returns: number
@@ -768,6 +1030,10 @@ export type Database = {
           matched_at: string
         }[]
       }
+      get_or_create_conversation: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: string
+      }
       get_user_plan: {
         Args: { user_id_param?: string }
         Returns: Database["public"]["Enums"]["user_plan_type"]
@@ -778,6 +1044,10 @@ export type Database = {
       }
       is_admin: {
         Args: { user_id: string }
+        Returns: boolean
+      }
+      is_user_blocked: {
+        Args: { blocker_id: string; blocked_id: string }
         Returns: boolean
       }
     }
