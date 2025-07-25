@@ -44,15 +44,17 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            className="relative"
           >
             <Button
               onClick={onCreatePost}
-              size="sm"
-              className="rounded-full bg-gradient-primary hover:shadow-glow transition-all duration-300 px-4"
+              size="lg"
+              className="rounded-2xl bg-gradient-primary hover:shadow-glow hover:scale-105 transition-all duration-300 px-6 py-3 font-semibold text-primary-foreground shadow-elegant border-0"
             >
-              <Plus className="w-4 h-4 mr-1" />
-              Post
+              <Plus className="w-5 h-5 mr-2" />
+              New Post
             </Button>
+            <div className="absolute inset-0 rounded-2xl bg-gradient-primary opacity-20 blur-lg -z-10"></div>
           </motion.div>
         </div>
 
@@ -63,20 +65,20 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-muted/30 border border-border/50 p-1 rounded-2xl">
+            <TabsList className="grid w-full grid-cols-2 bg-muted/50 border border-border/30 p-1.5 rounded-2xl shadow-card">
               <TabsTrigger 
                 value="trending" 
-                className="flex items-center gap-2 rounded-xl data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-glow transition-all duration-300"
+                className="flex items-center gap-2 rounded-xl text-foreground font-medium transition-all duration-300 hover:bg-muted/70 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-card data-[state=active]:border data-[state=active]:border-primary/20"
               >
                 <TrendingUp className="w-4 h-4" />
-                <span className="font-medium">Trending</span>
+                <span>Trending</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="recent" 
-                className="flex items-center gap-2 rounded-xl data-[state=active]:bg-gradient-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-glow transition-all duration-300"
+                className="flex items-center gap-2 rounded-xl text-foreground font-medium transition-all duration-300 hover:bg-muted/70 data-[state=active]:bg-background data-[state=active]:text-primary data-[state=active]:shadow-card data-[state=active]:border data-[state=active]:border-primary/20"
               >
                 <Clock className="w-4 h-4" />
-                <span className="font-medium">Recent</span>
+                <span>Recent</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>

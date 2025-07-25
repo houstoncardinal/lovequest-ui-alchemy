@@ -126,34 +126,41 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-gradient-primary">
-              <Upload className="w-4 h-4 text-white" />
+      <DialogContent className="sm:max-w-md bg-gradient-glow border border-border/50 shadow-glow">
+        <DialogHeader className="pb-4 border-b border-border/30">
+          <DialogTitle className="flex items-center gap-3 text-xl">
+            <div className="p-2 rounded-xl bg-gradient-primary shadow-elegant">
+              <Upload className="w-5 h-5 text-primary-foreground" />
             </div>
             Create Post
           </DialogTitle>
+          <p className="text-sm text-muted-foreground mt-2">
+            Share something meaningful with the community
+          </p>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label htmlFor="content">What's on your mind?</Label>
+        <form onSubmit={handleSubmit} className="space-y-6 pt-4">
+          <div className="space-y-2">
+            <Label htmlFor="content" className="text-sm font-medium text-foreground">
+              What's on your mind?
+            </Label>
             <Textarea
               id="content"
               value={content}
               onChange={(e) => setContent(e.target.value)}
               placeholder="Share something meaningful with the community..."
-              className="min-h-[100px] resize-none"
+              className="min-h-[120px] resize-none border-border/50 focus:border-primary/50 bg-background/50"
               maxLength={1000}
             />
-            <div className="text-xs text-muted-foreground text-right mt-1">
+            <div className="text-xs text-muted-foreground text-right">
               {content.length}/1000
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="location">Location (optional)</Label>
+          <div className="space-y-2">
+            <Label htmlFor="location" className="text-sm font-medium text-foreground">
+              Location (optional)
+            </Label>
             <div className="relative">
               <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
               <Input
@@ -161,27 +168,27 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
                 placeholder="Add a location..."
-                className="pl-10"
+                className="pl-10 border-border/50 focus:border-primary/50 bg-background/50"
                 maxLength={100}
               />
             </div>
           </div>
 
-          <div>
-            <Label>Image (optional)</Label>
+          <div className="space-y-3">
+            <Label className="text-sm font-medium text-foreground">Image (optional)</Label>
             {imagePreview ? (
               <div className="relative mt-2">
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="w-full h-40 object-cover rounded-lg"
+                  className="w-full h-48 object-cover rounded-xl border border-border/30"
                 />
                 <Button
                   type="button"
-                  variant="destructive"
+                  variant="secondary"
                   size="sm"
                   onClick={removeImage}
-                  className="absolute top-2 right-2"
+                  className="absolute top-3 right-3 h-8 w-8 rounded-full bg-background/80 hover:bg-background border border-border/50"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -189,10 +196,13 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
             ) : (
               <div className="mt-2">
                 <label htmlFor="image-upload" className="cursor-pointer">
-                  <div className="border-2 border-dashed border-border rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
-                    <Image className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
-                    <p className="text-sm text-muted-foreground">
+                  <div className="border-2 border-dashed border-border/50 rounded-xl p-8 text-center hover:border-primary/50 hover:bg-primary/5 transition-all duration-300 bg-gradient-glow">
+                    <Image className="w-10 h-10 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-sm font-medium text-foreground mb-1">
                       Click to upload an image
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      PNG, JPG up to 10MB
                     </p>
                   </div>
                 </label>
@@ -207,19 +217,19 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
             )}
           </div>
 
-          <div className="flex gap-2 pt-4">
+          <div className="flex gap-3 pt-6 border-t border-border/30">
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="flex-1"
+              className="flex-1 border-border/50 hover:bg-muted/50"
               disabled={uploading}
             >
               Cancel
             </Button>
             <Button
               type="submit"
-              className="flex-1"
+              className="flex-1 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-primary-foreground font-medium"
               disabled={uploading || !content.trim()}
             >
               {uploading ? "Posting..." : "Share Post"}

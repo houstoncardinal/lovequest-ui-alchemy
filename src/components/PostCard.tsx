@@ -70,13 +70,13 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
       transition={{ duration: 0.3 }}
       className="relative"
     >
-      <Card className="overflow-hidden border-0 shadow-elegant hover:shadow-glow transition-all duration-500 bg-card/50 backdrop-blur-sm">
+      <Card className="overflow-hidden border-0 shadow-elegant hover:shadow-glow transition-all duration-500 bg-card/80 backdrop-blur-sm border border-border/30">
         {/* Post Header */}
-        <div className="p-5 pb-4">
+        <div className="p-5 pb-4 bg-gradient-glow/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
+              <div className="relative group">
+                <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background transition-all duration-300 group-hover:ring-primary/40">
                   <AvatarImage src={post.profiles?.avatar_url} className="object-cover" />
                   <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">
                     {initials}
@@ -91,12 +91,12 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-semibold text-foreground text-sm truncate">
+                  <h3 className="font-semibold text-foreground text-sm truncate hover:text-primary transition-colors">
                     {displayName}
                   </h3>
                   {post.is_trending && (
-                    <Badge variant="secondary" className="bg-gradient-primary/10 text-primary border-primary/20 text-xs">
-                      Trending
+                    <Badge variant="secondary" className="bg-gradient-primary/10 text-primary border-primary/20 text-xs shadow-sm">
+                      ✨ Trending
                     </Badge>
                   )}
                 </div>
@@ -124,8 +124,8 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
         </div>
 
         {/* Post Content */}
-        <div className="px-5 pb-4">
-          <p className="text-foreground leading-relaxed whitespace-pre-wrap text-sm line-clamp-3">
+        <div className="px-5 pb-4 bg-gradient-to-b from-transparent to-card/20">
+          <p className="text-foreground leading-relaxed whitespace-pre-wrap text-sm line-clamp-3 hover:line-clamp-none transition-all duration-300 cursor-pointer">
             {post.content}
           </p>
         </div>
@@ -133,25 +133,26 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
         {/* Post Image */}
         {post.image_url && (
           <div className="px-5 pb-4">
-            <div className="relative overflow-hidden rounded-xl bg-muted">
+            <div className="relative overflow-hidden rounded-2xl bg-muted shadow-inner">
               <img 
                 src={post.image_url} 
                 alt="Post image" 
-                className="w-full h-auto max-h-80 object-cover transition-transform duration-300 hover:scale-105"
+                className="w-full h-auto max-h-96 object-cover transition-transform duration-500 hover:scale-105 cursor-pointer"
                 loading="lazy"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
             </div>
           </div>
         )}
 
         {/* Post Actions */}
-        <div className="px-5 py-4 border-t border-border/50 bg-gradient-glow">
+        <div className="px-5 py-4 border-t border-border/30 bg-gradient-to-r from-primary/5 via-transparent to-accent/5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-6">
               <motion.button
                 onClick={handleLike}
-                className={`flex items-center gap-2 transition-all duration-200 hover:scale-105 ${
-                  isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-foreground'
+                className={`flex items-center gap-2 transition-all duration-200 hover:scale-110 active:scale-95 ${
+                  isLiked ? 'text-red-500' : 'text-muted-foreground hover:text-red-400'
                 }`}
                 whileTap={{ scale: 0.95 }}
               >
@@ -191,17 +192,17 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
                 <span className="font-medium text-sm">{likesCount}</span>
               </motion.button>
               
-              <button className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors">
+              <button className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-all duration-200 hover:scale-105">
                 <MessageCircle className="w-5 h-5" />
                 <span className="font-medium text-sm">{post.comments_count}</span>
               </button>
             </div>
             
-            <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-muted/50">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-primary/10 hover:text-primary transition-all duration-200 hover:scale-105">
                 <Share2 className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-muted/50">
+              <Button variant="ghost" size="sm" className="h-9 w-9 p-0 hover:bg-accent/10 hover:text-accent transition-all duration-200 hover:scale-105">
                 <Bookmark className="w-4 h-4" />
               </Button>
             </div>
