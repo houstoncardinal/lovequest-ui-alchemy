@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Heart, ArrowRight, Eye, EyeOff, Crown, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -90,168 +94,181 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 flex flex-col">
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
-        <button 
+      <div className="flex items-center justify-between p-6">
+        <Button 
+          variant="ghost"
+          size="icon"
           onClick={() => navigate("/welcome")}
-          className="p-2 rounded-full hover:bg-slate-200 transition-colors"
+          className="hover:bg-emerald-100"
         >
-          <svg className="w-6 h-6 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        
+          <ArrowRight className="w-6 h-6 rotate-180 text-emerald-600" />
+        </Button>
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
-            <Heart className="w-6 h-6 text-white fill-current" />
+          <div className="relative">
+            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg ring-4 ring-emerald-100">
+              <Heart className="w-7 h-7 text-white fill-current" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full flex items-center justify-center">
+              <Crown className="w-3 h-3 text-white" />
+            </div>
           </div>
-          <h1 className="text-xl font-bold text-slate-800">Jaan</h1>
+          <div className="ml-4">
+            <h1 className="text-2xl font-bold text-gray-900">Jaan</h1>
+            <p className="text-xs text-emerald-600 font-medium">Premium Halal Dating</p>
+          </div>
         </div>
-        
         <div></div>
       </div>
 
       {/* Form Content */}
-      <div className="flex-1 flex flex-col justify-center px-8">
-        <div className="max-w-sm mx-auto w-full">
+      <div className="flex-1 flex flex-col justify-center px-4 sm:px-8">
+        <div className="max-w-md mx-auto w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-emerald-100 p-8">
           <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-slate-800 mb-2">Create Account</h2>
-            <p className="text-slate-600">Join Jaan and find your soulmate</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
+            <p className="text-emerald-600">Join Jaan and find your soulmate</p>
+            <Badge className="mt-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-1 text-xs font-bold shadow-lg inline-flex items-center">
+              <Sparkles className="w-3 h-3 mr-1" />
+              Premium Experience
+            </Badge>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-slate-700 mb-2">
-                  First Name
-                </label>
-                <input
+                <Label htmlFor="firstName">First Name</Label>
+                <Input
                   type="text"
                   id="firstName"
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
                   placeholder="First name"
                   required
+                  className="mt-2"
                 />
               </div>
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-slate-700 mb-2">
-                  Last Name
-                </label>
-                <input
+                <Label htmlFor="lastName">Last Name</Label>
+                <Input
                   type="text"
                   id="lastName"
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
                   placeholder="Last name"
                   required
+                  className="mt-2"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-slate-700 mb-2">
-                Email
-              </label>
-              <input
+              <Label htmlFor="email">Email</Label>
+              <Input
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
                 placeholder="Enter your email"
                 required
+                className="mt-2"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
-                Password
-              </label>
+              <Label htmlFor="password">Password</Label>
               <div className="relative">
-                <input
+                <Input
                   type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 pr-12 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
                   placeholder="Create a password"
                   required
+                  className="mt-2 pr-12"
                 />
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="icon"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-emerald-400 hover:text-emerald-600"
+                  tabIndex={-1}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
+                </Button>
               </div>
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-slate-700 mb-2">
-                Confirm Password
-              </label>
-              <input
+              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Input
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all duration-200"
                 placeholder="Confirm your password"
                 required
+                className="mt-2"
               />
             </div>
 
             <div className="flex items-start">
-              <input
+              <Input
                 type="checkbox"
                 id="agreeToTerms"
                 name="agreeToTerms"
                 checked={formData.agreeToTerms}
                 onChange={handleInputChange}
-                className="w-4 h-4 mt-1 text-amber-600 border-slate-300 rounded focus:ring-amber-500"
+                className="w-4 h-4 mt-1 text-emerald-600 border-emerald-300 rounded focus:ring-emerald-500"
                 required
               />
-              <label htmlFor="agreeToTerms" className="ml-2 text-sm text-slate-600">
-                I agree to the{" "}
-                <button type="button" className="text-amber-600 hover:text-amber-700 font-medium">
-                  Terms of Service
-                </button>{" "}
-                and{" "}
-                <button type="button" className="text-amber-600 hover:text-amber-700 font-medium">
-                  Privacy Policy
-                </button>
-              </label>
+              <Label htmlFor="agreeToTerms" className="ml-2 text-sm text-emerald-700">
+                I agree to the{' '}
+                <Button type="button" variant="link" className="text-emerald-600 hover:text-emerald-700 font-medium px-0 h-auto">Terms of Service</Button>{' '}
+                and{' '}
+                <Button type="button" variant="link" className="text-emerald-600 hover:text-emerald-700 font-medium px-0 h-auto">Privacy Policy</Button>
+              </Label>
             </div>
 
-            <button
+            <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-amber-500 to-yellow-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold py-3 px-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+              size="lg"
             >
               {isLoading ? "Creating Account..." : "Create Account"}
               {!isLoading && <ArrowRight className="w-5 h-5 ml-2" />}
-            </button>
+            </Button>
+
+            {/* Google Sign Up Placeholder */}
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-emerald-200 text-emerald-700 hover:bg-emerald-50 mt-2"
+              onClick={() => toast({ title: "Coming soon!", description: "Google sign up will be available soon." })}
+            >
+              <svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.9 33.1 30.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c2.6 0 5 .8 7 2.2l6.4-6.4C33.5 5.5 28.1 3.5 22 3.5 11.6 3.5 3 12.1 3 22.5S11.6 41.5 22 41.5c9.5 0 17.5-7.7 17.5-17.5 0-1.2-.1-2.1-.3-3z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 17.1 18.3 15 22 15c2.6 0 5 .8 7 2.2l6.4-6.4C33.5 5.5 28.1 3.5 22 3.5c-6.6 0-12 5.4-12 12 0 2.1.5 4.1 1.3 5.7z"/><path fill="#FBBC05" d="M22 41.5c6.2 0 11.4-2.1 15.2-5.7l-7-5.7C28.7 32.9 26.5 34 24 34c-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7c-1.2 3.2-4.2 5.5-7.7 5.5-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19 6.1 0 11.5-2.1 15.2-5.7l-7-5.7C28.7 32.9 26.5 34 24 34c-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19 6.1 0 11.5-2.1 15.2-5.7l-7-5.7C28.7 32.9 26.5 34 24 34c-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19z"/></g></svg>
+              Sign up with Google
+            </Button>
           </form>
 
           <div className="mt-8 text-center">
-            <p className="text-slate-600">
-              Already have an account?{" "}
-              <button
+            <p className="text-emerald-700">
+              Already have an account?{' '}
+              <Button
+                type="button"
+                variant="link"
                 onClick={() => navigate("/login")}
-                className="text-amber-600 hover:text-amber-700 font-semibold"
+                className="text-emerald-600 hover:text-emerald-700 font-semibold px-0 h-auto"
               >
                 Sign in
-              </button>
+              </Button>
             </p>
           </div>
         </div>
