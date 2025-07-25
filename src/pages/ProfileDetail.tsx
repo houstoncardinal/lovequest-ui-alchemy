@@ -374,7 +374,7 @@ const ProfileDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20 relative">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-32 relative">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-4">
         <button 
@@ -436,14 +436,14 @@ const ProfileDetail = () => {
       </div>
 
       {/* Content */}
-      <div className="p-4">
+      <div className="p-4 pb-8">
         {renderTabContent()}
       </div>
 
       {/* Action Buttons */}
-      <div className="fixed bottom-20 left-0 right-0 px-4 pb-4">
+      <div className="fixed bottom-24 left-0 right-0 px-4 z-30">
         <div className="flex justify-center space-x-6">
-          <button className="w-16 h-16 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300">
+          <button className="w-16 h-16 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95">
             <svg className="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
@@ -451,16 +451,16 @@ const ProfileDetail = () => {
           
           <button 
             onClick={() => setIsLiked(!isLiked)}
-            className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 ${
+            className={`w-20 h-20 rounded-full flex items-center justify-center shadow-xl transition-all duration-300 hover:scale-105 active:scale-95 ${
               isLiked 
-                ? "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white" 
+                ? "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white shadow-emerald-300" 
                 : "bg-white border-2 border-emerald-500 text-emerald-600 hover:bg-emerald-500 hover:text-white"
             }`}
           >
             <Heart className={`w-9 h-9 ${isLiked ? "fill-current" : ""}`} />
           </button>
           
-          <button className="w-16 h-16 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300">
+          <button className="w-16 h-16 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95">
             <Star className="w-7 h-7 text-gray-600" />
           </button>
         </div>
