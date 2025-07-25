@@ -1,12 +1,17 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Heart, MessageCircle, MapPin, Sparkles, TrendingUp, Clock } from "lucide-react";
+import { Heart, MessageCircle, MapPin, Sparkles, TrendingUp, Clock, Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
+
+import CreatePostModal from "@/components/CreatePostModal";
+import EditPostModal from "@/components/EditPostModal";
+import PostMenu from "@/components/PostMenu";
 
 interface Post {
   id: string;
@@ -31,7 +36,11 @@ const Community = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("trending");
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchPosts();
@@ -61,10 +70,23 @@ const Community = () => {
         .select('user_id, display_name, avatar_url, first_name, last_name')
         .in('user_id', userIds);
 
-      // Combine posts with profiles
+      // Check which posts current user has liked
+      let userLikes = [];
+      if (user) {
+        const { data: likesData } = await supabase
+          .from('post_likes')
+          .select('post_id')
+          .eq('user_id', user.id)
+          .in('post_id', postsData?.map(p => p.id) || []);
+        
+        userLikes = likesData?.map(like => like.post_id) || [];
+      }
+
+      // Combine posts with profiles and like status
       const postsWithProfiles = postsData?.map(post => ({
         ...post,
-        profiles: profilesData?.find(profile => profile.user_id === post.user_id) || null
+        profiles: profilesData?.find(profile => profile.user_id === post.user_id) || null,
+        user_liked: userLikes.includes(post.id)
       })) || [];
 
       setPosts(postsWithProfiles);
@@ -82,7 +104,6 @@ const Community = () => {
 
   const handleLike = async (postId: string, isLiked: boolean) => {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
         toast({
           title: "Authentication required",
@@ -125,6 +146,15 @@ const Community = () => {
     }
   };
 
+  const handleEditPost = (post: Post) => {
+    setEditingPost(post);
+    setShowEditModal(true);
+  };
+
+  const handleDeletePost = (deletedPostId: string) => {
+    setPosts(posts.filter(post => post.id !== deletedPostId));
+  };
+
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -156,16 +186,26 @@ const Community = () => {
       {/* Header */}
       <div className="sticky top-0 bg-background/95 backdrop-blur-lg border-b border-border/50 p-6 z-10">
         <div className="max-w-md mx-auto">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="p-2 rounded-xl bg-gradient-primary">
-              <Sparkles className="w-6 h-6 text-white" />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-xl bg-gradient-primary">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                  Community
+                </h1>
+                <p className="text-sm text-muted-foreground">Discover and connect</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                Community
-              </h1>
-              <p className="text-sm text-muted-foreground">Discover and connect</p>
-            </div>
+            <Button
+              onClick={() => setShowCreateModal(true)}
+              size="sm"
+              className="rounded-full"
+            >
+              <Plus className="w-4 h-4 mr-1" />
+              Post
+            </Button>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
@@ -219,6 +259,13 @@ const Community = () => {
                     <span>{formatTimeAgo(post.created_at)}</span>
                   </div>
                 </div>
+                {user?.id === post.user_id && (
+                  <PostMenu
+                    postId={post.id}
+                    onEdit={() => handleEditPost(post)}
+                    onDelete={() => handleDeletePost(post.id)}
+                  />
+                )}
               </div>
             </div>
 
@@ -282,6 +329,22 @@ const Community = () => {
 
       {/* Bottom padding for navigation */}
       <div className="h-24"></div>
+
+      {/* Create Post Modal */}
+      <CreatePostModal
+        open={showCreateModal}
+        onOpenChange={setShowCreateModal}
+        onPostCreated={fetchPosts}
+      />
+
+      {/* Edit Post Modal */}
+      <EditPostModal
+        open={showEditModal}
+        onOpenChange={setShowEditModal}
+        post={editingPost}
+        onPostUpdated={fetchPosts}
+      />
+
     </div>
   );
 };

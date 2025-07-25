@@ -2,9 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import BottomNavigation from "@/components/BottomNavigation";
 import Home from "./pages/Home";
 import LikeYou from "./pages/LikeYou";
 import ForYou from "./pages/ForYou";
@@ -39,15 +40,16 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-function App() {
+const AppWithNavigation = () => {
+  const location = useLocation();
+  
+  // Pages where we don't want to show the bottom navigation
+  const hideNavigationOn = ['/welcome', '/signup', '/login', '/onboarding'];
+  const showNavigation = !hideNavigationOn.includes(location.pathname);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-        <Routes>
+    <>
+      <Routes>
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
@@ -82,7 +84,21 @@ function App() {
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        </BrowserRouter>
+        {showNavigation && <BottomNavigation />}
+    </>
+  );
+};
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <AppWithNavigation />
+          </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
