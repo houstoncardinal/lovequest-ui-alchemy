@@ -1,19 +1,61 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Camera, Plus, X } from "lucide-react";
+import { ArrowLeft, Camera, Plus, X, Save, Loader2 } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import profile1 from "@/assets/profile-1.jpg";
 
 const EditProfile = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: "Sarah Johnson",
-    bio: "Music lover and coffee enthusiast. Always exploring new sounds and cozy cafes around the city.",
-    age: "24",
-    jobTitle: "Music Student",
-    company: "Local University",
-    location: "New York, NY"
+    name: "",
+    bio: "",
+    age: "",
+    jobTitle: "",
+    company: "",
+    location: ""
   });
+
+  useEffect(() => {
+    fetchProfile();
+  }, [user]);
+
+  const fetchProfile = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      
+      if (data) {
+        setFormData({
+          name: data.display_name || data.first_name || "",
+          bio: data.bio || "",
+          age: data.age?.toString() || "",
+          jobTitle: data.career_field || "",
+          company: data.education_level || "",
+          location: data.location || ""
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load profile data.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -23,10 +65,46 @@ const EditProfile = () => {
     }));
   };
 
-  const handleSave = () => {
-    // Save logic here
-    console.log("Saving profile:", formData);
-    navigate("/account");
+  const handleSave = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      const profileData = {
+        user_id: user.id,
+        display_name: formData.name,
+        first_name: formData.name.split(' ')[0],
+        last_name: formData.name.split(' ').slice(1).join(' '),
+        bio: formData.bio,
+        age: formData.age ? parseInt(formData.age) : null,
+        career_field: formData.jobTitle,
+        education_level: formData.company,
+        location: formData.location,
+        updated_at: new Date().toISOString()
+      };
+
+      const { error } = await supabase
+        .from('profiles')
+        .upsert(profileData);
+
+      if (error) throw error;
+
+      toast({
+        title: "Profile updated",
+        description: "Your profile has been successfully updated.",
+      });
+      
+      navigate("/account");
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save profile. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -40,9 +118,15 @@ const EditProfile = () => {
           <h1 className="text-xl font-bold text-gray-900">Edit Profile</h1>
           <button 
             onClick={handleSave}
-            className="text-primary font-semibold"
+            disabled={loading}
+            className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
           >
-            Save
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            <span>{loading ? "Saving..." : "Save"}</span>
           </button>
         </div>
       </div>

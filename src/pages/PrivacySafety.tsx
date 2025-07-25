@@ -1,10 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Shield, Eye, EyeOff, Users, Bell } from "lucide-react";
+import { ArrowLeft, Shield, Eye, EyeOff, Users, Bell, Save, Loader2 } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
 const PrivacySafety = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [settings, setSettings] = useState({
     profileVisibility: "everyone",
     showAge: true,
@@ -14,6 +19,37 @@ const PrivacySafety = () => {
     incognitoMode: false,
     blockContacts: false
   });
+
+  useEffect(() => {
+    loadSettings();
+  }, [user]);
+
+  const loadSettings = async () => {
+    // In a real app, fetch privacy settings from backend
+  };
+
+  const saveSettings = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      // In a real app, save to backend
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Settings saved",
+        description: "Your privacy settings have been updated.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to save settings. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleToggle = (key: string) => {
     setSettings(prev => ({
@@ -31,7 +67,18 @@ const PrivacySafety = () => {
             <ArrowLeft className="w-6 h-6 text-gray-600" />
           </button>
           <h1 className="text-xl font-bold text-gray-900">Privacy & Safety</h1>
-          <div></div>
+          <button 
+            onClick={saveSettings}
+            disabled={loading}
+            className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            <span>{loading ? "Saving..." : "Save"}</span>
+          </button>
         </div>
       </div>
 

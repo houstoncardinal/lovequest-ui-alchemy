@@ -1,18 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Camera, Plus, X, Upload } from "lucide-react";
+import { ArrowLeft, Camera, Plus, X, Upload, Loader2 } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import profile1 from "@/assets/profile-1.jpg";
 import profile2 from "@/assets/profile-2.jpg";
 import profile3 from "@/assets/profile-3.jpg";
 
 const ManagePhotos = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [photos, setPhotos] = useState([
     { id: 1, url: profile1, isMain: true },
     { id: 2, url: profile2, isMain: false },
     { id: 3, url: profile3, isMain: false },
   ]);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    fetchUserPhotos();
+  }, [user]);
 
   const handleSetMain = (id: number) => {
     setPhotos(photos.map(photo => ({
@@ -21,8 +32,101 @@ const ManagePhotos = () => {
     })));
   };
 
-  const handleRemovePhoto = (id: number) => {
-    setPhotos(photos.filter(photo => photo.id !== id));
+  const fetchUserPhotos = async () => {
+    if (!user) return;
+    
+    try {
+      // In a real app, you'd fetch photos from storage/database
+      // For now, keeping the static photos as placeholders
+    } catch (error) {
+      console.error('Error fetching photos:', error);
+    }
+  };
+
+  const handleRemovePhoto = async (id: number) => {
+    try {
+      // In a real app, you'd delete from storage here
+      setPhotos(photos.filter(photo => photo.id !== id));
+      
+      toast({
+        title: "Photo removed",
+        description: "Photo has been successfully removed.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to remove photo. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleFileSelect = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file",
+        description: "Please select an image file.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        title: "File too large",
+        description: "Please select an image smaller than 5MB.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('avatars')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data } = supabase.storage
+        .from('avatars')
+        .getPublicUrl(fileName);
+
+      // Add new photo to the list
+      const newPhoto = {
+        id: photos.length + 1,
+        url: data.publicUrl,
+        isMain: photos.length === 0
+      };
+
+      setPhotos([...photos, newPhoto]);
+
+      toast({
+        title: "Photo uploaded",
+        description: "Your photo has been successfully uploaded.",
+      });
+    } catch (error) {
+      console.error('Error uploading photo:', error);
+      toast({
+        title: "Upload failed",
+        description: "Failed to upload photo. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -93,11 +197,30 @@ const ManagePhotos = () => {
 
           {/* Add Photo Button */}
           {photos.length < 6 && (
-            <div className="aspect-square border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors">
-              <Upload className="w-8 h-8 text-gray-400 mb-2" />
-              <span className="text-sm text-gray-500">Add Photo</span>
-            </div>
+            <button
+              onClick={handleFileSelect}
+              disabled={uploading}
+              className="aspect-square border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-colors disabled:opacity-50"
+            >
+              {uploading ? (
+                <Loader2 className="w-8 h-8 text-gray-400 mb-2 animate-spin" />
+              ) : (
+                <Upload className="w-8 h-8 text-gray-400 mb-2" />
+              )}
+              <span className="text-sm text-gray-500">
+                {uploading ? "Uploading..." : "Add Photo"}
+              </span>
+            </button>
           )}
+          
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
         </div>
 
         {/* Photo Count */}

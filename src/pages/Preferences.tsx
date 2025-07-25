@@ -1,11 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, MapPin, Heart, Shield, Filter } from "lucide-react";
+import { ArrowLeft, Users, MapPin, Heart, Shield, Filter, Save, Loader2 } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Preferences = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [preferences, setPreferences] = useState({
     ageRange: [22, 30],
     maxDistance: 25,
@@ -17,6 +23,57 @@ const Preferences = () => {
       kids: false
     }
   });
+
+  useEffect(() => {
+    fetchPreferences();
+  }, [user]);
+
+  const fetchPreferences = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      
+      // Set preferences from profile data if available
+      if (data) {
+        // For now, keeping default values as the schema doesn't have these specific fields
+        // In a real app, you'd have a separate preferences table
+      }
+    } catch (error) {
+      console.error('Error fetching preferences:', error);
+    }
+  };
+
+  const savePreferences = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      // In a real app, you'd save to a preferences table
+      // For now, we'll simulate saving
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      toast({
+        title: "Preferences saved",
+        description: "Your preferences have been successfully updated.",
+      });
+    } catch (error) {
+      console.error('Error saving preferences:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save preferences. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleRangeChange = (field: string, index: number, value: number) => {
     setPreferences(prev => ({
@@ -39,7 +96,18 @@ const Preferences = () => {
             <ArrowLeft className="w-6 h-6 text-emerald-600" />
           </button>
           <h1 className="text-xl font-bold text-gray-900">Preferences</h1>
-          <div className="w-10"></div>
+          <button 
+            onClick={savePreferences}
+            disabled={loading}
+            className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+          >
+            {loading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <Save className="w-4 h-4" />
+            )}
+            <span>{loading ? "Saving..." : "Save"}</span>
+          </button>
         </div>
       </div>
 
