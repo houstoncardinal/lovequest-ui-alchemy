@@ -1,13 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, Edit3, Camera, Shield, Bell, Heart, Users, HelpCircle, LogOut, Key, Crown, Star, CreditCard, Calendar, ArrowRight } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import ApiKeyManager from "@/components/ApiKeyManager";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import profile1 from "@/assets/profile-1.jpg";
 
 const Account = () => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+  const [profile, setProfile] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [user]);
+
+  const fetchProfile = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
+      setProfile(data);
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "You've been signed out successfully.",
+      });
+      navigate('/welcome');
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
   const [currentPlan] = useState({
     id: "premium",
     name: "Premium",
@@ -121,7 +168,9 @@ const Account = () => {
             </div>
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-1">
-                <h2 className="text-xl font-bold text-gray-900">Ayesha Siddiqui</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  {profile?.display_name || profile?.first_name || user?.email?.split('@')[0] || 'User'}
+                </h2>
                 <Crown className="w-5 h-5 text-amber-500 fill-current" />
               </div>
               <p className="text-emerald-600 text-sm font-medium mb-2">Premium Member</p>
@@ -255,7 +304,10 @@ const Account = () => {
         </div>
 
         {/* Logout */}
-        <button className="w-full mt-6 bg-white rounded-2xl shadow-sm border border-red-100 p-5 text-left hover:shadow-lg hover:border-red-200 transition-all duration-300 active:scale-98 group">
+        <button 
+          onClick={handleSignOut}
+          className="w-full mt-6 bg-white rounded-2xl shadow-sm border border-red-100 p-5 text-left hover:shadow-lg hover:border-red-200 transition-all duration-300 active:scale-98 group"
+        >
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
               <LogOut className="w-6 h-6 text-red-500" />

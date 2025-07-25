@@ -1,17 +1,74 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, Star, Zap, Users, Brain, Music } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import ProfileCard from "@/components/ProfileCard";
 import { Badge } from "@/components/ui/badge";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import profile1 from "@/assets/profile-1.jpg";
 import profile2 from "@/assets/profile-2.jpg";
 import profile3 from "@/assets/profile-3.jpg";
 
 const ForYou = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeCategory, setActiveCategory] = useState("Personality");
+  const [profiles, setProfiles] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   
+  useEffect(() => {
+    fetchProfiles();
+  }, [user]);
+
+  const fetchProfiles = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .neq('user_id', user.id)
+        .limit(10);
+
+      if (error) throw error;
+      
+      // Add mock data for demo purposes since profiles might be empty
+      const mockProfiles = [
+        {
+          id: "p1",
+          display_name: "Emma Watson",
+          age: 24,
+          location: "1.5 km away",
+          avatar_url: profile1,
+          bio: "Perfect personality alignment"
+        },
+        {
+          id: "p2", 
+          display_name: "Sophia Chen",
+          age: 22,
+          location: "2.3 km away",
+          avatar_url: profile2,
+          bio: "Similar communication style"
+        },
+        {
+          id: "p3",
+          display_name: "Maya Rodriguez", 
+          age: 26,
+          location: "3.1 km away",
+          avatar_url: profile3,
+          bio: "8 shared interests"
+        }
+      ];
+      
+      setProfiles(data?.length ? data : mockProfiles);
+    } catch (error) {
+      console.error('Error fetching profiles:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const categories = [
     { name: "Personality", icon: Brain, color: "bg-purple-500" },
     { name: "Interest", icon: Music, color: "bg-blue-500" },
@@ -150,49 +207,62 @@ const ForYou = () => {
 
         {/* Profiles Grid */}
         <div className="space-y-4">
-          {matchProfiles[activeCategory as keyof typeof matchProfiles]?.map((profile) => (
-            <div
-              key={profile.id}
-              className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer transform transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
-              onClick={() => navigate(`/profile/${profile.id}`)}
-            >
-              <div className="flex items-center p-4">
-                {/* Profile Image */}
-                <div className="w-20 h-20 rounded-2xl overflow-hidden mr-4 flex-shrink-0">
-                  <img 
-                    src={profile.image} 
-                    alt={`${profile.name}'s profile`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                {/* Profile Info */}
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold text-gray-900">
-                      {profile.name}, {profile.age}
-                    </h3>
-                    <div className="flex items-center bg-primary/10 px-2 py-1 rounded-full">
-                      <Star className="w-3 h-3 text-primary mr-1" />
-                      <span className="text-xs font-semibold text-primary">
-                        {profile.matchScore}%
-                      </span>
-                    </div>
+          {loading ? (
+            <div className="text-center py-8">
+              <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Finding your matches...</p>
+            </div>
+          ) : profiles.length === 0 ? (
+            <div className="text-center py-8">
+              <Heart className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">No matches yet</h3>
+              <p className="text-gray-600">Complete your profile to find better matches!</p>
+            </div>
+          ) : (
+            profiles.map((profile) => (
+              <div
+                key={profile.id}
+                className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 cursor-pointer transform transition-all duration-200 hover:scale-[1.02] hover:shadow-md"
+                onClick={() => navigate(`/profile/${profile.id}`)}
+              >
+                <div className="flex items-center p-4">
+                  {/* Profile Image */}
+                  <div className="w-20 h-20 rounded-2xl overflow-hidden mr-4 flex-shrink-0">
+                    <img 
+                      src={profile.avatar_url || profile1} 
+                      alt={`${profile.display_name || 'User'}'s profile`}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                   
-                  <p className="text-gray-500 text-sm mb-2">{profile.distance}</p>
-                  <p className="text-primary text-sm font-medium">
-                    {profile.matchReason}
-                  </p>
+                  {/* Profile Info */}
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold text-gray-900">
+                        {profile.display_name || 'Anonymous'}, {profile.age || '25'}
+                      </h3>
+                      <div className="flex items-center bg-primary/10 px-2 py-1 rounded-full">
+                        <Star className="w-3 h-3 text-primary mr-1" />
+                        <span className="text-xs font-semibold text-primary">
+                          {Math.floor(Math.random() * 20) + 80}%
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <p className="text-gray-500 text-sm mb-2">{profile.location || '2.1 km away'}</p>
+                    <p className="text-primary text-sm font-medium">
+                      {profile.bio || 'Great personality match'}
+                    </p>
+                  </div>
+                  
+                  {/* Action Button */}
+                  <button className="ml-3 w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <Heart className="w-5 h-5 text-white" />
+                  </button>
                 </div>
-                
-                {/* Action Button */}
-                <button className="ml-3 w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                  <Heart className="w-5 h-5 text-white" />
-                </button>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
