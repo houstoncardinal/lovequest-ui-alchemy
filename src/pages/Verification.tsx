@@ -1,160 +1,145 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Progress } from '@/components/ui/progress';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import VerificationStatus from '@/components/VerificationStatus';
-import PremiumBadge from '@/components/PremiumBadge';
+import VerificationFlow from '@/components/VerificationFlow';
 import { 
   Shield, 
   Camera, 
-  GraduationCap, 
-  Briefcase, 
   CheckCircle,
   Clock,
   XCircle,
-  Upload,
   FileText,
-  Award
+  Award,
+  AlertCircle,
+  ArrowLeft
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface VerificationRequest {
   id: string;
-  verification_type: 'photo' | 'education' | 'career' | 'background';
+  verification_type: string;
   status: 'pending' | 'approved' | 'rejected';
   notes?: string;
+  admin_notes?: string;
+  id_document_url?: string;
+  face_photo_url?: string;
   created_at: string;
+  updated_at: string;
+}
+
+interface Profile {
+  can_access_app: boolean;
+  verification_level: string;
+  is_verified: boolean;
 }
 
 const Verification = () => {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [requests, setRequests] = useState<VerificationRequest[]>([]);
+  const navigate = useNavigate();
+  const [verificationRequest, setVerificationRequest] = useState<VerificationRequest | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState<string | null>(null);
+  const [showVerificationFlow, setShowVerificationFlow] = useState(false);
 
   useEffect(() => {
     if (user) {
-      fetchVerificationRequests();
+      loadVerificationData();
     }
   }, [user]);
 
-  const fetchVerificationRequests = async () => {
+  const loadVerificationData = async () => {
     try {
-      const { data, error } = await supabase
+      // Load verification request
+      const { data: verificationData, error: verificationError } = await supabase
         .from('verification_requests')
         .select('*')
         .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
+        .eq('verification_type', 'identity')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-      if (error) throw error;
+      if (verificationError && verificationError.code !== 'PGRST116') {
+        throw verificationError;
+      }
 
-      setRequests(data as any || []);
+      setVerificationRequest(verificationData as VerificationRequest | null);
+
+      // Load profile data
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('can_access_app, verification_level, is_verified')
+        .eq('user_id', user?.id)
+        .single();
+
+      if (profileError) throw profileError;
+      setProfile(profileData);
+
     } catch (error) {
-      console.error('Error fetching verification requests:', error);
+      console.error('Error loading verification data:', error);
+      toast({
+        title: "Load Error",
+        description: "Failed to load verification status.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const submitVerificationRequest = async (type: 'photo' | 'education' | 'career' | 'background', documents: any) => {
-    setUploading(type);
-    try {
-      const { error } = await supabase
-        .from('verification_requests')
-        .insert({
-          user_id: user?.id,
-          verification_type: type,
-          documents: documents,
-          status: 'pending'
-        });
+  const handleVerificationComplete = () => {
+    setShowVerificationFlow(false);
+    loadVerificationData();
+    toast({
+      title: "Verification Submitted",
+      description: "Your verification has been submitted for review.",
+    });
+  };
 
-      if (error) throw error;
+  const getVerificationStatus = () => {
+    if (!verificationRequest) return 'none';
+    return verificationRequest.status;
+  };
 
-      toast({
-        title: "Verification Request Submitted",
-        description: `Your ${type} verification request has been submitted for review`,
-      });
-
-      fetchVerificationRequests();
-    } catch (error) {
-      console.error('Error submitting verification:', error);
-      toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your verification request",
-        variant: "destructive",
-      });
-    } finally {
-      setUploading(null);
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return <CheckCircle className="h-5 w-5 text-green-600" />;
+      case 'pending':
+        return <Clock className="h-5 w-5 text-amber-600" />;
+      case 'rejected':
+        return <XCircle className="h-5 w-5 text-red-600" />;
+      default:
+        return <Shield className="h-5 w-5 text-gray-400" />;
     }
   };
 
-  const getVerificationStatus = (type: string) => {
-    const request = requests.find(r => r.verification_type === type);
-    return request?.status || 'none';
-  };
-
-  const getCompletionPercentage = () => {
-    const types = ['photo', 'education', 'career', 'background'];
-    const completed = types.filter(type => getVerificationStatus(type) === 'approved').length;
-    return (completed / types.length) * 100;
-  };
-
-  const verificationTypes = [
-    {
-      type: 'photo' as const,
-      title: 'Photo Verification',
-      description: 'Verify your identity with a selfie holding your ID',
-      icon: Camera,
-      requirements: [
-        'Clear photo of yourself',
-        'Hold a government-issued ID',
-        'Both face and ID must be visible',
-        'Good lighting and resolution'
-      ]
-    },
-    {
-      type: 'education' as const,
-      title: 'Education Verification',
-      description: 'Verify your educational background',
-      icon: GraduationCap,
-      requirements: [
-        'Diploma or degree certificate',
-        'Official transcript',
-        'University verification letter',
-        'Clear, readable documents'
-      ]
-    },
-    {
-      type: 'career' as const,
-      title: 'Career Verification',
-      description: 'Verify your professional background',
-      icon: Briefcase,
-      requirements: [
-        'Employment verification letter',
-        'Professional license',
-        'LinkedIn profile verification',
-        'Salary or position confirmation'
-      ]
-    },
-    {
-      type: 'background' as const,
-      title: 'Background Check',
-      description: 'Comprehensive background verification',
-      icon: Shield,
-      requirements: [
-        'Criminal background check',
-        'Reference verification',
-        'Address confirmation',
-        'Character references'
-      ]
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'approved':
+        return 'Verified';
+      case 'pending':
+        return 'Under Review';
+      case 'rejected':
+        return 'Verification Failed';
+      default:
+        return 'Not Verified';
     }
-  ];
+  };
+
+  const getProgressPercentage = () => {
+    const status = getVerificationStatus();
+    if (status === 'approved') return 100;
+    if (status === 'pending') return 75;
+    if (status === 'rejected') return 25;
+    return 0;
+  };
 
   if (loading) {
     return (
@@ -167,6 +152,30 @@ const Verification = () => {
     );
   }
 
+  if (showVerificationFlow) {
+    return (
+      <div className="min-h-screen bg-background">
+        <div className="container mx-auto px-4 py-6">
+          {/* Header */}
+          <div className="mb-6">
+            <Button
+              variant="ghost"
+              onClick={() => setShowVerificationFlow(false)}
+              className="mb-4"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Verification
+            </Button>
+          </div>
+          
+          <VerificationFlow onComplete={handleVerificationComplete} />
+        </div>
+      </div>
+    );
+  }
+
+  const status = getVerificationStatus();
+
   return (
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-6 pb-20">
@@ -174,44 +183,192 @@ const Verification = () => {
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-2">
             <Shield className="h-6 w-6 text-primary" />
-            <h1 className="text-2xl font-bold text-foreground">Profile Verification</h1>
-            <PremiumBadge plan="platinum" />
+            <h1 className="text-2xl font-bold text-foreground">Identity Verification</h1>
           </div>
           <p className="text-muted-foreground">
-            Build trust with verified credentials and enhanced profile security
+            Verify your identity to access all app features and build trust with other users
           </p>
         </div>
 
-        {/* Verification Progress */}
+        {/* Current Status Card */}
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
-              <span>Verification Progress</span>
+              <span>Verification Status</span>
               <div className="flex items-center gap-2">
-                <Award className="h-5 w-5 text-yellow-500" />
-                <span className="text-sm font-medium">{Math.round(getCompletionPercentage())}% Complete</span>
+                {getStatusIcon(status)}
+                <span className="text-sm font-medium">{getStatusText(status)}</span>
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <Progress value={getCompletionPercentage()} className="h-3 mb-4" />
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {verificationTypes.map((type) => (
-                <div key={type.type} className="text-center">
-                  <VerificationStatus 
-                    verificationType={type.type}
-                    status={getVerificationStatus(type.type) as any}
-                    showLabel={false}
-                    size="lg"
-                  />
-                  <p className="text-xs text-muted-foreground mt-1">{type.title}</p>
+            <Progress value={getProgressPercentage()} className="h-3 mb-4" />
+            
+            {/* Access Status */}
+            <div className={`p-4 rounded-lg border ${
+              profile?.can_access_app 
+                ? 'bg-green-50 border-green-200' 
+                : 'bg-amber-50 border-amber-200'
+            }`}>
+              <div className="flex items-start gap-2">
+                {profile?.can_access_app ? (
+                  <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                ) : (
+                  <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
+                )}
+                <div>
+                  <p className={`font-medium ${
+                    profile?.can_access_app ? 'text-green-800' : 'text-amber-800'
+                  }`}>
+                    {profile?.can_access_app ? 'Full Access Granted' : 'Limited Access'}
+                  </p>
+                  <p className={`text-sm ${
+                    profile?.can_access_app ? 'text-green-700' : 'text-amber-700'
+                  }`}>
+                    {profile?.can_access_app 
+                      ? 'You can access all app features including messaging and matching.'
+                      : 'You can browse profiles but cannot send messages until verified.'
+                    }
+                  </p>
                 </div>
-              ))}
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Verification Benefits */}
+        {/* Main Verification Card */}
+        <Card className="mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3">
+              <Camera className="h-6 w-6 text-primary" />
+              <span>Identity Verification</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground mb-6">
+              Complete our secure identity verification process by uploading your government-issued ID and taking a verification selfie.
+            </p>
+            
+            {/* Requirements */}
+            <div className="mb-6">
+              <h4 className="font-semibold mb-3">What you'll need:</h4>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <h5 className="font-medium flex items-center gap-2">
+                    <FileText className="w-4 h-4 text-blue-600" />
+                    Government-issued ID
+                  </h5>
+                  <ul className="space-y-1 text-sm text-muted-foreground ml-6">
+                    <li>• Passport</li>
+                    <li>• Driver's License</li>
+                    <li>• National ID Card</li>
+                    <li>• State ID</li>
+                  </ul>
+                </div>
+                <div className="space-y-2">
+                  <h5 className="font-medium flex items-center gap-2">
+                    <Camera className="w-4 h-4 text-green-600" />
+                    Verification Selfie
+                  </h5>
+                  <ul className="space-y-1 text-sm text-muted-foreground ml-6">
+                    <li>• Clear photo of your face</li>
+                    <li>• Good lighting</li>
+                    <li>• Look directly at camera</li>
+                    <li>• No filters or editing</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Status-based content */}
+            {status === 'none' && (
+              <div className="text-center">
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-6 mb-4">
+                  <Shield className="h-12 w-12 text-blue-600 mx-auto mb-3" />
+                  <h3 className="font-semibold text-blue-900 mb-2">Ready to Get Verified?</h3>
+                  <p className="text-sm text-blue-700">
+                    The verification process takes just 2-3 minutes and helps keep our community safe.
+                  </p>
+                </div>
+                <Button 
+                  onClick={() => setShowVerificationFlow(true)}
+                  size="lg"
+                  className="w-full md:w-auto"
+                >
+                  <Camera className="h-4 w-4 mr-2" />
+                  Start Verification Process
+                </Button>
+              </div>
+            )}
+
+            {status === 'pending' && (
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <Clock className="h-6 w-6 text-amber-600" />
+                  <h3 className="font-semibold text-amber-800">Verification Under Review</h3>
+                </div>
+                <p className="text-amber-700 mb-4">
+                  We're reviewing your submitted documents. This typically takes 24-48 hours. You'll receive a notification once the review is complete.
+                </p>
+                {verificationRequest && (
+                  <div className="bg-white rounded border p-3">
+                    <p className="text-xs text-amber-600">
+                      Submitted on {new Date(verificationRequest.created_at).toLocaleDateString()} at {new Date(verificationRequest.created_at).toLocaleTimeString()}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {status === 'approved' && (
+              <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <CheckCircle className="h-6 w-6 text-green-600" />
+                  <h3 className="font-semibold text-green-800">Verification Approved!</h3>
+                </div>
+                <p className="text-green-700 mb-4">
+                  Congratulations! Your identity has been successfully verified. You now have full access to all app features.
+                </p>
+                <div className="bg-white rounded border p-3">
+                  <div className="flex items-center gap-2">
+                    <Award className="h-4 w-4 text-green-600" />
+                    <span className="text-sm font-medium text-green-800">Verified Member</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {status === 'rejected' && (
+              <div className="bg-red-50 border border-red-200 rounded-lg p-6">
+                <div className="flex items-center gap-3 mb-3">
+                  <XCircle className="h-6 w-6 text-red-600" />
+                  <h3 className="font-semibold text-red-800">Verification Not Approved</h3>
+                </div>
+                <p className="text-red-700 mb-4">
+                  Unfortunately, we couldn't verify your identity with the submitted documents. Please review the requirements and try again.
+                </p>
+                
+                {verificationRequest?.admin_notes && (
+                  <div className="bg-white rounded border p-4 mb-4">
+                    <p className="text-xs font-medium text-muted-foreground mb-2">Review Notes:</p>
+                    <p className="text-sm text-red-800">{verificationRequest.admin_notes}</p>
+                  </div>
+                )}
+
+                <Button 
+                  onClick={() => setShowVerificationFlow(true)}
+                  variant="outline"
+                  className="w-full md:w-auto"
+                >
+                  <Camera className="h-4 w-4 mr-2" />
+                  Try Verification Again
+                </Button>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Benefits Card */}
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Verification Benefits</CardTitle>
@@ -221,147 +378,24 @@ const Verification = () => {
               <div className="text-center p-4">
                 <CheckCircle className="h-8 w-8 text-green-500 mx-auto mb-2" />
                 <h4 className="font-semibold mb-1">Increased Trust</h4>
-                <p className="text-sm text-muted-foreground">Show potential matches you're genuine</p>
+                <p className="text-sm text-muted-foreground">Show potential matches you're genuine and serious</p>
               </div>
               <div className="text-center p-4">
                 <Shield className="h-8 w-8 text-blue-500 mx-auto mb-2" />
                 <h4 className="font-semibold mb-1">Enhanced Safety</h4>
-                <p className="text-sm text-muted-foreground">Connect with other verified users</p>
+                <p className="text-sm text-muted-foreground">Connect with confidence in a secure environment</p>
               </div>
               <div className="text-center p-4">
-                <Award className="h-8 w-8 text-yellow-500 mx-auto mb-2" />
-                <h4 className="font-semibold mb-1">Priority Matching</h4>
-                <p className="text-sm text-muted-foreground">Get featured in search results</p>
+                <Award className="h-8 w-8 text-purple-500 mx-auto mb-2" />
+                <h4 className="font-semibold mb-1">Full Access</h4>
+                <p className="text-sm text-muted-foreground">Unlock messaging, matching, and all app features</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Verification Types */}
-        <div className="space-y-6">
-          {verificationTypes.map((verificationType) => {
-            const status = getVerificationStatus(verificationType.type);
-            const request = requests.find(r => r.verification_type === verificationType.type);
-            
-            return (
-              <Card key={verificationType.type}>
-                <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <verificationType.icon className="h-6 w-6 text-primary" />
-                      <span>{verificationType.title}</span>
-                    </div>
-                    <VerificationStatus 
-                      verificationType={verificationType.type}
-                      status={status as any}
-                    />
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">{verificationType.description}</p>
-                  
-                  {/* Requirements */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold mb-2">Requirements:</h4>
-                    <ul className="space-y-1">
-                      {verificationType.requirements.map((req, index) => (
-                        <li key={index} className="text-sm text-muted-foreground flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0"></div>
-                          {req}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Status-based content */}
-                  {status === 'none' && (
-                    <div className="space-y-4">
-                      <div className="border-2 border-dashed border-muted rounded-lg p-6 text-center">
-                        <Upload className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
-                        <p className="text-sm text-muted-foreground mb-4">
-                          Upload your documents for {verificationType.title.toLowerCase()}
-                        </p>
-                        <Button 
-                          onClick={() => submitVerificationRequest(verificationType.type, {})}
-                          disabled={uploading === verificationType.type}
-                        >
-                          {uploading === verificationType.type ? (
-                            <>
-                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                              Submitting...
-                            </>
-                          ) : (
-                            <>
-                              <Upload className="h-4 w-4 mr-2" />
-                              Start Verification
-                            </>
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-
-                  {status === 'pending' && (
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Clock className="h-4 w-4 text-yellow-600" />
-                        <span className="font-medium text-yellow-800">Under Review</span>
-                      </div>
-                      <p className="text-sm text-yellow-700">
-                        Your verification request is being reviewed. This typically takes 2-3 business days.
-                      </p>
-                      {request && (
-                        <p className="text-xs text-yellow-600 mt-2">
-                          Submitted on {new Date(request.created_at).toLocaleDateString()}
-                        </p>
-                      )}
-                    </div>
-                  )}
-
-                  {status === 'approved' && (
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle className="h-4 w-4 text-green-600" />
-                        <span className="font-medium text-green-800">Verified</span>
-                      </div>
-                      <p className="text-sm text-green-700">
-                        Your {verificationType.title.toLowerCase()} has been successfully verified!
-                      </p>
-                    </div>
-                  )}
-
-                  {status === 'rejected' && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <XCircle className="h-4 w-4 text-red-600" />
-                        <span className="font-medium text-red-800">Verification Failed</span>
-                      </div>
-                      <p className="text-sm text-red-700 mb-3">
-                        Your verification request was not approved. Please check the requirements and try again.
-                      </p>
-                      {request?.notes && (
-                        <div className="bg-white rounded border p-3 mb-3">
-                          <p className="text-xs font-medium text-muted-foreground mb-1">Review Notes:</p>
-                          <p className="text-sm">{request.notes}</p>
-                        </div>
-                      )}
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => submitVerificationRequest(verificationType.type, {})}
-                      >
-                        Try Again
-                      </Button>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
         {/* Help Section */}
-        <Card className="mt-6">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
@@ -371,10 +405,10 @@ const Verification = () => {
           <CardContent>
             <div className="space-y-3">
               <p className="text-sm text-muted-foreground">
-                Having trouble with verification? Our support team is here to help:
+                Having trouble with verification? Our support team is here to help with any questions or issues.
               </p>
               <div className="flex gap-2">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" onClick={() => navigate('/help-support')}>
                   Contact Support
                 </Button>
                 <Button variant="outline" size="sm">
