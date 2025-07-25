@@ -26,7 +26,7 @@ import {
   Eye,
   Crown,
   Gem,
-  Infinity,
+  Infinity as InfinityIcon,
   ArrowUp
 } from 'lucide-react';
 
@@ -219,7 +219,7 @@ const IslamicFeatures = () => {
             x: [0, 50, 0],
             y: [0, -30, 0]
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 20, repeat: 999999, ease: "linear" }}
         />
         <motion.div 
           className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-amber-200/30 to-amber-400/30 rounded-full blur-3xl"
@@ -229,7 +229,7 @@ const IslamicFeatures = () => {
             x: [0, -40, 0],
             y: [0, 30, 0]
           }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          transition={{ duration: 25, repeat: 999999, ease: "linear" }}
         />
         <motion.div 
           className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-r from-indigo-200/20 to-purple-300/20 rounded-full blur-2xl"
@@ -237,7 +237,7 @@ const IslamicFeatures = () => {
             scale: [1, 1.1, 1],
             opacity: [0.3, 0.7, 0.3]
           }}
-          transition={{ duration: 15, repeat: Infinity }}
+          transition={{ duration: 15, repeat: 999999 }}
         />
       </div>
 
@@ -253,7 +253,7 @@ const IslamicFeatures = () => {
           <motion.div
             className="relative"
             animate={{ rotate: [0, 1, -1, 0] }}
-            transition={{ duration: 4, repeat: Infinity }}
+            transition={{ duration: 4, repeat: 999999 }}
           >
             <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl shadow-2xl mb-6 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
@@ -261,7 +261,7 @@ const IslamicFeatures = () => {
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
                 animate={{ x: [-100, 100] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                transition={{ duration: 2, repeat: 999999, ease: "linear" }}
               />
             </div>
           </motion.div>
@@ -349,7 +349,7 @@ const IslamicFeatures = () => {
                         </span>
                         <motion.div
                           animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: Infinity }}
+                          transition={{ duration: 2, repeat: 999999 }}
                         >
                           <Sparkles className="w-5 h-5 text-emerald-500" />
                         </motion.div>
@@ -360,7 +360,7 @@ const IslamicFeatures = () => {
                         <motion.div 
                           className="text-5xl font-mono font-bold text-gray-800 tracking-wider"
                           animate={{ scale: [1, 1.02, 1] }}
-                          transition={{ duration: 1, repeat: Infinity }}
+                          transition={{ duration: 1, repeat: 999999 }}
                         >
                           {currentTime.toLocaleTimeString()}
                         </motion.div>
@@ -404,7 +404,7 @@ const IslamicFeatures = () => {
                             <motion.div
                               className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg"
                               animate={{ rotate: [0, 10, -10, 0] }}
-                              transition={{ duration: 4, repeat: Infinity }}
+                              transition={{ duration: 4, repeat: 999999 }}
                             >
                               <Moon className="h-6 w-6 text-white" />
                             </motion.div>
@@ -417,7 +417,7 @@ const IslamicFeatures = () => {
                           <motion.div 
                             className="text-2xl font-bold text-amber-700 mb-2"
                             animate={{ scale: [1, 1.05, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                            transition={{ duration: 2, repeat: 999999 }}
                           >
                             {nextPrayer.name}
                           </motion.div>
@@ -427,7 +427,7 @@ const IslamicFeatures = () => {
                           <motion.div
                             className="mt-3 flex justify-center"
                             animate={{ y: [0, -5, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                            transition={{ duration: 2, repeat: 999999 }}
                           >
                             <ArrowUp className="w-5 h-5 text-amber-500" />
                           </motion.div>
@@ -461,9 +461,9 @@ const IslamicFeatures = () => {
                           </span>
                           <motion.div
                             animate={{ rotate: [0, 360] }}
-                            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                            transition={{ duration: 10, repeat: 999999, ease: "linear" }}
                           >
-                            <Infinity className="w-5 h-5 text-purple-500" />
+                            <InfinityIcon className="w-5 h-5 text-purple-500" />
                           </motion.div>
                         </CardTitle>
                       </CardHeader>
@@ -493,7 +493,7 @@ const IslamicFeatures = () => {
                                 </div>
                                 <motion.div
                                   animate={{ rotate: [0, 10, -10, 0] }}
-                                  transition={{ duration: 3, repeat: Infinity, delay: index * 0.2 }}
+                                  transition={{ duration: 3, repeat: 999999, delay: index * 0.2 }}
                                 >
                                   <prayer.icon className="w-6 h-6" />
                                 </motion.div>
@@ -522,7 +522,7 @@ const IslamicFeatures = () => {
                           <motion.div
                             className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-lg"
                             animate={{ rotate: [0, 360] }}
-                            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                            transition={{ duration: 20, repeat: 999999, ease: "linear" }}
                           >
                             <Compass className="h-6 w-6 text-white" />
                           </motion.div>
@@ -531,7 +531,7 @@ const IslamicFeatures = () => {
                           </span>
                           <motion.div
                             animate={{ scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                            transition={{ duration: 2, repeat: 999999 }}
                           >
                             <Navigation className="w-5 h-5 text-green-500" />
                           </motion.div>
@@ -544,7 +544,7 @@ const IslamicFeatures = () => {
                             <motion.div 
                               className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-green-400 to-emerald-400 shadow-lg"
                               animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                              transition={{ duration: 30, repeat: 999999, ease: "linear" }}
                             >
                               <div className="absolute inset-2 rounded-full bg-gradient-to-br from-white via-green-50 to-emerald-50 shadow-inner"></div>
                             </motion.div>
@@ -554,14 +554,14 @@ const IslamicFeatures = () => {
                               className="absolute top-4 left-1/2 w-1 h-16 bg-gradient-to-t from-green-600 to-emerald-500 origin-bottom transform -translate-x-1/2 rounded-full shadow-lg"
                               style={{ transform: `translateX(-50%) rotate(${qiblaDirection}deg)` }}
                               animate={{ scale: [1, 1.1, 1] }}
-                              transition={{ duration: 2, repeat: Infinity }}
+                              transition={{ duration: 2, repeat: 999999 }}
                             />
                             
                             {/* Center Point */}
                             <motion.div 
                               className="absolute top-1/2 left-1/2 w-4 h-4 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg"
                               animate={{ scale: [1, 1.2, 1] }}
-                              transition={{ duration: 1.5, repeat: Infinity }}
+                              transition={{ duration: 1.5, repeat: 999999 }}
                             />
                             
                             {/* Compass Directions */}
@@ -575,7 +575,7 @@ const IslamicFeatures = () => {
                         <motion.div 
                           className="text-2xl font-bold text-green-700 p-3 bg-white/60 rounded-xl backdrop-blur-sm inline-block"
                           animate={{ scale: [1, 1.05, 1] }}
-                          transition={{ duration: 3, repeat: Infinity }}
+                          transition={{ duration: 3, repeat: 999999 }}
                         >
                           {Math.round(qiblaDirection)}° from North
                         </motion.div>
@@ -610,7 +610,7 @@ const IslamicFeatures = () => {
                       </span>
                       <motion.div
                         animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
+                        transition={{ duration: 3, repeat: 999999 }}
                       >
                         <Star className="w-5 h-5 text-amber-500" />
                       </motion.div>
@@ -631,7 +631,7 @@ const IslamicFeatures = () => {
                           <div className="flex items-center gap-2">
                             <motion.div
                               animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 8, repeat: Infinity, ease: "linear", delay: index }}
+                              transition={{ duration: 8, repeat: 999999, ease: "linear", delay: index }}
                             >
                               <Gem className="w-5 h-5 text-amber-500" />
                             </motion.div>
@@ -666,7 +666,7 @@ const IslamicFeatures = () => {
                       <motion.div
                         className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-lg"
                         animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <Heart className="h-6 w-6 text-white" />
                       </motion.div>
@@ -675,7 +675,7 @@ const IslamicFeatures = () => {
                       </span>
                       <motion.div
                         animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <Sparkles className="w-5 h-5 text-green-500" />
                       </motion.div>
@@ -698,7 +698,7 @@ const IslamicFeatures = () => {
                         <div className="flex items-start gap-3 relative">
                           <motion.div
                             animate={{ rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 4, repeat: Infinity, delay: index }}
+                            transition={{ duration: 4, repeat: 999999, delay: index }}
                           >
                             <Eye className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
                           </motion.div>
@@ -725,7 +725,7 @@ const IslamicFeatures = () => {
                       <motion.div
                         className="p-3 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg"
                         animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <Shield className="h-6 w-6 text-white" />
                       </motion.div>
@@ -734,7 +734,7 @@ const IslamicFeatures = () => {
                       </span>
                       <motion.div
                         animate={{ rotate: [0, 5, -5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
+                        transition={{ duration: 3, repeat: 999999 }}
                       >
                         <Zap className="w-5 h-5 text-red-500" />
                       </motion.div>
@@ -780,7 +780,7 @@ const IslamicFeatures = () => {
                       <motion.div
                         className="p-3 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl shadow-lg"
                         animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-                        transition={{ duration: 3, repeat: Infinity }}
+                        transition={{ duration: 3, repeat: 999999 }}
                       >
                         <Phone className="h-6 w-6 text-white" />
                       </motion.div>
@@ -789,7 +789,7 @@ const IslamicFeatures = () => {
                       </span>
                       <motion.div
                         animate={{ scale: [1, 1.3, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <AlertTriangle className="w-5 h-5 text-orange-500" />
                       </motion.div>
@@ -842,7 +842,7 @@ const IslamicFeatures = () => {
                       </span>
                       <motion.div
                         animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <Crown className="w-5 h-5 text-purple-500" />
                       </motion.div>
@@ -863,7 +863,7 @@ const IslamicFeatures = () => {
                           <div className="flex items-center gap-2">
                             <motion.div
                               animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 10, repeat: Infinity, ease: "linear", delay: index }}
+                              transition={{ duration: 10, repeat: 999999, ease: "linear", delay: index }}
                             >
                               <Star className="w-5 h-5 text-purple-500" />
                             </motion.div>
@@ -892,7 +892,7 @@ const IslamicFeatures = () => {
                       <motion.div
                         className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg"
                         animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <Info className="h-6 w-6 text-white" />
                       </motion.div>
@@ -901,7 +901,7 @@ const IslamicFeatures = () => {
                       </span>
                       <motion.div
                         animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 2, repeat: Infinity }}
+                        transition={{ duration: 2, repeat: 999999 }}
                       >
                         <Sparkles className="w-5 h-5 text-blue-500" />
                       </motion.div>
@@ -937,7 +937,7 @@ const IslamicFeatures = () => {
                           <motion.div
                             className="ml-auto relative"
                             animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
+                            transition={{ duration: 2, repeat: 999999 }}
                           >
                             <ArrowUp className="h-4 w-4 text-blue-500 rotate-45" />
                           </motion.div>
