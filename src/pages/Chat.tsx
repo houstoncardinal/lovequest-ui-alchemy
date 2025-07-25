@@ -1,14 +1,33 @@
 import { useState } from "react";
-import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown } from "lucide-react";
+import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown, Mic, Smile, Video, Phone } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+import EmojiPicker from "@/components/EmojiPicker";
+import VoiceRecorder from "@/components/VoiceRecorder";
+import VideoCallModal from "@/components/VideoCallModal";
+import VoiceMessage from "@/components/VoiceMessage";
 import { Badge } from "@/components/ui/badge";
+import { useToast } from "@/hooks/use-toast";
 import profile1 from "@/assets/profile-1.jpg";
 import profile2 from "@/assets/profile-2.jpg";
 import profile3 from "@/assets/profile-3.jpg";
 
+interface Message {
+  id: string;
+  sender: 'me' | 'them';
+  time: string;
+  type: 'text' | 'voice';
+  text?: string;
+  audioBlob?: Blob;
+  duration?: number;
+}
+
 const Chat = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false);
+  const [showVideoCall, setShowVideoCall] = useState(false);
+  const { toast } = useToast();
 
   const conversations = [
     {
@@ -53,38 +72,83 @@ const Chat = () => {
     }
   ];
 
-  const messages = [
+  const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
       sender: "them",
       text: "Hey! I saw you're into music too 🎵",
-      time: "10:30 AM"
+      time: "10:30 AM",
+      type: "text"
     },
     {
       id: "2",
       sender: "me", 
       text: "Yes! I love discovering new artists. What's your favorite genre?",
-      time: "10:32 AM"
+      time: "10:32 AM",
+      type: "text"
     },
     {
       id: "3",
       sender: "them",
       text: "I'm really into indie rock and some electronic music. There's this new band I found called Aurora Dreams - they're incredible!",
-      time: "10:35 AM"
+      time: "10:35 AM",
+      type: "text"
     },
     {
       id: "4",
       sender: "me",
       text: "That sounds amazing! I'd love to check them out. Do you want to go to a concert together sometime?",
-      time: "10:37 AM"
+      time: "10:37 AM",
+      type: "text"
     },
     {
       id: "5",
       sender: "them",
       text: "That sounds amazing! I'd love to go 🎵",
-      time: "10:40 AM"
+      time: "10:40 AM",
+      type: "text"
     }
-  ];
+  ]);
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      const newMsg: Message = {
+        id: Date.now().toString(),
+        sender: "me",
+        text: newMessage,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        type: "text"
+      };
+      setMessages([...messages, newMsg]);
+      setNewMessage("");
+      setShowEmojiPicker(false);
+    }
+  };
+
+  const handleEmojiSelect = (emoji: string) => {
+    setNewMessage(newMessage + emoji);
+  };
+
+  const handleVoiceSend = (audioBlob: Blob, duration: number) => {
+    const newMsg: Message = {
+      id: Date.now().toString(),
+      sender: "me",
+      audioBlob,
+      duration,
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      type: "voice"
+    };
+    setMessages([...messages, newMsg]);
+    
+    toast({
+      title: "Voice message sent",
+      description: "Your voice message has been delivered.",
+    });
+  };
+
+  const handleVideoCall = () => {
+    setShowVideoCall(true);
+  };
 
   if (selectedChat) {
     const currentUser = conversations.find(c => c.id === selectedChat);
@@ -126,9 +190,18 @@ const Chat = () => {
               </div>
             </div>
             
-            <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
-              <MoreHorizontal className="w-6 h-6 text-emerald-600" />
-            </button>
+            <div className="flex items-center space-x-3">
+              <button 
+                onClick={handleVideoCall}
+                className="p-2 rounded-full hover:bg-emerald-50 transition-colors"
+                title="Video Call"
+              >
+                <Video className="w-6 h-6 text-emerald-600" />
+              </button>
+              <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
+                <MoreHorizontal className="w-6 h-6 text-emerald-600" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -139,28 +212,68 @@ const Chat = () => {
               key={message.id}
               className={`flex ${message.sender === 'me' ? 'justify-end' : 'justify-start'}`}
             >
-              <div
-                className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
-                  message.sender === 'me'
-                    ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-br-md'
-                    : 'bg-white border border-emerald-100 text-gray-900 rounded-bl-md'
-                }`}
-              >
-                <p className="text-sm leading-relaxed">{message.text}</p>
-                <p className={`text-xs mt-2 ${
-                  message.sender === 'me' ? 'text-white/70' : 'text-gray-500'
-                }`}>
-                  {message.time}
-                </p>
-              </div>
+              {message.type === 'voice' && message.audioBlob && message.duration ? (
+                <VoiceMessage
+                  audioBlob={message.audioBlob}
+                  duration={message.duration}
+                  isOwnMessage={message.sender === 'me'}
+                  time={message.time}
+                />
+              ) : (
+                <div
+                  className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
+                    message.sender === 'me'
+                      ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-br-md'
+                      : 'bg-white border border-emerald-100 text-gray-900 rounded-bl-md'
+                  }`}
+                >
+                  <p className="text-sm leading-relaxed">{message.text || ''}</p>
+                  <p className={`text-xs mt-2 ${
+                    message.sender === 'me' ? 'text-white/70' : 'text-gray-500'
+                  }`}>
+                    {message.time}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>
 
         {/* Message Input */}
-        <div className="bg-white/80 backdrop-blur-sm border-t border-emerald-100 px-4 py-4">
+        <div className="bg-white/80 backdrop-blur-sm border-t border-emerald-100 px-4 py-4 relative">
+          {/* Voice Recorder */}
+          {showVoiceRecorder && (
+            <VoiceRecorder
+              onSend={handleVoiceSend}
+              onClose={() => setShowVoiceRecorder(false)}
+            />
+          )}
+          
+          {/* Emoji Picker */}
+          {showEmojiPicker && (
+            <EmojiPicker
+              onEmojiSelect={handleEmojiSelect}
+              onClose={() => setShowEmojiPicker(false)}
+            />
+          )}
+          
           <div className="flex items-center space-x-3">
-            <button className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors">
+            <button 
+              onClick={() => setShowVoiceRecorder(!showVoiceRecorder)}
+              className={`p-3 rounded-full transition-colors ${
+                showVoiceRecorder 
+                  ? 'bg-emerald-500 text-white' 
+                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-600'
+              }`}
+              title="Voice Message"
+            >
+              <Mic className="w-5 h-5" />
+            </button>
+            
+            <button 
+              className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
+              title="Camera"
+            >
               <Camera className="w-5 h-5 text-emerald-600" />
             </button>
             
@@ -169,12 +282,21 @@ const Chat = () => {
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Type a message..."
-                className="w-full px-4 py-3 bg-emerald-50 rounded-2xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 transition-colors"
+                className="w-full px-4 py-3 pr-12 bg-emerald-50 rounded-2xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 transition-colors"
               />
+              <button
+                onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-emerald-100 rounded-full transition-colors"
+                title="Emojis"
+              >
+                <Smile className="w-5 h-5 text-emerald-600" />
+              </button>
             </div>
             
             <button 
+              onClick={handleSendMessage}
               className={`p-3 rounded-full transition-all duration-200 ${
                 newMessage.trim() 
                   ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg hover:shadow-xl' 
@@ -186,6 +308,14 @@ const Chat = () => {
             </button>
           </div>
         </div>
+
+        {/* Video Call Modal */}
+        <VideoCallModal
+          isOpen={showVideoCall}
+          onClose={() => setShowVideoCall(false)}
+          userName={currentUser?.name || ""}
+          userImage={currentUser?.image || ""}
+        />
 
         <InteractiveMenu />
       </div>

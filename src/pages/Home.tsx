@@ -99,7 +99,10 @@ const Home = () => {
       <div className="p-4">
         <div className="relative max-w-sm mx-auto">
           {/* Profile Card */}
-          <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-emerald-100 group cursor-pointer">
+          <div 
+            className="bg-white rounded-3xl shadow-xl overflow-hidden border border-emerald-100 group cursor-pointer"
+            onClick={() => navigate(`/profile/${currentProfile.id}`)}
+          >
             <div className="relative" style={{ height: '460px' }}>
               <img 
                 src={currentProfile.image} 
@@ -148,6 +151,11 @@ const Home = () => {
                   </div>
                   
                   <p className="text-xs text-gray-700 leading-relaxed line-clamp-2">{currentProfile.bio}</p>
+                  
+                  {/* Click hint */}
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="text-xs text-emerald-600 font-medium">Click to view profile</span>
+                  </div>
                 </div>
               </div>
             </div>
