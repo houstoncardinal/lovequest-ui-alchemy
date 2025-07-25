@@ -111,7 +111,14 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
   };
 
   const submitVerification = async () => {
-    if (!user || !idDocument || !facePhoto) return;
+    if (!user || !idDocument || !facePhoto) {
+      toast({
+        title: "Missing Requirements",
+        description: "Please upload both ID document and take a face photo.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsUploading(true);
     try {
@@ -123,7 +130,8 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
       );
 
       // Convert face photo to blob and upload
-      const faceBlob = await fetch(facePhoto).then(res => res.blob());
+      const response = await fetch(facePhoto);
+      const faceBlob = await response.blob();
       const facePath = await uploadToSupabase(
         faceBlob, 
         `${Date.now()}.jpg`, 
@@ -143,6 +151,17 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
         });
 
       if (error) throw error;
+
+      // Update profile to show verification is pending
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          verification_required: true,
+          can_access_app: false
+        })
+        .eq('user_id', user.id);
+
+      if (profileError) console.error('Profile update error:', profileError);
 
       setStep('complete');
       toast({

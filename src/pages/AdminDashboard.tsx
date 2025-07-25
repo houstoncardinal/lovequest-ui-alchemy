@@ -32,6 +32,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import QuickReview from '@/components/QuickReview';
 
 interface User {
   id: string;
@@ -95,6 +96,7 @@ const AdminDashboard = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedVerification, setSelectedVerification] = useState<VerificationRequest | null>(null);
+  const [showQuickReview, setShowQuickReview] = useState(false);
 
   // Check admin access
   useEffect(() => {
@@ -361,6 +363,10 @@ const AdminDashboard = () => {
     return null;
   }
 
+  if (showQuickReview) {
+    return <QuickReview onBack={() => setShowQuickReview(false)} />;
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8">
@@ -549,6 +555,15 @@ const AdminDashboard = () => {
                 <div className="flex flex-col sm:flex-row gap-4 justify-between">
                   <CardTitle>Verification Requests</CardTitle>
                   <div className="flex gap-2">
+                    {verificationRequests.filter(r => r.status === 'pending').length > 0 && (
+                      <Button
+                        onClick={() => setShowQuickReview(true)}
+                        className="bg-amber-600 hover:bg-amber-700 text-white"
+                      >
+                        <AlertTriangle className="w-4 h-4 mr-2" />
+                        Quick Review ({verificationRequests.filter(r => r.status === 'pending').length})
+                      </Button>
+                    )}
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                       <Input
