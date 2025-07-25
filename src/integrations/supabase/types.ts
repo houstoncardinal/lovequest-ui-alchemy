@@ -215,7 +215,46 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      calculate_match_score: {
+        Args: { user1_id: string; user2_id: string }
+        Returns: number
+      }
+      get_match_recommendations: {
+        Args: { target_user_id: string; limit_count?: number }
+        Returns: {
+          user_id: string
+          first_name: string
+          last_name: string
+          display_name: string
+          age: number
+          location: string
+          bio: string
+          avatar_url: string
+          religion_level: string
+          prayer_frequency: string
+          hijab_status: string
+          match_score: number
+        }[]
+      }
+      get_mutual_matches: {
+        Args: { target_user_id: string }
+        Returns: {
+          match_id: string
+          matched_user_id: string
+          first_name: string
+          last_name: string
+          display_name: string
+          age: number
+          location: string
+          bio: string
+          avatar_url: string
+          religion_level: string
+          prayer_frequency: string
+          hijab_status: string
+          match_score: number
+          matched_at: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
