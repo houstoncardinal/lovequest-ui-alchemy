@@ -9,7 +9,7 @@ import BottomNavigation from "@/components/BottomNavigation";
 import Home from "./pages/Home";
 import LikeYou from "./pages/LikeYou";
 import ForYou from "./pages/ForYou";
-import Chat from "./pages/Chat";
+import Matches from "./pages/Matches";
 import Community from "./pages/Community";
 import Account from "./pages/Account";
 import ProfileDetail from "./pages/ProfileDetail";
@@ -59,7 +59,7 @@ const AppWithNavigation = () => {
           <Route path="/like-you" element={<ProtectedRoute><LikeYou /></ProtectedRoute>} />
           <Route path="/for-you" element={<ProtectedRoute><ForYou /></ProtectedRoute>} />
           <Route path="/community" element={<ProtectedRoute><Community /></ProtectedRoute>} />
-          <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
+          <Route path="/matches" element={<ProtectedRoute><Matches /></ProtectedRoute>} />
           <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
           <Route path="/profile/:id" element={<ProtectedRoute><ProfileDetail /></ProtectedRoute>} />
           <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />

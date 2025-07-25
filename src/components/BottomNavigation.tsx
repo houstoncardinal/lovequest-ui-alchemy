@@ -4,10 +4,10 @@ import { NavLink } from "react-router-dom";
 const BottomNavigation = () => {
   const navItems = [
     { icon: Home, label: "Home", path: "/", count: 0 },
+    { icon: Heart, label: "Like You", path: "/like-you", count: 54 },
+    { icon: MessageCircle, label: "Matches", path: "/matches", count: 12 },
     { icon: Sparkles, label: "Community", path: "/community", count: 0 },
     { icon: Moon, label: "Deen", path: "/islamic-features", count: 0 },
-    { icon: Heart, label: "Like You", path: "/like-you", count: 54 },
-    { icon: MessageCircle, label: "Chat", path: "/chat", count: 12 },
     { icon: User, label: "Account", path: "/account", count: 0 },
   ];
 
