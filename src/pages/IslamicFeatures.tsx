@@ -220,13 +220,15 @@ const IslamicFeatures = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-lg mb-4">
-            <Star className="w-8 h-8 text-white" />
+          <div className="flex justify-center mb-4">
+            <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-lg flex items-center justify-center">
+              <Star className="w-8 h-8 text-white" />
+            </div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 text-center">
             Islamic Features
           </h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto text-center leading-relaxed">
             Essential tools for your Islamic lifestyle and spiritual journey
           </p>
         </motion.div>
