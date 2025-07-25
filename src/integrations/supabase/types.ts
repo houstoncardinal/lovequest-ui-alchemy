@@ -486,6 +486,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string
+          features_enabled: Json | null
+          id: string
+          is_active: boolean
+          plan_type: Database["public"]["Enums"]["user_plan_type"]
+          subscription_end: string | null
+          subscription_start: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          features_enabled?: Json | null
+          id?: string
+          is_active?: boolean
+          plan_type?: Database["public"]["Enums"]["user_plan_type"]
+          subscription_end?: string | null
+          subscription_start?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          features_enabled?: Json | null
+          id?: string
+          is_active?: boolean
+          plan_type?: Database["public"]["Enums"]["user_plan_type"]
+          subscription_end?: string | null
+          subscription_start?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_settings: {
         Row: {
           allow_read_receipts: boolean | null
@@ -732,13 +768,21 @@ export type Database = {
           matched_at: string
         }[]
       }
+      get_user_plan: {
+        Args: { user_id_param?: string }
+        Returns: Database["public"]["Enums"]["user_plan_type"]
+      }
+      has_feature_access: {
+        Args: { feature_name: string; user_id_param?: string }
+        Returns: boolean
+      }
       is_admin: {
         Args: { user_id: string }
         Returns: boolean
       }
     }
     Enums: {
-      [_ in never]: never
+      user_plan_type: "free" | "premium" | "elite"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -865,6 +909,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_plan_type: ["free", "premium", "elite"],
+    },
   },
 } as const

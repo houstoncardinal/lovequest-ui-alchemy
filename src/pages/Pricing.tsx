@@ -9,8 +9,8 @@ const Pricing = () => {
 
   const plans = [
     {
-      id: "basic",
-      name: "Basic",
+      id: "free",
+      name: "Free",
       monthlyPrice: "Free",
       yearlyPrice: "Free",
       period: "forever",
@@ -19,15 +19,16 @@ const Pricing = () => {
         "5 likes per day",
         "Basic matching",
         "View profiles",
+        "Voice notes & emojis",
         "Standard support",
         "Basic filters"
       ],
       limitations: [
+        "No video messaging",
         "No messaging without match",
         "Limited daily likes",
         "No premium features",
-        "No read receipts",
-        "No profile boost"
+        "No read receipts"
       ],
       color: "border-gray-200",
       bgColor: "bg-gray-50",
@@ -45,19 +46,19 @@ const Pricing = () => {
       period: billingCycle === 'monthly' ? "per month" : "per year",
       description: "Most popular choice",
       features: [
+        "Everything in Free",
         "Unlimited likes",
         "See who liked you",
         "Advanced filters",
-        "Priority support",
-        "Message anyone (with paid message)",
+        "Video messaging",
         "Read receipts",
         "Profile boost",
-        "Undo last swipe",
+        "Priority support",
         "5 paid messages per month"
       ],
       limitations: [
-        "No video calls",
-        "Limited paid messages"
+        "Limited paid messages",
+        "No video calls"
       ],
       color: "border-emerald-300",
       bgColor: "bg-emerald-50",
@@ -73,18 +74,18 @@ const Pricing = () => {
       monthlyPrice: "$39.99",
       yearlyPrice: "$399.99",
       period: billingCycle === 'monthly' ? "per month" : "per year",
-      description: "Ultimate dating experience",
+      description: "Ultimate marriage experience",
       features: [
         "Everything in Premium",
+        "Video messaging",
+        "Video calls with matches",
         "Unlimited paid messages",
-        "Video calls",
-        "Profile verification",
+        "Profile verification priority",
         "Advanced analytics",
         "VIP support",
         "Concierge matching",
         "Priority in search results",
-        "Custom filters",
-        "Profile insights"
+        "Custom filters"
       ],
       limitations: [],
       color: "border-amber-300",
@@ -203,14 +204,14 @@ const Pricing = () => {
                   {/* Plan Header */}
                   <div className="text-center mb-6">
                     <div className={`w-20 h-20 mx-auto mb-4 rounded-3xl flex items-center justify-center relative overflow-hidden ${
-                      plan.id === 'basic' ? 'bg-gray-100' : 
+                      plan.id === 'free' ? 'bg-gray-100' : 
                       plan.id === 'premium' ? 'bg-gradient-to-br from-emerald-100 to-emerald-200' : 'bg-gradient-to-br from-amber-100 to-amber-200'
                     }`}>
-                      {plan.id !== 'basic' && (
+                      {plan.id !== 'free' && (
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
                       )}
                       <Icon className={`w-10 h-10 relative z-10 ${
-                        plan.id === 'basic' ? 'text-gray-600' : 
+                        plan.id === 'free' ? 'text-gray-600' : 
                         plan.id === 'premium' ? 'text-emerald-600' : 'text-amber-600'
                       }`} />
                     </div>
@@ -222,7 +223,7 @@ const Pricing = () => {
                         {billingCycle === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice}
                       </div>
                       <div className="text-sm text-gray-500">{plan.period}</div>
-                      {billingCycle === 'yearly' && plan.id !== 'basic' && (
+                      {billingCycle === 'yearly' && plan.id !== 'free' && (
                         <div className="text-xs text-emerald-600 font-medium mt-1">
                           {plan.id === 'premium' ? '$1.67/month saved' : '$3.33/month saved'}
                         </div>
@@ -269,11 +270,11 @@ const Pricing = () => {
                     className={`w-full py-4 rounded-2xl font-bold transition-all duration-300 text-sm relative overflow-hidden group ${plan.buttonClass}`}
                   >
                     {/* Button shine effect for premium plans */}
-                    {plan.id !== 'basic' && (
+                    {plan.id !== 'free' && (
                       <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                     )}
                     <span className="relative z-10">
-                      {plan.id === 'basic' ? 'Get Started Free' : 'Choose Plan'}
+                      {plan.id === 'free' ? 'Get Started Free' : 'Choose Plan'}
                     </span>
                   </button>
                 </div>

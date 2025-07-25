@@ -12,12 +12,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import VerificationFlow from "@/components/VerificationFlow";
 import LocationSetup from "@/components/LocationSetup";
+import { useUserRole, type UserPlanType } from "@/hooks/useUserRole";
 
 const Onboarding = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
   const { toast } = useToast();
+  const { updateUserPlan } = useUserRole();
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(
     location.state?.selectedPlan || null
@@ -67,8 +69,8 @@ const Onboarding = () => {
 
   const plans = [
     {
-      id: "basic",
-      name: "Basic",
+      id: "free",
+      name: "Free",
       price: "Free",
       period: "forever",
       description: "Perfect for getting started",
@@ -76,6 +78,7 @@ const Onboarding = () => {
         "5 likes per day",
         "Basic matching",
         "View profiles",
+        "Voice notes & emojis",
         "Standard support"
       ],
       popular: false
@@ -87,9 +90,11 @@ const Onboarding = () => {
       period: "per month",
       description: "Most popular choice",
       features: [
+        "Everything in Free",
         "Unlimited likes",
         "See who liked you",
         "Advanced filters",
+        "Video messaging",
         "Priority support"
       ],
       popular: true
@@ -99,11 +104,12 @@ const Onboarding = () => {
       name: "Elite",
       price: "$39.99",
       period: "per month",
-      description: "Ultimate dating experience",
+      description: "Ultimate marriage experience",
       features: [
         "Everything in Premium",
-        "Video calls",
-        "Profile verification",
+        "Video messaging",
+        "Video calls with matches",
+        "Profile verification priority",
         "VIP support"
       ],
       popular: false
@@ -324,9 +330,9 @@ const Onboarding = () => {
                   )}
                   <div className="flex flex-col items-center mb-4">
                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-lg
-                      ${plan.id === 'basic' ? 'bg-gray-100' : plan.id === 'premium' ? 'bg-emerald-100' : 'bg-amber-100'}`}
+                      ${plan.id === 'free' ? 'bg-gray-100' : plan.id === 'premium' ? 'bg-emerald-100' : 'bg-amber-100'}`}
                     >
-                      {plan.id === 'basic' && <Users className="w-8 h-8 text-emerald-600" />}
+                      {plan.id === 'free' && <Users className="w-8 h-8 text-emerald-600" />}
                       {plan.id === 'premium' && <Star className="w-8 h-8 text-amber-500" />}
                       {plan.id === 'elite' && <Crown className="w-8 h-8 text-amber-500" />}
                     </div>
@@ -835,6 +841,7 @@ const Onboarding = () => {
     // If this is the last step, save profile and complete onboarding
     if (currentStep === onboardingSteps.length - 1) {
       await saveProfile();
+      await savePlanSelection();
       navigate('/');
       return;
     }
@@ -885,6 +892,25 @@ const Onboarding = () => {
       toast({
         title: "Save Failed",
         description: "Failed to save your profile. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const savePlanSelection = async () => {
+    if (!selectedPlan) return;
+
+    try {
+      await updateUserPlan(selectedPlan as UserPlanType);
+      toast({
+        title: "Plan Activated",
+        description: `Your ${selectedPlan} plan has been activated!`,
+      });
+    } catch (error) {
+      console.error('Plan save error:', error);
+      toast({
+        title: "Plan Activation Failed",
+        description: "Failed to activate your selected plan. You can change it later in settings.",
         variant: "destructive",
       });
     }
