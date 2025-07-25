@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_users: {
+        Row: {
+          created_at: string | null
+          id: string
+          permissions: Json | null
+          role: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          permissions?: Json | null
+          role?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          permissions?: Json | null
+          role?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       match_insights: {
         Row: {
           compatibility_score: number
@@ -246,6 +273,7 @@ export type Database = {
           avatar_url: string | null
           bio: string | null
           body_type: string | null
+          can_access_app: boolean | null
           career_field: string | null
           children_preference: string | null
           community_involvement_level: string | null
@@ -269,7 +297,10 @@ export type Database = {
           languages_spoken: string[] | null
           last_active: string | null
           last_name: string | null
+          latitude: number | null
           location: string | null
+          location_updated_at: string | null
+          longitude: number | null
           madhab: string | null
           marital_status: string | null
           marriage_timeline: string | null
@@ -285,6 +316,7 @@ export type Database = {
           updated_at: string
           user_id: string
           verification_level: string | null
+          verification_required: boolean | null
           wali_contact_info: Json | null
           wants_children: boolean | null
         }
@@ -293,6 +325,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           body_type?: string | null
+          can_access_app?: boolean | null
           career_field?: string | null
           children_preference?: string | null
           community_involvement_level?: string | null
@@ -316,7 +349,10 @@ export type Database = {
           languages_spoken?: string[] | null
           last_active?: string | null
           last_name?: string | null
+          latitude?: number | null
           location?: string | null
+          location_updated_at?: string | null
+          longitude?: number | null
           madhab?: string | null
           marital_status?: string | null
           marriage_timeline?: string | null
@@ -332,6 +368,7 @@ export type Database = {
           updated_at?: string
           user_id: string
           verification_level?: string | null
+          verification_required?: boolean | null
           wali_contact_info?: Json | null
           wants_children?: boolean | null
         }
@@ -340,6 +377,7 @@ export type Database = {
           avatar_url?: string | null
           bio?: string | null
           body_type?: string | null
+          can_access_app?: boolean | null
           career_field?: string | null
           children_preference?: string | null
           community_involvement_level?: string | null
@@ -363,7 +401,10 @@ export type Database = {
           languages_spoken?: string[] | null
           last_active?: string | null
           last_name?: string | null
+          latitude?: number | null
           location?: string | null
+          location_updated_at?: string | null
+          longitude?: number | null
           madhab?: string | null
           marital_status?: string | null
           marriage_timeline?: string | null
@@ -379,6 +420,7 @@ export type Database = {
           updated_at?: string
           user_id?: string
           verification_level?: string | null
+          verification_required?: boolean | null
           wali_contact_info?: Json | null
           wants_children?: boolean | null
         }
@@ -503,9 +545,12 @@ export type Database = {
       }
       verification_requests: {
         Row: {
+          admin_notes: string | null
           created_at: string
           documents: Json | null
+          face_photo_url: string | null
           id: string
+          id_document_url: string | null
           notes: string | null
           reviewed_at: string | null
           reviewed_by: string | null
@@ -515,9 +560,12 @@ export type Database = {
           verification_type: string
         }
         Insert: {
+          admin_notes?: string | null
           created_at?: string
           documents?: Json | null
+          face_photo_url?: string | null
           id?: string
+          id_document_url?: string | null
           notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -527,9 +575,12 @@ export type Database = {
           verification_type: string
         }
         Update: {
+          admin_notes?: string | null
           created_at?: string
           documents?: Json | null
+          face_photo_url?: string | null
           id?: string
+          id_document_url?: string | null
           notes?: string | null
           reviewed_at?: string | null
           reviewed_by?: string | null
@@ -578,6 +629,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      calculate_distance: {
+        Args: { lat1: number; lon1: number; lat2: number; lon2: number }
+        Returns: number
+      }
       calculate_enhanced_match_score: {
         Args: { user1_id: string; user2_id: string }
         Returns: number
@@ -619,6 +674,28 @@ export type Database = {
           match_score: number
         }[]
       }
+      get_location_based_matches: {
+        Args: {
+          target_user_id: string
+          max_distance_km?: number
+          limit_count?: number
+        }
+        Returns: {
+          user_id: string
+          first_name: string
+          last_name: string
+          display_name: string
+          age: number
+          location: string
+          bio: string
+          avatar_url: string
+          religion_level: string
+          prayer_frequency: string
+          hijab_status: string
+          match_score: number
+          distance_km: number
+        }[]
+      }
       get_match_recommendations: {
         Args: { target_user_id: string; limit_count?: number }
         Returns: {
@@ -654,6 +731,10 @@ export type Database = {
           match_score: number
           matched_at: string
         }[]
+      }
+      is_admin: {
+        Args: { user_id: string }
+        Returns: boolean
       }
     }
     Enums: {
