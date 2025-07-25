@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      match_insights: {
+        Row: {
+          compatibility_score: number
+          created_at: string
+          family_compatibility_score: number | null
+          id: string
+          insights_data: Json | null
+          lifestyle_compatibility_score: number | null
+          personality_match_score: number | null
+          religious_compatibility_score: number | null
+          updated_at: string
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          compatibility_score: number
+          created_at?: string
+          family_compatibility_score?: number | null
+          id?: string
+          insights_data?: Json | null
+          lifestyle_compatibility_score?: number | null
+          personality_match_score?: number | null
+          religious_compatibility_score?: number | null
+          updated_at?: string
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          compatibility_score?: number
+          created_at?: string
+          family_compatibility_score?: number | null
+          id?: string
+          insights_data?: Json | null
+          lifestyle_compatibility_score?: number | null
+          personality_match_score?: number | null
+          religious_compatibility_score?: number | null
+          updated_at?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           created_at: string
@@ -138,54 +180,171 @@ export type Database = {
         }
         Relationships: []
       }
+      premium_feature_usage: {
+        Row: {
+          feature_type: string
+          id: string
+          last_used: string
+          reset_date: string
+          usage_count: number
+          user_id: string
+        }
+        Insert: {
+          feature_type: string
+          id?: string
+          last_used?: string
+          reset_date?: string
+          usage_count?: number
+          user_id: string
+        }
+        Update: {
+          feature_type?: string
+          id?: string
+          last_used?: string
+          reset_date?: string
+          usage_count?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
+      premium_subscriptions: {
+        Row: {
+          created_at: string
+          end_date: string
+          id: string
+          is_active: boolean
+          plan_type: string
+          start_date: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          end_date: string
+          id?: string
+          is_active?: boolean
+          plan_type: string
+          start_date?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          end_date?: string
+          id?: string
+          is_active?: boolean
+          plan_type?: string
+          start_date?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null
           avatar_url: string | null
           bio: string | null
+          career_field: string | null
+          community_involvement_level: string | null
           created_at: string
           display_name: string | null
+          education_level: string | null
+          family_size_preference: string | null
+          financial_readiness: string | null
           first_name: string | null
+          hajj_umrah_experience: boolean | null
           hijab_status: string | null
           id: string
+          income_range: string | null
+          is_verified: boolean | null
+          islamic_knowledge_level: string | null
+          languages_spoken: string[] | null
+          last_active: string | null
           last_name: string | null
           location: string | null
+          madhab: string | null
+          marriage_timeline: string | null
+          number_of_children_wanted: number | null
           prayer_frequency: string | null
+          previous_marriage: boolean | null
+          profile_boost_expires: string | null
           religion_level: string | null
           updated_at: string
           user_id: string
+          verification_level: string | null
+          wali_contact_info: Json | null
+          wants_children: boolean | null
         }
         Insert: {
           age?: number | null
           avatar_url?: string | null
           bio?: string | null
+          career_field?: string | null
+          community_involvement_level?: string | null
           created_at?: string
           display_name?: string | null
+          education_level?: string | null
+          family_size_preference?: string | null
+          financial_readiness?: string | null
           first_name?: string | null
+          hajj_umrah_experience?: boolean | null
           hijab_status?: string | null
           id?: string
+          income_range?: string | null
+          is_verified?: boolean | null
+          islamic_knowledge_level?: string | null
+          languages_spoken?: string[] | null
+          last_active?: string | null
           last_name?: string | null
           location?: string | null
+          madhab?: string | null
+          marriage_timeline?: string | null
+          number_of_children_wanted?: number | null
           prayer_frequency?: string | null
+          previous_marriage?: boolean | null
+          profile_boost_expires?: string | null
           religion_level?: string | null
           updated_at?: string
           user_id: string
+          verification_level?: string | null
+          wali_contact_info?: Json | null
+          wants_children?: boolean | null
         }
         Update: {
           age?: number | null
           avatar_url?: string | null
           bio?: string | null
+          career_field?: string | null
+          community_involvement_level?: string | null
           created_at?: string
           display_name?: string | null
+          education_level?: string | null
+          family_size_preference?: string | null
+          financial_readiness?: string | null
           first_name?: string | null
+          hajj_umrah_experience?: boolean | null
           hijab_status?: string | null
           id?: string
+          income_range?: string | null
+          is_verified?: boolean | null
+          islamic_knowledge_level?: string | null
+          languages_spoken?: string[] | null
+          last_active?: string | null
           last_name?: string | null
           location?: string | null
+          madhab?: string | null
+          marriage_timeline?: string | null
+          number_of_children_wanted?: number | null
           prayer_frequency?: string | null
+          previous_marriage?: boolean | null
+          profile_boost_expires?: string | null
           religion_level?: string | null
           updated_at?: string
           user_id?: string
+          verification_level?: string | null
+          wali_contact_info?: Json | null
+          wants_children?: boolean | null
         }
         Relationships: []
       }
@@ -207,6 +366,78 @@ export type Database = {
           id?: string
           liked_id?: string
           liker_id?: string
+        }
+        Relationships: []
+      }
+      verification_requests: {
+        Row: {
+          created_at: string
+          documents: Json | null
+          id: string
+          notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          verification_type: string
+        }
+        Insert: {
+          created_at?: string
+          documents?: Json | null
+          id?: string
+          notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          verification_type: string
+        }
+        Update: {
+          created_at?: string
+          documents?: Json | null
+          id?: string
+          notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          verification_type?: string
+        }
+        Relationships: []
+      }
+      video_call_sessions: {
+        Row: {
+          caller_id: string
+          created_at: string
+          ended_at: string | null
+          id: string
+          receiver_id: string
+          session_data: Json | null
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          caller_id: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          receiver_id: string
+          session_data?: Json | null
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          caller_id?: string
+          created_at?: string
+          ended_at?: string | null
+          id?: string
+          receiver_id?: string
+          session_data?: Json | null
+          started_at?: string | null
+          status?: string
         }
         Relationships: []
       }
