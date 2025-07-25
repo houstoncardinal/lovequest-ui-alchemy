@@ -327,7 +327,7 @@ const Chat = () => {
       {/* Header */}
       <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-bold text-gray-900">Messages</h1>
+          <h1 className="text-xl font-bold text-gray-900">Matches</h1>
           <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
             <MoreHorizontal className="w-6 h-6 text-emerald-600" />
           </button>
