@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
-import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown, Mic, Smile, Video, Phone } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown, Mic, Smile, Video, Phone, Settings, Shield, HelpCircle } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import EmojiPicker from "@/components/EmojiPicker";
 import VoiceRecorder from "@/components/VoiceRecorder";
 import VideoCallModal from "@/components/VideoCallModal";
 import VoiceMessage from "@/components/VoiceMessage";
 import { Badge } from "@/components/ui/badge";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -44,6 +46,7 @@ interface MatchData {
 }
 
 const Chat = () => {
+  const navigate = useNavigate();
   const { user } = useAuth();
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState("");
@@ -592,9 +595,27 @@ const Chat = () => {
       <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-bold text-gray-900">Matches</h1>
-          <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
-            <MoreHorizontal className="w-6 h-6 text-emerald-600" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
+                <MoreHorizontal className="w-6 h-6 text-emerald-600" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => navigate('/preferences')}>
+                <Settings className="w-4 h-4 mr-2" />
+                Preferences
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/privacy-safety')}>
+                <Shield className="w-4 h-4 mr-2" />
+                Privacy & Safety
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/help-support')}>
+                <HelpCircle className="w-4 h-4 mr-2" />
+                Help & Support
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         
         {/* Search */}
@@ -611,7 +632,7 @@ const Chat = () => {
       </div>
 
       {/* Matches List */}
-      <div className="px-4 py-2">
+      <div className="px-6 py-2">
         {loading ? (
           <div className="text-center py-8">
             <p className="text-gray-500">Loading matches...</p>
@@ -625,24 +646,35 @@ const Chat = () => {
             <div
               key={match.match_id}
               onClick={() => setSelectedChat(match.matched_user_id)}
-              className="flex items-center py-4 cursor-pointer hover:bg-white hover:rounded-2xl hover:px-3 transition-all duration-300 mb-2"
+              className="flex items-center py-4 px-4 cursor-pointer hover:bg-white hover:rounded-3xl hover:shadow-lg transition-all duration-300 mb-3 group animate-fade-in"
             >
               <div className="relative mr-4">
-                <img 
-                  src={match.avatar_url || profile1} 
-                  alt={match.display_name}
-                  className="w-16 h-16 rounded-2xl object-cover ring-2 ring-emerald-100"
-                />
-                <div className="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={match.avatar_url || profile1} 
+                    alt={match.display_name}
+                    className="w-18 h-18 rounded-full object-cover ring-4 ring-emerald-100 shadow-lg group-hover:ring-emerald-200 transition-all duration-300 hover-scale"
+                  />
+                  {/* Online indicator */}
+                  <div className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-3 border-white rounded-full shadow-sm animate-pulse"></div>
+                  {/* Premium crown overlay */}
+                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full flex items-center justify-center shadow-md">
+                    <Crown className="w-3 h-3 text-white" />
+                  </div>
+                </div>
               </div>
               
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
-                    <h3 className="font-bold text-gray-900">{match.display_name}</h3>
-                    <Crown className="w-4 h-4 text-amber-500 fill-current" />
+                    <h3 className="font-bold text-gray-900 text-lg group-hover:text-emerald-600 transition-colors truncate">
+                      {match.display_name}
+                    </h3>
+                    <Badge className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs px-2 py-1 rounded-full">
+                      {match.match_score}% match
+                    </Badge>
                   </div>
-                  <span className="text-xs text-gray-500">
+                  <span className="text-xs text-gray-500 flex-shrink-0">
                     {new Date(match.matched_at).toLocaleDateString()}
                   </span>
                 </div>
@@ -651,7 +683,7 @@ const Chat = () => {
                   <p className="text-sm text-gray-600 truncate flex-1 mr-3 leading-relaxed">
                     {match.bio || "Start a conversation..."}
                   </p>
-                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-medium shadow-sm">
+                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs rounded-full w-7 h-7 flex items-center justify-center font-medium shadow-sm flex-shrink-0">
                     ✓
                   </Badge>
                 </div>

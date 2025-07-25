@@ -44,17 +44,16 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative"
+            className="relative z-10"
           >
             <Button
               onClick={onCreatePost}
               size="lg"
-              className="rounded-2xl bg-gradient-primary hover:shadow-glow hover:scale-105 transition-all duration-300 px-6 py-3 font-semibold text-primary-foreground shadow-elegant border-0"
+              className="rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-lg hover:scale-105 transition-all duration-300 px-6 py-3 font-semibold text-white shadow-md border-0 animate-fade-in"
             >
               <Plus className="w-5 h-5 mr-2" />
               New Post
             </Button>
-            <div className="absolute inset-0 rounded-2xl bg-gradient-primary opacity-20 blur-lg -z-10"></div>
           </motion.div>
         </div>
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, Edit3, Camera, Shield, Bell, Heart, Users, HelpCircle, LogOut, Key, Crown, Star, CreditCard, Calendar, ArrowRight } from "lucide-react";
+import { Settings, Edit3, Camera, Shield, Bell, Heart, Users, HelpCircle, LogOut, Key, Crown, Star, CreditCard, Calendar, ArrowRight, MoreVertical } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import ApiKeyManager from "@/components/ApiKeyManager";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
@@ -143,9 +144,31 @@ const Account = () => {
       <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-emerald-100">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-bold text-gray-900">Account</h1>
-          <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
-            <Settings className="w-5 h-5 text-emerald-600" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
+                <Settings className="w-5 h-5 text-emerald-600" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuItem onClick={() => navigate('/settings')}>
+                <Settings className="w-4 h-4 mr-2" />
+                Account Settings
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/privacy-safety')}>
+                <Shield className="w-4 h-4 mr-2" />
+                Privacy & Safety
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/help-support')}>
+                <HelpCircle className="w-4 h-4 mr-2" />
+                Help & Support
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/notifications')}>
+                <Bell className="w-4 h-4 mr-2" />
+                Notifications
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
 
