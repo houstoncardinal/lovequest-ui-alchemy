@@ -196,21 +196,31 @@ const AdminDashboard = () => {
 
   const loadVerificationRequests = async () => {
     try {
-      const { data, error } = await supabase
+      // First get verification requests
+      const { data: requests, error: requestsError } = await supabase
         .from('verification_requests')
-        .select(`
-          *,
-          profiles:profiles!verification_requests_user_id_fkey (
-            first_name,
-            last_name,
-            display_name,
-            avatar_url
-          )
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
-      setVerificationRequests(data || []);
+      if (requestsError) throw requestsError;
+
+      // Then get profiles for each request
+      const requestsWithProfiles = await Promise.all(
+        (requests || []).map(async (request) => {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('first_name, last_name, display_name, avatar_url')
+            .eq('user_id', request.user_id)
+            .single();
+
+          return {
+            ...request,
+            profiles: profile
+          };
+        })
+      );
+
+      setVerificationRequests(requestsWithProfiles);
     } catch (error) {
       console.error('Load verification requests error:', error);
       toast({
