@@ -35,7 +35,6 @@ import FamilyFeatures from "./pages/FamilyFeatures";
 import MatchInsights from "./pages/MatchInsights";
 import EnhancedMatching from "./pages/EnhancedMatching";
 import AdminDashboard from "./pages/AdminDashboard";
-import EnhancedOnboarding from "./pages/EnhancedOnboarding";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -80,7 +79,6 @@ function App() {
           <Route path="/match-insights/:id" element={<ProtectedRoute><MatchInsights matchId="" onBack={() => {}} /></ProtectedRoute>} />
           <Route path="/enhanced-matching" element={<ProtectedRoute><EnhancedMatching /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
-          <Route path="/enhanced-onboarding" element={<ProtectedRoute><EnhancedOnboarding /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
