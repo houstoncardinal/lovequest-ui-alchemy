@@ -19,19 +19,19 @@ const Welcome = () => {
       title: "Find Your Halal Match",
       subtitle: "Connect with Muslims who share your values and marriage goals.",
       image: "🌙",
-      color: "from-amber-500 to-yellow-600"
+      color: "from-primary to-emerald-600"
     },
     {
       title: "Luxury Experience, Faithful Connections",
       subtitle: "Jaan offers a premium, safe, and respectful space for Muslim singles.",
       image: "💎",
-      color: "from-slate-700 to-slate-900"
+      color: "from-emerald-700 to-emerald-900"
     },
     {
       title: "Privacy & Trust First",
       subtitle: "Your privacy and faith are our top priorities.",
       image: "🛡️",
-      color: "from-emerald-600 to-teal-700"
+      color: "from-emerald-600 to-emerald-800"
     }
   ];
 
@@ -44,20 +44,20 @@ const Welcome = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-background to-emerald-50 flex flex-col">
       {/* Header */}
       <div className="flex items-center justify-between p-4">
         <div className="flex items-center">
-          <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-emerald-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
             <Heart className="w-6 h-6 text-white fill-current" />
           </div>
-          <h1 className="text-xl font-bold text-slate-800">Jaan</h1>
+          <h1 className="text-xl font-bold text-foreground">Jaan</h1>
         </div>
         
         {currentSlide < slides.length - 1 && (
           <button 
             onClick={() => navigate("/signup")}
-            className="text-slate-600 font-medium hover:text-slate-800 transition-colors"
+            className="text-muted-foreground font-medium hover:text-foreground transition-colors"
           >
             Skip
           </button>
@@ -72,11 +72,11 @@ const Welcome = () => {
           <span className="text-6xl">{slides[currentSlide].image}</span>
         </div>
 
-        <h2 className="text-3xl font-bold text-slate-800 text-center mb-4">
+        <h2 className="text-3xl font-bold text-foreground text-center mb-4">
           {slides[currentSlide].title}
         </h2>
         
-        <p className="text-slate-600 text-center text-lg leading-relaxed mb-12 max-w-sm">
+        <p className="text-muted-foreground text-center text-lg leading-relaxed mb-12 max-w-sm">
           {slides[currentSlide].subtitle}
         </p>
 
@@ -86,7 +86,7 @@ const Welcome = () => {
             <div
               key={index}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide ? "bg-gradient-to-r from-amber-500 to-yellow-600 w-8" : "bg-slate-300"
+                index === currentSlide ? "bg-gradient-to-r from-primary to-emerald-600 w-8" : "bg-muted"
               }`}
             />
           ))}
@@ -95,7 +95,7 @@ const Welcome = () => {
         {/* Continue Button */}
         <button
           onClick={nextSlide}
-          className="w-full max-w-sm bg-gradient-to-r from-amber-500 to-yellow-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 flex items-center justify-center"
+          className="w-full max-w-sm bg-gradient-to-r from-primary to-emerald-600 text-white font-semibold py-4 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 flex items-center justify-center"
         >
           {currentSlide === slides.length - 1 ? "Get Started" : "Continue"}
           <ArrowRight className="w-5 h-5 ml-2" />
