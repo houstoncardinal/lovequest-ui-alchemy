@@ -1,17 +1,16 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Heart, MessageCircle, MapPin, Sparkles, TrendingUp, Clock, Plus } from "lucide-react";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
+import { motion, AnimatePresence } from "framer-motion";
 
+// Components
 import CreatePostModal from "@/components/CreatePostModal";
 import EditPostModal from "@/components/EditPostModal";
-import PostMenu from "@/components/PostMenu";
+import CommunityHeader from "@/components/CommunityHeader";
+import PostCard from "@/components/PostCard";
+import CommunityLoadingSkeleton from "@/components/CommunityLoadingSkeleton";
+import CommunityEmptyState from "@/components/CommunityEmptyState";
 
 interface Post {
   id: string;
@@ -160,171 +159,58 @@ const Community = () => {
     const now = new Date();
     const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
     
+    if (diffInMinutes < 1) return 'just now';
     if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
     if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-    return `${Math.floor(diffInMinutes / 1440)}d ago`;
+    if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`;
+    return date.toLocaleDateString();
   };
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10 p-6">
-        <div className="max-w-md mx-auto space-y-6">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="p-6 animate-pulse">
-              <div className="h-4 bg-muted rounded w-3/4 mb-4"></div>
-              <div className="h-20 bg-muted rounded mb-4"></div>
-              <div className="h-4 bg-muted rounded w-1/2"></div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    );
+    return <CommunityLoadingSkeleton />;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/5 to-secondary/10">
-      {/* Header */}
-      <div className="sticky top-0 bg-background/95 backdrop-blur-lg border-b border-border/50 p-6 z-10">
-        <div className="max-w-md mx-auto">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-gradient-primary">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                  Community
-                </h1>
-                <p className="text-sm text-muted-foreground">Discover and connect</p>
-              </div>
-            </div>
-            <Button
-              onClick={() => setShowCreateModal(true)}
-              size="sm"
-              className="rounded-full"
-            >
-              <Plus className="w-4 h-4 mr-1" />
-              Post
-            </Button>
-          </div>
-
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-2 bg-muted/50">
-              <TabsTrigger value="trending" className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                Trending
-              </TabsTrigger>
-              <TabsTrigger value="recent" className="flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Recent
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gradient-subtle">
+      <CommunityHeader
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        onCreatePost={() => setShowCreateModal(true)}
+        postsCount={posts.length}
+      />
 
       {/* Posts Feed */}
-      <div className="max-w-md mx-auto p-6 space-y-6">
-        {posts.map((post) => (
-          <Card key={post.id} className="overflow-hidden border-border/50 shadow-elegant hover:shadow-glow transition-all duration-300">
-            {/* Post Header */}
-            <div className="p-4 border-b border-border/30">
-              <div className="flex items-center gap-3">
-                <Avatar className="ring-2 ring-primary/20">
-                  <AvatarImage src={post.profiles?.avatar_url} />
-                  <AvatarFallback className="bg-gradient-primary text-white">
-                    {post.profiles?.first_name?.[0]}{post.profiles?.last_name?.[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-foreground">
-                      {post.profiles?.display_name || `${post.profiles?.first_name} ${post.profiles?.last_name}`}
-                    </h3>
-                    {post.is_trending && (
-                      <Badge variant="secondary" className="flex items-center gap-1 bg-accent/20 text-accent">
-                        <TrendingUp className="w-3 h-3" />
-                        Trending
-                      </Badge>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    {post.location && (
-                      <>
-                        <MapPin className="w-3 h-3" />
-                        <span>{post.location}</span>
-                        <span>•</span>
-                      </>
-                    )}
-                    <span>{formatTimeAgo(post.created_at)}</span>
-                  </div>
-                </div>
-                {user?.id === post.user_id && (
-                  <PostMenu
-                    postId={post.id}
-                    onEdit={() => handleEditPost(post)}
-                    onDelete={() => handleDeletePost(post.id)}
+      <div className="max-w-md mx-auto px-6 pb-6">
+        <AnimatePresence mode="wait">
+          {posts.length === 0 ? (
+            <CommunityEmptyState onCreatePost={() => setShowCreateModal(true)} />
+          ) : (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-6 pt-6"
+            >
+              {posts.map((post, index) => (
+                <motion.div
+                  key={post.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                >
+                  <PostCard
+                    post={post}
+                    currentUserId={user?.id}
+                    onLike={handleLike}
+                    onEdit={handleEditPost}
+                    onDelete={handleDeletePost}
+                    formatTimeAgo={formatTimeAgo}
                   />
-                )}
-              </div>
-            </div>
-
-            {/* Post Content */}
-            <div className="p-4">
-              <p className="text-foreground leading-relaxed whitespace-pre-wrap">
-                {post.content}
-              </p>
-              
-              {post.image_url && (
-                <div className="mt-4 rounded-lg overflow-hidden">
-                  <img 
-                    src={post.image_url} 
-                    alt="Post image" 
-                    className="w-full h-auto object-cover"
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Post Actions */}
-            <div className="px-4 py-3 border-t border-border/30 bg-muted/20">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleLike(post.id, post.user_liked || false)}
-                    className={`flex items-center gap-2 hover:text-accent transition-colors ${
-                      post.user_liked ? 'text-accent' : 'text-muted-foreground'
-                    }`}
-                  >
-                    <Heart className={`w-4 h-4 ${post.user_liked ? 'fill-current' : ''}`} />
-                    <span className="font-medium">{post.likes_count}</span>
-                  </Button>
-                  
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    <span className="font-medium">{post.comments_count}</span>
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </Card>
-        ))}
-
-        {posts.length === 0 && !loading && (
-          <Card className="p-8 text-center">
-            <Sparkles className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-            <h3 className="text-lg font-semibold mb-2">No posts yet</h3>
-            <p className="text-muted-foreground">
-              Be the first to share something beautiful with the community!
-            </p>
-          </Card>
-        )}
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Bottom padding for navigation */}
@@ -344,7 +230,6 @@ const Community = () => {
         post={editingPost}
         onPostUpdated={fetchPosts}
       />
-
     </div>
   );
 };
