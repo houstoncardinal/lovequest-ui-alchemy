@@ -5,8 +5,13 @@ interface ProfileCardProps {
   id: string;
   name: string;
   age: number;
-  distance: string;
+  distance?: string;
+  location?: string;
+  bio?: string;
   image: string;
+  verified?: boolean;
+  matchScore?: number;
+  badges?: string[];
   isLiked?: boolean;
   onLike?: (id: string) => void;
   onClick?: (id: string) => void;
@@ -16,8 +21,13 @@ const ProfileCard = ({
   id, 
   name, 
   age, 
-  distance, 
-  image, 
+  distance,
+  location, 
+  bio,
+  image,
+  verified = false,
+  matchScore,
+  badges = [],
   isLiked = false, 
   onLike,
   onClick 
@@ -65,7 +75,7 @@ const ProfileCard = ({
           </h3>
           <div className="flex items-center mt-1 text-sm">
             <MapPin className="w-4 h-4 mr-1" />
-            <span>{distance}</span>
+            <span>{distance || location}</span>
           </div>
         </div>
       </div>

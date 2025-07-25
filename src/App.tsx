@@ -28,6 +28,10 @@ import AdvancedFilters from "./pages/AdvancedFilters";
 import BlockReport from "./pages/BlockReport";
 import TermsOfService from "./pages/TermsOfService";
 import IslamicFeatures from "./pages/IslamicFeatures";
+import PremiumFeatures from "./pages/PremiumFeatures";
+import AdvancedSearch from "./pages/AdvancedSearch";
+import Verification from "./pages/Verification";
+import FamilyFeatures from "./pages/FamilyFeatures";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -65,6 +69,10 @@ function App() {
           <Route path="/block-report/:id" element={<ProtectedRoute><BlockReport /></ProtectedRoute>} />
           <Route path="/terms-of-service" element={<ProtectedRoute><TermsOfService /></ProtectedRoute>} />
           <Route path="/islamic-features" element={<ProtectedRoute><IslamicFeatures /></ProtectedRoute>} />
+          <Route path="/premium-features" element={<ProtectedRoute><PremiumFeatures /></ProtectedRoute>} />
+          <Route path="/advanced-search" element={<ProtectedRoute><AdvancedSearch /></ProtectedRoute>} />
+          <Route path="/verification" element={<ProtectedRoute><Verification /></ProtectedRoute>} />
+          <Route path="/family-features" element={<ProtectedRoute><FamilyFeatures /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
