@@ -1,34 +1,109 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Users, MapPin, Heart, Shield, Filter, Save, Loader2 } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+import { ArrowLeft, Save, Loader2, Heart, Users, MapPin, Shield, Star, Church, Baby, GraduationCap, Briefcase, Home, Calendar, Clock, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Separator } from "@/components/ui/separator";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
+
+interface UserPreferences {
+  age_range_min: number;
+  age_range_max: number;
+  max_distance_km: number;
+  looking_for: string;
+  show_me: string;
+  deal_breakers: {
+    smoking: boolean;
+    drinking: boolean;
+    has_children: boolean;
+    previous_marriage: boolean;
+    different_religion_level: boolean;
+    different_madhab: boolean;
+    no_hijab: boolean; // For men looking for women
+    non_practicing: boolean;
+    different_prayer_frequency: boolean;
+  };
+  religion_preferences: {
+    min_religion_level: string;
+    preferred_madhab: string[];
+    prayer_frequency_preference: string;
+    hijab_preference: string; // For men
+    islamic_knowledge_preference: string;
+  };
+  lifestyle_preferences: {
+    education_level_preference: string[];
+    career_field_preference: string[];
+    smoking_preference: string;
+    family_size_preference: string;
+    marriage_timeline_preference: string;
+    location_preference: string;
+  };
+  family_preferences: {
+    children_preference: string;
+    family_involvement_preference: string;
+    living_arrangement_preference: string;
+  };
+}
 
 const Preferences = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
-  const [preferences, setPreferences] = useState({
-    ageRange: [22, 30],
-    maxDistance: 25,
-    lookingFor: "relationship",
-    showMe: "women",
-    dealBreakers: {
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [preferences, setPreferences] = useState<UserPreferences>({
+    age_range_min: 22,
+    age_range_max: 35,
+    max_distance_km: 50,
+    looking_for: "marriage",
+    show_me: "opposite", // Will be determined by user's gender
+    deal_breakers: {
       smoking: false,
       drinking: false,
-      kids: false
-    }
+      has_children: false,
+      previous_marriage: false,
+      different_religion_level: false,
+      different_madhab: false,
+      no_hijab: false,
+      non_practicing: false,
+      different_prayer_frequency: false,
+    },
+    religion_preferences: {
+      min_religion_level: "somewhat_religious",
+      preferred_madhab: [],
+      prayer_frequency_preference: "any",
+      hijab_preference: "any",
+      islamic_knowledge_preference: "any",
+    },
+    lifestyle_preferences: {
+      education_level_preference: [],
+      career_field_preference: [],
+      smoking_preference: "never",
+      family_size_preference: "any",
+      marriage_timeline_preference: "any",
+      location_preference: "any",
+    },
+    family_preferences: {
+      children_preference: "wants_children",
+      family_involvement_preference: "moderate",
+      living_arrangement_preference: "any",
+    },
   });
 
   useEffect(() => {
+    fetchUserProfile();
     fetchPreferences();
   }, [user]);
 
-  const fetchPreferences = async () => {
+  const fetchUserProfile = async () => {
     if (!user) return;
     
     try {
@@ -39,11 +114,36 @@ const Preferences = () => {
         .single();
 
       if (error && error.code !== 'PGRST116') throw error;
+      setUserProfile(data);
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+    }
+  };
+
+  const fetchPreferences = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('user_preferences')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (error && error.code !== 'PGRST116') throw error;
       
-      // Set preferences from profile data if available
       if (data) {
-        // For now, keeping default values as the schema doesn't have these specific fields
-        // In a real app, you'd have a separate preferences table
+        setPreferences({
+          age_range_min: data.age_range_min || 22,
+          age_range_max: data.age_range_max || 35,
+          max_distance_km: data.max_distance_km || 50,
+          looking_for: data.looking_for || "marriage",
+          show_me: data.show_me || "opposite",
+          deal_breakers: (typeof data.deal_breakers === 'object' && data.deal_breakers !== null) ? data.deal_breakers as any : preferences.deal_breakers,
+          religion_preferences: (data.deal_breakers as any)?.religion_preferences || preferences.religion_preferences,
+          lifestyle_preferences: (data.deal_breakers as any)?.lifestyle_preferences || preferences.lifestyle_preferences,
+          family_preferences: (data.deal_breakers as any)?.family_preferences || preferences.family_preferences,
+        });
       }
     } catch (error) {
       console.error('Error fetching preferences:', error);
@@ -55,9 +155,24 @@ const Preferences = () => {
     
     setLoading(true);
     try {
-      // In a real app, you'd save to a preferences table
-      // For now, we'll simulate saving
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const { error } = await supabase
+        .from('user_preferences')
+        .upsert({
+          user_id: user.id,
+          age_range_min: preferences.age_range_min,
+          age_range_max: preferences.age_range_max,
+          max_distance_km: preferences.max_distance_km,
+          looking_for: preferences.looking_for,
+          show_me: preferences.show_me,
+          deal_breakers: {
+            ...preferences.deal_breakers,
+            religion_preferences: preferences.religion_preferences,
+            lifestyle_preferences: preferences.lifestyle_preferences,
+            family_preferences: preferences.family_preferences,
+          },
+        });
+
+      if (error) throw error;
       
       toast({
         title: "Preferences saved",
@@ -75,225 +190,455 @@ const Preferences = () => {
     }
   };
 
-  const handleRangeChange = (field: string, index: number, value: number) => {
-    setPreferences(prev => ({
-      ...prev,
-      [field]: index === 0 
-        ? [value, prev.ageRange[1]]
-        : [prev.ageRange[0], value]
-    }));
+  // Helper function to get opposite gender options
+  const getGenderOptions = () => {
+    if (!userProfile) return [];
+    
+    // In Islam, only opposite gender matching is allowed
+    if (userProfile.gender === 'male') {
+      return [{ value: 'female', label: 'Women', icon: '👩' }];
+    } else if (userProfile.gender === 'female') {
+      return [{ value: 'male', label: 'Men', icon: '👨' }];
+    }
+    return [];
   };
 
+  const religionLevels = [
+    { value: 'very_religious', label: 'Very Religious' },
+    { value: 'religious', label: 'Religious' },
+    { value: 'somewhat_religious', label: 'Somewhat Religious' },
+    { value: 'not_very_religious', label: 'Not Very Religious' },
+  ];
+
+  const madhabs = [
+    { value: 'hanafi', label: 'Hanafi' },
+    { value: 'maliki', label: 'Maliki' },
+    { value: 'shafii', label: 'Shafi\'i' },
+    { value: 'hanbali', label: 'Hanbali' },
+  ];
+
+  const prayerFrequencies = [
+    { value: '5_times_daily', label: '5 times daily' },
+    { value: 'daily', label: 'Daily' },
+    { value: 'weekly', label: 'Weekly' },
+    { value: 'occasionally', label: 'Occasionally' },
+    { value: 'rarely', label: 'Rarely' },
+  ];
+
+  const educationLevels = [
+    { value: 'high_school', label: 'High School' },
+    { value: 'bachelors', label: 'Bachelor\'s Degree' },
+    { value: 'masters', label: 'Master\'s Degree' },
+    { value: 'doctorate', label: 'Doctorate' },
+    { value: 'trade_school', label: 'Trade School' },
+  ];
+
+  const careerFields = [
+    { value: 'technology', label: 'Technology' },
+    { value: 'healthcare', label: 'Healthcare' },
+    { value: 'education', label: 'Education' },
+    { value: 'business', label: 'Business' },
+    { value: 'engineering', label: 'Engineering' },
+    { value: 'arts', label: 'Arts & Creative' },
+    { value: 'islamic_studies', label: 'Islamic Studies' },
+    { value: 'other', label: 'Other' },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
+    <div className="min-h-screen bg-gradient-subtle pb-24">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-emerald-100">
-        <div className="flex items-center justify-between p-4">
-          <button 
+      <div className="sticky top-0 z-20 backdrop-blur-xl bg-background/90 border-b border-border/50">
+        <div className="flex items-center justify-between p-6">
+          <Button 
+            variant="ghost"
+            size="sm"
             onClick={() => navigate("/account")}
-            className="p-2 rounded-full hover:bg-emerald-50 transition-colors"
+            className="rounded-full"
           >
-            <ArrowLeft className="w-6 h-6 text-emerald-600" />
-          </button>
-          <h1 className="text-xl font-bold text-gray-900">Preferences</h1>
-          <button 
+            <ArrowLeft className="w-5 h-5" />
+          </Button>
+          
+          <div className="text-center">
+            <h1 className="text-xl font-bold text-foreground">Preferences</h1>
+            <p className="text-sm text-muted-foreground">Customize your match criteria</p>
+          </div>
+          
+          <Button 
             onClick={savePreferences}
             disabled={loading}
-            className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+            className="bg-gradient-primary hover:shadow-glow transition-all duration-300"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
               <Save className="w-4 h-4" />
             )}
-            <span>{loading ? "Saving..." : "Save"}</span>
-          </button>
+          </Button>
         </div>
       </div>
 
-      <div className="p-4 space-y-6">
+      <div className="max-w-md mx-auto p-6 space-y-6">
         {/* Basic Preferences */}
-        <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6 relative overflow-hidden">
-          {/* Decorative element */}
-          <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-400/10 to-emerald-600/10 rounded-full -translate-y-10 translate-x-10"></div>
-          
-          <div className="relative z-10">
-            <div className="flex items-center space-x-2 mb-6">
-              <Filter className="w-5 h-5 text-emerald-600" />
-              <h3 className="font-bold text-gray-900 text-lg">Discovery Settings</h3>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-xl bg-gradient-primary">
+                <User className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg">Basic Preferences</h3>
             </div>
             
             {/* Age Range */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <label className="text-sm font-semibold text-gray-700">
-                  Age Range
-                </label>
-                <Badge className="bg-emerald-100 text-emerald-700 px-3 py-1 text-xs font-medium">
-                  {preferences.ageRange[0]} - {preferences.ageRange[1]} years
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-medium">Age Range</Label>
+                <Badge variant="secondary" className="bg-primary/10 text-primary">
+                  {preferences.age_range_min} - {preferences.age_range_max} years
                 </Badge>
               </div>
               <div className="space-y-4">
-                <div className="flex items-center space-x-4">
-                  <span className="text-xs text-gray-500 w-8">18</span>
-                  <input
-                    type="range"
-                    min="18"
-                    max="50"
-                    value={preferences.ageRange[0]}
-                    onChange={(e) => handleRangeChange("ageRange", 0, parseInt(e.target.value))}
-                    className="flex-1 h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer slider"
-                    style={{
-                      background: `linear-gradient(to right, #10b981 0%, #10b981 ${(preferences.ageRange[0] - 18) / 32 * 100}%, #d1fae5 ${(preferences.ageRange[0] - 18) / 32 * 100}%, #d1fae5 100%)`
-                    }}
+                <div>
+                  <Label className="text-xs text-muted-foreground mb-2 block">Minimum Age</Label>
+                  <Slider
+                    value={[preferences.age_range_min]}
+                    onValueChange={(value) => setPreferences(prev => ({ ...prev, age_range_min: value[0] }))}
+                    max={50}
+                    min={18}
+                    step={1}
+                    className="w-full"
                   />
-                  <span className="text-xs text-gray-500 w-8">50</span>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-xs text-gray-500 w-8">18</span>
-                  <input
-                    type="range"
-                    min="18"
-                    max="50"
-                    value={preferences.ageRange[1]}
-                    onChange={(e) => handleRangeChange("ageRange", 1, parseInt(e.target.value))}
-                    className="flex-1 h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer slider"
-                    style={{
-                      background: `linear-gradient(to right, #10b981 0%, #10b981 ${(preferences.ageRange[1] - 18) / 32 * 100}%, #d1fae5 ${(preferences.ageRange[1] - 18) / 32 * 100}%, #d1fae5 100%)`
-                    }}
+                <div>
+                  <Label className="text-xs text-muted-foreground mb-2 block">Maximum Age</Label>
+                  <Slider
+                    value={[preferences.age_range_max]}
+                    onValueChange={(value) => setPreferences(prev => ({ ...prev, age_range_max: value[0] }))}
+                    max={60}
+                    min={preferences.age_range_min}
+                    step={1}
+                    className="w-full"
                   />
-                  <span className="text-xs text-gray-500 w-8">50</span>
                 </div>
               </div>
             </div>
 
-            {/* Max Distance */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <label className="text-sm font-semibold text-gray-700">
-                  Maximum Distance
-                </label>
-                <Badge className="bg-emerald-100 text-emerald-700 px-3 py-1 text-xs font-medium">
-                  {preferences.maxDistance} km
+            {/* Distance */}
+            <div className="space-y-4 mb-6">
+              <div className="flex items-center justify-between">
+                <Label className="text-sm font-medium">Maximum Distance</Label>
+                <Badge variant="secondary" className="bg-primary/10 text-primary">
+                  {preferences.max_distance_km} km
                 </Badge>
               </div>
-              <div className="flex items-center space-x-4">
-                <MapPin className="w-4 h-4 text-emerald-600" />
-                <input
-                  type="range"
-                  min="1"
-                  max="100"
-                  value={preferences.maxDistance}
-                  onChange={(e) => setPreferences(prev => ({ ...prev, maxDistance: parseInt(e.target.value) }))}
-                  className="flex-1 h-2 bg-emerald-200 rounded-lg appearance-none cursor-pointer slider"
-                  style={{
-                    background: `linear-gradient(to right, #10b981 0%, #10b981 ${preferences.maxDistance}%, #d1fae5 ${preferences.maxDistance}%, #d1fae5 100%)`
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Show Me */}
-            <div className="mb-8">
-              <label className="block text-sm font-semibold text-gray-700 mb-4">Show Me</label>
-              <div className="grid grid-cols-1 gap-3">
-                {[
-                  { value: "women", label: "Women", icon: "👩" },
-                  { value: "men", label: "Men", icon: "👨" },
-                  { value: "everyone", label: "Everyone", icon: "👥" }
-                ].map((option) => (
-                  <label key={option.value} className="flex items-center p-3 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-colors cursor-pointer">
-                    <input
-                      type="radio"
-                      name="showMe"
-                      value={option.value}
-                      checked={preferences.showMe === option.value}
-                      onChange={(e) => setPreferences(prev => ({ ...prev, showMe: e.target.value }))}
-                      className="mr-3 w-4 h-4 text-emerald-600"
-                    />
-                    <span className="text-lg mr-3">{option.icon}</span>
-                    <span className="capitalize font-medium">{option.label}</span>
-                  </label>
-                ))}
-              </div>
+              <Slider
+                value={[preferences.max_distance_km]}
+                onValueChange={(value) => setPreferences(prev => ({ ...prev, max_distance_km: value[0] }))}
+                max={500}
+                min={1}
+                step={1}
+                className="w-full"
+              />
             </div>
 
             {/* Looking For */}
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-4">Looking For</label>
-              <div className="grid grid-cols-1 gap-3">
-                {[
-                  { value: "relationship", label: "Long-term relationship", icon: Heart },
-                  { value: "dating", label: "Dating", icon: Heart },
-                  { value: "friends", label: "New friends", icon: Users },
-                  { value: "networking", label: "Networking", icon: Users }
-                ].map((option) => {
-                  const Icon = option.icon;
-                  return (
-                    <label key={option.value} className="flex items-center p-3 rounded-xl border border-emerald-100 hover:border-emerald-200 transition-colors cursor-pointer">
-                      <input
-                        type="radio"
-                        name="lookingFor"
-                        value={option.value}
-                        checked={preferences.lookingFor === option.value}
-                        onChange={(e) => setPreferences(prev => ({ ...prev, lookingFor: e.target.value }))}
-                        className="mr-3 w-4 h-4 text-emerald-600"
-                      />
-                      <Icon className="w-5 h-5 text-emerald-600 mr-3" />
-                      <span className="font-medium">{option.label}</span>
-                    </label>
-                  );
-                })}
-              </div>
+            <div className="space-y-4 mb-6">
+              <Label className="text-sm font-medium">Looking For</Label>
+              <Select 
+                value={preferences.looking_for} 
+                onValueChange={(value) => setPreferences(prev => ({ ...prev, looking_for: value }))}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select what you're looking for" />
+                </SelectTrigger>
+                <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                  <SelectItem value="marriage">💍 Marriage</SelectItem>
+                  <SelectItem value="serious_relationship">❤️ Serious Relationship</SelectItem>
+                  <SelectItem value="getting_to_know">🤝 Getting to Know</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-          </div>
-        </div>
+
+            {/* Show Me - Automatically set to opposite gender for Islamic compliance */}
+            {userProfile && (
+              <div className="space-y-4">
+                <Label className="text-sm font-medium">Show Me</Label>
+                <div className="p-3 rounded-xl border border-border/50 bg-muted/30">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">
+                      {userProfile.gender === 'male' ? '👩' : '👨'}
+                    </span>
+                    <div>
+                      <p className="font-medium">
+                        {userProfile.gender === 'male' ? 'Women' : 'Men'}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Islamic guidelines - opposite gender only
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Card>
+        </motion.div>
+
+        {/* Religious Preferences */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.1 }}
+        >
+          <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-xl bg-gradient-primary">
+                <Church className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg">Religious Preferences</h3>
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <Label className="text-sm font-medium mb-3 block">Minimum Religion Level</Label>
+                <Select 
+                  value={preferences.religion_preferences.min_religion_level}
+                  onValueChange={(value) => setPreferences(prev => ({
+                    ...prev,
+                    religion_preferences: { ...prev.religion_preferences, min_religion_level: value }
+                  }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                    {religionLevels.map(level => (
+                      <SelectItem key={level.value} value={level.value}>
+                        {level.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-sm font-medium mb-3 block">Prayer Frequency Preference</Label>
+                <Select 
+                  value={preferences.religion_preferences.prayer_frequency_preference}
+                  onValueChange={(value) => setPreferences(prev => ({
+                    ...prev,
+                    religion_preferences: { ...prev.religion_preferences, prayer_frequency_preference: value }
+                  }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                    <SelectItem value="any">Any</SelectItem>
+                    {prayerFrequencies.map(freq => (
+                      <SelectItem key={freq.value} value={freq.value}>
+                        {freq.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {userProfile?.gender === 'male' && (
+                <div>
+                  <Label className="text-sm font-medium mb-3 block">Hijab Preference</Label>
+                  <Select 
+                    value={preferences.religion_preferences.hijab_preference}
+                    onValueChange={(value) => setPreferences(prev => ({
+                      ...prev,
+                      religion_preferences: { ...prev.religion_preferences, hijab_preference: value }
+                    }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                      <SelectItem value="any">Any</SelectItem>
+                      <SelectItem value="wears_hijab">Wears Hijab</SelectItem>
+                      <SelectItem value="prefers_hijab">Prefers Hijab</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+          </Card>
+        </motion.div>
 
         {/* Deal Breakers */}
-        <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6 relative overflow-hidden">
-          {/* Decorative element */}
-          <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-red-400/10 to-red-600/10 rounded-full -translate-y-8 -translate-x-8"></div>
-          
-          <div className="relative z-10">
-            <div className="flex items-center space-x-2 mb-4">
-              <Shield className="w-5 h-5 text-red-500" />
-              <h3 className="font-bold text-gray-900 text-lg">Deal Breakers</h3>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.2 }}
+        >
+          <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-xl bg-red-500/20">
+                <Shield className="w-5 h-5 text-red-500" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg">Deal Breakers</h3>
             </div>
-            <p className="text-sm text-gray-600 mb-6">
+            <p className="text-sm text-muted-foreground mb-6">
               Don't show me people who have these traits
             </p>
             
             <div className="space-y-4">
               {[
-                { key: "smoking", label: "Smoking", icon: "🚬" },
-                { key: "drinking", label: "Heavy drinking", icon: "🍺" },
-                { key: "kids", label: "Has children", icon: "👶" }
+                { key: 'smoking', label: 'Smoking', icon: '🚬' },
+                { key: 'has_children', label: 'Has children', icon: '👶' },
+                { key: 'previous_marriage', label: 'Previously married', icon: '💍' },
+                { key: 'different_religion_level', label: 'Very different religion level', icon: '📿' },
+                { key: 'non_practicing', label: 'Non-practicing Muslim', icon: '🕌' },
+                ...(userProfile?.gender === 'male' ? [{ key: 'no_hijab', label: 'Does not wear hijab', icon: '🧕' }] : []),
               ].map((item) => (
-                <label key={item.key} className="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-emerald-200 transition-colors cursor-pointer">
-                  <div className="flex items-center">
-                    <span className="text-lg mr-3">{item.icon}</span>
-                    <span className="font-medium">{item.label}</span>
+                <div key={item.key} className="flex items-center justify-between p-4 rounded-xl border border-border/30 hover:border-primary/30 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">{item.icon}</span>
+                    <span className="font-medium text-sm">{item.label}</span>
                   </div>
-                  <input
-                    type="checkbox"
-                    checked={preferences.dealBreakers[item.key as keyof typeof preferences.dealBreakers]}
-                    onChange={(e) => setPreferences(prev => ({
+                  <Switch
+                    checked={preferences.deal_breakers[item.key as keyof typeof preferences.deal_breakers]}
+                    onCheckedChange={(checked) => setPreferences(prev => ({
                       ...prev,
-                      dealBreakers: {
-                        ...prev.dealBreakers,
-                        [item.key]: e.target.checked
-                      }
+                      deal_breakers: { ...prev.deal_breakers, [item.key]: checked }
                     }))}
-                    className="w-5 h-5 text-emerald-600 rounded"
                   />
-                </label>
+                </div>
               ))}
             </div>
-          </div>
-        </div>
-      </div>
+          </Card>
+        </motion.div>
 
-      <InteractiveMenu />
+        {/* Lifestyle Preferences */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.3 }}
+        >
+          <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-xl bg-gradient-primary">
+                <Star className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg">Lifestyle Preferences</h3>
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <Label className="text-sm font-medium mb-3 block">Education Level</Label>
+                <Select 
+                  value={preferences.lifestyle_preferences.education_level_preference[0] || "any"}
+                  onValueChange={(value) => setPreferences(prev => ({
+                    ...prev,
+                    lifestyle_preferences: { 
+                      ...prev.lifestyle_preferences, 
+                      education_level_preference: value === "any" ? [] : [value]
+                    }
+                  }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                    <SelectItem value="any">Any</SelectItem>
+                    {educationLevels.map(level => (
+                      <SelectItem key={level.value} value={level.value}>
+                        {level.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-sm font-medium mb-3 block">Marriage Timeline</Label>
+                <Select 
+                  value={preferences.lifestyle_preferences.marriage_timeline_preference}
+                  onValueChange={(value) => setPreferences(prev => ({
+                    ...prev,
+                    lifestyle_preferences: { ...prev.lifestyle_preferences, marriage_timeline_preference: value }
+                  }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                    <SelectItem value="any">Any</SelectItem>
+                    <SelectItem value="within_year">Within a year</SelectItem>
+                    <SelectItem value="1_2_years">1-2 years</SelectItem>
+                    <SelectItem value="2_plus_years">2+ years</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Family Preferences */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+        >
+          <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="p-2 rounded-xl bg-gradient-primary">
+                <Home className="w-5 h-5 text-primary-foreground" />
+              </div>
+              <h3 className="font-bold text-foreground text-lg">Family Preferences</h3>
+            </div>
+            
+            <div className="space-y-6">
+              <div>
+                <Label className="text-sm font-medium mb-3 block">Children Preference</Label>
+                <Select 
+                  value={preferences.family_preferences.children_preference}
+                  onValueChange={(value) => setPreferences(prev => ({
+                    ...prev,
+                    family_preferences: { ...prev.family_preferences, children_preference: value }
+                  }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                    <SelectItem value="wants_children">Wants children</SelectItem>
+                    <SelectItem value="open_to_children">Open to children</SelectItem>
+                    <SelectItem value="doesnt_want_children">Doesn't want children</SelectItem>
+                    <SelectItem value="already_has_enough">Already has enough</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div>
+                <Label className="text-sm font-medium mb-3 block">Family Involvement</Label>
+                <Select 
+                  value={preferences.family_preferences.family_involvement_preference}
+                  onValueChange={(value) => setPreferences(prev => ({
+                    ...prev,
+                    family_preferences: { ...prev.family_preferences, family_involvement_preference: value }
+                  }))}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
+                    <SelectItem value="very_involved">Very involved family</SelectItem>
+                    <SelectItem value="moderate">Moderately involved</SelectItem>
+                    <SelectItem value="independent">More independent</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </Card>
+        </motion.div>
+      </div>
     </div>
   );
 };
