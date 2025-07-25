@@ -405,6 +405,102 @@ export type Database = {
         }
         Relationships: []
       }
+      user_preferences: {
+        Row: {
+          age_range_max: number | null
+          age_range_min: number | null
+          created_at: string | null
+          deal_breakers: Json | null
+          id: string
+          looking_for: string | null
+          max_distance_km: number | null
+          show_me: string | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          age_range_max?: number | null
+          age_range_min?: number | null
+          created_at?: string | null
+          deal_breakers?: Json | null
+          id?: string
+          looking_for?: string | null
+          max_distance_km?: number | null
+          show_me?: string | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          age_range_max?: number | null
+          age_range_min?: number | null
+          created_at?: string | null
+          deal_breakers?: Json | null
+          id?: string
+          looking_for?: string | null
+          max_distance_km?: number | null
+          show_me?: string | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_settings: {
+        Row: {
+          allow_read_receipts: boolean | null
+          block_contacts: boolean | null
+          created_at: string | null
+          email_notifications: boolean | null
+          id: string
+          incognito_mode: boolean | null
+          marketing_emails: boolean | null
+          profile_visibility: string | null
+          push_notifications: boolean | null
+          show_active_status: boolean | null
+          show_age: boolean | null
+          show_distance: boolean | null
+          sound_enabled: boolean | null
+          updated_at: string | null
+          user_id: string
+          vibration_enabled: boolean | null
+        }
+        Insert: {
+          allow_read_receipts?: boolean | null
+          block_contacts?: boolean | null
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          incognito_mode?: boolean | null
+          marketing_emails?: boolean | null
+          profile_visibility?: string | null
+          push_notifications?: boolean | null
+          show_active_status?: boolean | null
+          show_age?: boolean | null
+          show_distance?: boolean | null
+          sound_enabled?: boolean | null
+          updated_at?: string | null
+          user_id: string
+          vibration_enabled?: boolean | null
+        }
+        Update: {
+          allow_read_receipts?: boolean | null
+          block_contacts?: boolean | null
+          created_at?: string | null
+          email_notifications?: boolean | null
+          id?: string
+          incognito_mode?: boolean | null
+          marketing_emails?: boolean | null
+          profile_visibility?: string | null
+          push_notifications?: boolean | null
+          show_active_status?: boolean | null
+          show_age?: boolean | null
+          show_distance?: boolean | null
+          sound_enabled?: boolean | null
+          updated_at?: string | null
+          user_id?: string
+          vibration_enabled?: boolean | null
+        }
+        Relationships: []
+      }
       verification_requests: {
         Row: {
           created_at: string
