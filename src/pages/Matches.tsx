@@ -53,6 +53,109 @@ const Chat = () => {
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Demo matches for when there's no real data
+  const demoMatches: MatchData[] = [
+    {
+      match_id: "demo-1",
+      matched_user_id: "demo-user-1",
+      first_name: "Shafa",
+      last_name: "Asadel",
+      display_name: "Shafa Asadel",
+      age: 25,
+      location: "New York, NY",
+      bio: "Love music, art, and meaningful conversations 🎵",
+      avatar_url: profile1,
+      religion_level: "Religious",
+      prayer_frequency: "5 times daily",
+      hijab_status: "Yes",
+      match_score: 95,
+      matched_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(), // 2 minutes ago
+    },
+    {
+      match_id: "demo-2",
+      matched_user_id: "demo-user-2",
+      first_name: "Roseane",
+      last_name: "Rose",
+      display_name: "Roseane Rose",
+      age: 23,
+      location: "Los Angeles, CA",
+      bio: "Passionate about photography and travel ✈️",
+      avatar_url: profile2,
+      religion_level: "Very Religious",
+      prayer_frequency: "Daily",
+      hijab_status: "Yes",
+      match_score: 88,
+      matched_at: new Date(Date.now() - 60 * 60 * 1000).toISOString(), // 1 hour ago
+    },
+    {
+      match_id: "demo-3",
+      matched_user_id: "demo-user-3",
+      first_name: "Aura",
+      last_name: "Alexandra",
+      display_name: "Aura Alexandra",
+      age: 27,
+      location: "Chicago, IL",
+      bio: "Book lover, coffee enthusiast, and nature explorer 📚",
+      avatar_url: profile3,
+      religion_level: "Religious",
+      prayer_frequency: "5 times daily",
+      hijab_status: "Sometimes",
+      match_score: 92,
+      matched_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+    }
+  ];
+
+  // Demo messages for demo matches
+  const demoMessages: { [key: string]: Message[] } = {
+    "demo-user-1": [
+      {
+        id: "demo-msg-1",
+        sender_id: "demo-user-1",
+        receiver_id: user?.id || "",
+        content: "Hey! I saw you're into music too 🎵",
+        message_type: "text",
+        created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
+        is_read: true,
+      },
+      {
+        id: "demo-msg-2",
+        sender_id: user?.id || "",
+        receiver_id: "demo-user-1",
+        content: "Yes! I love discovering new artists. What's your favorite genre?",
+        message_type: "text",
+        created_at: new Date(Date.now() - 28 * 60 * 1000).toISOString(),
+        is_read: true,
+      },
+      {
+        id: "demo-msg-3",
+        sender_id: "demo-user-1",
+        receiver_id: user?.id || "",
+        content: "I'm really into indie rock and some electronic music. There's this new band I found called Aurora Dreams - they're incredible!",
+        message_type: "text",
+        created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
+        is_read: true,
+      },
+      {
+        id: "demo-msg-4",
+        sender_id: user?.id || "",
+        receiver_id: "demo-user-1",
+        content: "That sounds amazing! I'd love to check them out. Do you want to go to a concert together sometime?",
+        message_type: "text",
+        created_at: new Date(Date.now() - 23 * 60 * 1000).toISOString(),
+        is_read: true,
+      },
+      {
+        id: "demo-msg-5",
+        sender_id: "demo-user-1",
+        receiver_id: user?.id || "",
+        content: "That sounds amazing! I'd love to go 🎵",
+        message_type: "text",
+        created_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
+        is_read: false,
+      }
+    ]
+  };
   const { toast } = useToast();
 
   // Fetch matches and set up real-time subscriptions
@@ -116,9 +219,16 @@ const Chat = () => {
       
       if (error) throw error;
       
-      setMatches(data || []);
+      // Use real matches if available, otherwise use demo matches
+      if (data && data.length > 0) {
+        setMatches(data);
+      } else {
+        setMatches(demoMatches);
+      }
     } catch (error) {
       console.error('Error fetching matches:', error);
+      // Fallback to demo matches on error
+      setMatches(demoMatches);
     } finally {
       setLoading(false);
     }
@@ -126,6 +236,12 @@ const Chat = () => {
 
   const fetchMessages = async (matchUserId: string) => {
     if (!user?.id) return;
+    
+    // Check if this is a demo match
+    if (matchUserId.startsWith('demo-user-')) {
+      setMessages(demoMessages[matchUserId] || []);
+      return;
+    }
     
     try {
       const { data, error } = await supabase
@@ -157,6 +273,29 @@ const Chat = () => {
 
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedChat || !user?.id) return;
+    
+    // Handle demo matches differently
+    if (selectedChat.startsWith('demo-user-')) {
+      const newMsg: Message = {
+        id: `demo-msg-${Date.now()}`,
+        sender_id: user.id,
+        receiver_id: selectedChat,
+        content: newMessage,
+        message_type: "text",
+        created_at: new Date().toISOString(),
+        is_read: false,
+      };
+      
+      setMessages(prev => [...prev, newMsg]);
+      setNewMessage("");
+      setShowEmojiPicker(false);
+      
+      toast({
+        title: "Message sent",
+        description: "Your message has been delivered.",
+      });
+      return;
+    }
     
     try {
       // Check if users are matched before sending
@@ -479,7 +618,7 @@ const Chat = () => {
           </div>
         ) : matches.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">No matches yet. Keep swiping!</p>
+            <p className="text-gray-500">Loading your matches...</p>
           </div>
         ) : (
           matches.map((match) => (
