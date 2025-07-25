@@ -22,12 +22,8 @@ import {
   Info,
   Star,
   Sparkles,
-  Zap,
   Eye,
-  Crown,
-  Gem,
-  Infinity as InfinityIcon,
-  ArrowUp
+  Gem
 } from 'lucide-react';
 
 interface PrayerTimes {
@@ -122,6 +118,14 @@ const IslamicFeatures = () => {
     setQiblaDirection(bearing);
   };
 
+  const formatTime = (timeStr: string) => {
+    const [hours, minutes] = timeStr.split(':');
+    const hour = parseInt(hours);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour % 12 || 12;
+    return `${displayHour}:${minutes} ${ampm}`;
+  };
+
   const getNextPrayer = () => {
     if (!prayerTimes) return null;
     
@@ -129,12 +133,11 @@ const IslamicFeatures = () => {
     const currentTimeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
     
     const prayers = [
-      { name: 'Fajr', time: prayerTimes.fajr },
-      { name: 'Sunrise', time: prayerTimes.sunrise },
-      { name: 'Dhuhr', time: prayerTimes.dhuhr },
-      { name: 'Asr', time: prayerTimes.asr },
-      { name: 'Maghrib', time: prayerTimes.maghrib },
-      { name: 'Isha', time: prayerTimes.isha },
+      { name: 'Fajr', time: prayerTimes.fajr, icon: Sun },
+      { name: 'Dhuhr', time: prayerTimes.dhuhr, icon: Sun },
+      { name: 'Asr', time: prayerTimes.asr, icon: Sun },
+      { name: 'Maghrib', time: prayerTimes.maghrib, icon: Moon },
+      { name: 'Isha', time: prayerTimes.isha, icon: Moon },
     ];
     
     for (const prayer of prayers) {
@@ -143,7 +146,7 @@ const IslamicFeatures = () => {
       }
     }
     
-    return { name: 'Fajr', time: prayerTimes.fajr }; // Next day's Fajr
+    return { name: 'Fajr', time: prayerTimes.fajr, icon: Sun }; // Next day's Fajr
   };
 
   const nextPrayer = getNextPrayer();
@@ -208,748 +211,462 @@ const IslamicFeatures = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50 relative overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 pb-24">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
         <motion.div 
-          className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-emerald-200/30 to-emerald-400/30 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 180, 360],
-            x: [0, 50, 0],
-            y: [0, -30, 0]
-          }}
-          transition={{ duration: 20, repeat: 999999, ease: "linear" }}
-        />
-        <motion.div 
-          className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-amber-200/30 to-amber-400/30 rounded-full blur-3xl"
-          animate={{ 
-            scale: [1, 1.3, 1],
-            rotate: [360, 180, 0],
-            x: [0, -40, 0],
-            y: [0, 30, 0]
-          }}
-          transition={{ duration: 25, repeat: 999999, ease: "linear" }}
-        />
-        <motion.div 
-          className="absolute top-1/2 left-1/3 w-64 h-64 bg-gradient-to-r from-indigo-200/20 to-purple-300/20 rounded-full blur-2xl"
-          animate={{ 
-            scale: [1, 1.1, 1],
-            opacity: [0.3, 0.7, 0.3]
-          }}
-          transition={{ duration: 15, repeat: 999999 }}
-        />
-      </div>
-
-      <div className="container mx-auto px-4 py-8 pb-24 relative z-10">
-        {/* Hero Header with Islamic Pattern */}
-        <motion.div 
-          className="mb-12 text-center relative"
-          initial={{ opacity: 0, y: -50 }}
+          className="text-center mb-8"
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-amber-500/10 rounded-3xl -m-8"></div>
-          <motion.div
-            className="relative"
-            animate={{ rotate: [0, 1, -1, 0] }}
-            transition={{ duration: 4, repeat: 999999 }}
-          >
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl shadow-2xl mb-6 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
-              <Star className="w-10 h-10 text-white relative z-10" />
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
-                animate={{ x: [-100, 100] }}
-                transition={{ duration: 2, repeat: 999999, ease: "linear" }}
-              />
-            </div>
-          </motion.div>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-emerald-700 via-emerald-600 to-amber-600 bg-clip-text text-transparent mb-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl shadow-lg mb-4">
+            <Star className="w-8 h-8 text-white" />
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             Islamic Features
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-            Comprehensive tools and guidance for your Islamic lifestyle, marriage journey, and spiritual growth
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Essential tools for your Islamic lifestyle and spiritual journey
           </p>
-          <motion.div
-            className="flex items-center justify-center gap-2 mt-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-          >
-            <Sparkles className="w-4 h-4 text-emerald-500" />
-            <span className="text-sm font-medium text-emerald-600">Blessed & Verified</span>
-            <Sparkles className="w-4 h-4 text-emerald-500" />
-          </motion.div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          <Tabs defaultValue="prayers" className="space-y-8">
-            {/* Enhanced Tab Navigation */}
-            <div className="relative">
-              <TabsList className="grid w-full grid-cols-4 h-16 bg-white/80 backdrop-blur-xl border border-white/20 shadow-2xl rounded-2xl p-2">
-                <TabsTrigger 
-                  value="prayers" 
-                  className="h-12 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-emerald-500 data-[state=active]:to-emerald-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
-                >
-                  <Clock className="w-4 h-4 mr-2" />
-                  Prayer
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="deen" 
-                  className="h-12 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-amber-500 data-[state=active]:to-amber-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
-                >
-                  <Book className="w-4 h-4 mr-2" />
-                  Deen
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="safety" 
-                  className="h-12 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-red-500 data-[state=active]:to-red-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
-                >
-                  <Shield className="w-4 h-4 mr-2" />
-                  Safety
-                </TabsTrigger>
-                <TabsTrigger 
-                  value="guidance" 
-                  className="h-12 rounded-xl font-semibold data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-500 data-[state=active]:to-purple-600 data-[state=active]:text-white data-[state=active]:shadow-lg transition-all duration-300"
-                >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Guidance
-                </TabsTrigger>
-              </TabsList>
-            </div>
+        <Tabs defaultValue="prayers" className="space-y-6">
+          {/* Tab Navigation */}
+          <TabsList className="grid w-full grid-cols-4 h-12 bg-white/80 backdrop-blur-md border shadow-lg rounded-xl">
+            <TabsTrigger value="prayers" className="flex items-center gap-2 rounded-lg">
+              <Clock className="w-4 h-4" />
+              <span className="hidden sm:inline">Prayer</span>
+            </TabsTrigger>
+            <TabsTrigger value="deen" className="flex items-center gap-2 rounded-lg">
+              <Book className="w-4 h-4" />
+              <span className="hidden sm:inline">Deen</span>
+            </TabsTrigger>
+            <TabsTrigger value="safety" className="flex items-center gap-2 rounded-lg">
+              <Shield className="w-4 h-4" />
+              <span className="hidden sm:inline">Safety</span>
+            </TabsTrigger>
+            <TabsTrigger value="guidance" className="flex items-center gap-2 rounded-lg">
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">Guidance</span>
+            </TabsTrigger>
+          </TabsList>
 
-            {/* Prayer Tab Content */}
-            <TabsContent value="prayers" className="space-y-6">
-              <div className="grid lg:grid-cols-3 gap-6">
-                {/* Current Time Card - Enhanced */}
+          {/* Prayer Tab Content */}
+          <TabsContent value="prayers" className="space-y-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* Current Time */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="lg:col-span-2"
+              >
+                <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="flex items-center gap-3">
+                      <div className="p-2 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-lg">
+                        <Clock className="h-5 w-5 text-white" />
+                      </div>
+                      <span className="text-emerald-700">Current Time</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-center space-y-4">
+                      <div className="text-4xl md:text-5xl font-mono font-bold text-gray-900">
+                        {currentTime.toLocaleString('en-US', {
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: true
+                        })}
+                      </div>
+                      {islamicDate && (
+                        <div className="space-y-2 p-4 bg-emerald-50 rounded-xl">
+                          <div className="text-sm text-gray-600">
+                            {islamicDate.gregorian}
+                          </div>
+                          <div className="text-lg font-semibold text-emerald-700 flex items-center justify-center gap-2">
+                            <Moon className="w-4 h-4" />
+                            {islamicDate.hijri} AH
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              {/* Next Prayer */}
+              {nextPrayer && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  className="lg:col-span-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
                 >
-                  <Card className="bg-gradient-to-br from-white via-emerald-50 to-white border-emerald-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 group overflow-hidden relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-transparent to-amber-500/5"></div>
-                    <CardHeader className="relative">
-                      <CardTitle className="flex items-center gap-3 text-xl">
-                        <motion.div
-                          className="p-3 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-2xl shadow-lg"
-                          whileHover={{ scale: 1.1, rotate: 5 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                        >
-                          <Clock className="h-6 w-6 text-white" />
-                        </motion.div>
-                        <span className="bg-gradient-to-r from-emerald-700 to-emerald-600 bg-clip-text text-transparent font-bold">
-                          Current Time
-                        </span>
-                        <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
-                          transition={{ duration: 2, repeat: 999999 }}
-                        >
-                          <Sparkles className="w-5 h-5 text-emerald-500" />
-                        </motion.div>
+                  <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                    <CardHeader className="pb-4">
+                      <CardTitle className="flex items-center gap-3">
+                        <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg">
+                          <nextPrayer.icon className="h-5 w-5 text-white" />
+                        </div>
+                        <span className="text-amber-700">Next Prayer</span>
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="relative">
-                      <div className="text-center space-y-4">
-                        <motion.div 
-                          className="text-5xl font-mono font-bold text-gray-800 tracking-wider"
-                          animate={{ scale: [1, 1.02, 1] }}
-                          transition={{ duration: 1, repeat: 999999 }}
-                        >
-                          {currentTime.toLocaleTimeString()}
-                        </motion.div>
-                        <AnimatePresence>
-                          {islamicDate && (
-                            <motion.div 
-                              className="space-y-2 p-4 bg-white/60 rounded-2xl backdrop-blur-sm"
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -20 }}
-                            >
-                              <div className="text-sm text-gray-600 font-medium">
-                                {islamicDate.gregorian}
-                              </div>
-                              <div className="text-lg font-bold text-emerald-700 flex items-center justify-center gap-2">
-                                <Moon className="w-5 h-5" />
-                                {islamicDate.hijri} AH
-                                <Moon className="w-5 h-5" />
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                    <CardContent className="text-center">
+                      <div className="text-2xl font-bold text-amber-700 mb-2">
+                        {nextPrayer.name}
+                      </div>
+                      <div className="text-3xl font-mono font-bold text-gray-900 p-3 bg-amber-50 rounded-xl">
+                        {formatTime(nextPrayer.time)}
                       </div>
                     </CardContent>
                   </Card>
                 </motion.div>
+              )}
+            </div>
 
-                {/* Next Prayer Card - Enhanced */}
-                <AnimatePresence>
-                  {nextPrayer && (
-                    <motion.div
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: 50 }}
-                      transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                      <Card className="bg-gradient-to-br from-white via-amber-50 to-white border-amber-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 group relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10"></div>
-                        <CardHeader className="relative">
-                          <CardTitle className="flex items-center gap-3">
-                            <motion.div
-                              className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg"
-                              animate={{ rotate: [0, 10, -10, 0] }}
-                              transition={{ duration: 4, repeat: 999999 }}
-                            >
-                              <Moon className="h-6 w-6 text-white" />
-                            </motion.div>
-                            <span className="bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent font-bold">
-                              Next Prayer
-                            </span>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="relative text-center">
-                          <motion.div 
-                            className="text-2xl font-bold text-amber-700 mb-2"
-                            animate={{ scale: [1, 1.05, 1] }}
-                            transition={{ duration: 2, repeat: 999999 }}
-                          >
-                            {nextPrayer.name}
-                          </motion.div>
-                          <div className="text-3xl font-mono font-bold text-gray-800 p-3 bg-white/60 rounded-xl backdrop-blur-sm">
-                            {nextPrayer.time}
-                          </div>
-                          <motion.div
-                            className="mt-3 flex justify-center"
-                            animate={{ y: [0, -5, 0] }}
-                            transition={{ duration: 2, repeat: 999999 }}
-                          >
-                            <ArrowUp className="w-5 h-5 text-amber-500" />
-                          </motion.div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Prayer Times Grid - Enhanced */}
-              <AnimatePresence>
-                {prayerTimes && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
-                  >
-                    <Card className="bg-gradient-to-br from-white via-gray-50 to-white border-gray-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                      <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/5 via-purple-500/5 to-amber-500/5"></div>
-                      <CardHeader className="relative">
-                        <CardTitle className="flex items-center gap-3 text-xl">
-                          <motion.div
-                            className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg"
-                            whileHover={{ scale: 1.1, rotate: -5 }}
-                          >
-                            <Calendar className="h-6 w-6 text-white" />
-                          </motion.div>
-                          <span className="bg-gradient-to-r from-purple-700 to-purple-600 bg-clip-text text-transparent font-bold">
-                            Prayer Times
-                          </span>
-                          <motion.div
-                            animate={{ rotate: [0, 360] }}
-                            transition={{ duration: 10, repeat: 999999, ease: "linear" }}
-                          >
-                            <InfinityIcon className="w-5 h-5 text-purple-500" />
-                          </motion.div>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="relative">
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                          {[
-                            { name: 'Fajr', time: prayerTimes.fajr, icon: Sun, color: 'from-blue-500 to-blue-600' },
-                            { name: 'Sunrise', time: prayerTimes.sunrise, icon: Sun, color: 'from-yellow-500 to-orange-500' },
-                            { name: 'Dhuhr', time: prayerTimes.dhuhr, icon: Sun, color: 'from-orange-500 to-red-500' },
-                            { name: 'Asr', time: prayerTimes.asr, icon: Sun, color: 'from-amber-500 to-yellow-600' },
-                            { name: 'Maghrib', time: prayerTimes.maghrib, icon: Moon, color: 'from-purple-500 to-purple-600' },
-                            { name: 'Isha', time: prayerTimes.isha, icon: Moon, color: 'from-indigo-500 to-purple-600' }
-                          ].map((prayer, index) => (
-                            <motion.div
-                              key={prayer.name}
-                              initial={{ opacity: 0, scale: 0.8 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.5, delay: index * 0.1 }}
-                              whileHover={{ scale: 1.05, y: -5 }}
-                              className={`p-4 bg-gradient-to-br ${prayer.color} rounded-2xl text-white shadow-lg hover:shadow-xl transition-all duration-300 group cursor-pointer relative overflow-hidden`}
-                            >
-                              <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                              <div className="flex items-center justify-between relative z-10">
-                                <div>
-                                  <div className="font-bold text-lg">{prayer.name}</div>
-                                  <div className="font-mono text-sm opacity-90">{prayer.time}</div>
-                                </div>
-                                <motion.div
-                                  animate={{ rotate: [0, 10, -10, 0] }}
-                                  transition={{ duration: 3, repeat: 999999, delay: index * 0.2 }}
-                                >
-                                  <prayer.icon className="w-6 h-6" />
-                                </motion.div>
+            {/* Prayer Times Grid */}
+            {prayerTimes && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-3">
+                      <div className="p-2 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg">
+                        <Calendar className="h-5 w-5 text-white" />
+                      </div>
+                      <span className="text-purple-700">Prayer Times</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                      {[
+                        { name: 'Fajr', time: prayerTimes.fajr, icon: Sun, color: 'blue' },
+                        { name: 'Sunrise', time: prayerTimes.sunrise, icon: Sun, color: 'yellow' },
+                        { name: 'Dhuhr', time: prayerTimes.dhuhr, icon: Sun, color: 'orange' },
+                        { name: 'Asr', time: prayerTimes.asr, icon: Sun, color: 'amber' },
+                        { name: 'Maghrib', time: prayerTimes.maghrib, icon: Moon, color: 'purple' },
+                        { name: 'Isha', time: prayerTimes.isha, icon: Moon, color: 'indigo' }
+                      ].map((prayer) => (
+                        <div
+                          key={prayer.name}
+                          className={`p-4 bg-gradient-to-br from-${prayer.color}-500 to-${prayer.color}-600 rounded-xl text-white shadow-lg hover:shadow-xl transition-all duration-300`}
+                        >
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <div className="font-semibold text-lg">{prayer.name}</div>
+                              <div className="font-mono text-sm opacity-90">
+                                {formatTime(prayer.time)}
                               </div>
-                            </motion.div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
-              {/* Qibla Direction - Enhanced */}
-              <AnimatePresence>
-                {qiblaDirection !== null && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                  >
-                    <Card className="bg-gradient-to-br from-white via-green-50 to-white border-green-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10"></div>
-                      <CardHeader className="relative">
-                        <CardTitle className="flex items-center gap-3 text-xl">
-                          <motion.div
-                            className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-lg"
-                            animate={{ rotate: [0, 360] }}
-                            transition={{ duration: 20, repeat: 999999, ease: "linear" }}
-                          >
-                            <Compass className="h-6 w-6 text-white" />
-                          </motion.div>
-                          <span className="bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent font-bold">
-                            Qibla Direction
-                          </span>
-                          <motion.div
-                            animate={{ scale: [1, 1.3, 1] }}
-                            transition={{ duration: 2, repeat: 999999 }}
-                          >
-                            <Navigation className="w-5 h-5 text-green-500" />
-                          </motion.div>
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent className="relative text-center">
-                        <div className="flex justify-center mb-6">
-                          <div className="relative w-40 h-40">
-                            {/* Compass Background */}
-                            <motion.div 
-                              className="absolute inset-0 rounded-full border-4 border-gradient-to-r from-green-400 to-emerald-400 shadow-lg"
-                              animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 30, repeat: 999999, ease: "linear" }}
-                            >
-                              <div className="absolute inset-2 rounded-full bg-gradient-to-br from-white via-green-50 to-emerald-50 shadow-inner"></div>
-                            </motion.div>
-                            
-                            {/* Qibla Arrow */}
-                            <motion.div 
-                              className="absolute top-4 left-1/2 w-1 h-16 bg-gradient-to-t from-green-600 to-emerald-500 origin-bottom transform -translate-x-1/2 rounded-full shadow-lg"
-                              style={{ transform: `translateX(-50%) rotate(${qiblaDirection}deg)` }}
-                              animate={{ scale: [1, 1.1, 1] }}
-                              transition={{ duration: 2, repeat: 999999 }}
-                            />
-                            
-                            {/* Center Point */}
-                            <motion.div 
-                              className="absolute top-1/2 left-1/2 w-4 h-4 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg"
-                              animate={{ scale: [1, 1.2, 1] }}
-                              transition={{ duration: 1.5, repeat: 999999 }}
-                            />
-                            
-                            {/* Compass Directions */}
-                            <div className="absolute top-1 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-700">N</div>
-                            <div className="absolute right-1 top-1/2 transform -translate-y-1/2 text-xs font-bold text-green-700">E</div>
-                            <div className="absolute bottom-1 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-700">S</div>
-                            <div className="absolute left-1 top-1/2 transform -translate-y-1/2 text-xs font-bold text-green-700">W</div>
+                            </div>
+                            <prayer.icon className="w-6 h-6 opacity-80" />
                           </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+
+            {/* Qibla Direction */}
+            {qiblaDirection !== null && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              >
+                <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-3">
+                      <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg">
+                        <Compass className="h-5 w-5 text-white" />
+                      </div>
+                      <span className="text-green-700">Qibla Direction</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-center">
+                    <div className="flex justify-center mb-6">
+                      <div className="relative w-32 h-32">
+                        {/* Compass Circle */}
+                        <div className="absolute inset-0 rounded-full border-4 border-green-200 bg-gradient-to-br from-green-50 to-emerald-50 shadow-inner">
+                          {/* Cardinal Directions */}
+                          <div className="absolute top-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-700">N</div>
+                          <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-green-700">E</div>
+                          <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 text-xs font-bold text-green-700">S</div>
+                          <div className="absolute left-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-green-700">W</div>
                         </div>
                         
-                        <motion.div 
-                          className="text-2xl font-bold text-green-700 p-3 bg-white/60 rounded-xl backdrop-blur-sm inline-block"
-                          animate={{ scale: [1, 1.05, 1] }}
-                          transition={{ duration: 3, repeat: 999999 }}
-                        >
-                          {Math.round(qiblaDirection)}° from North
-                        </motion.div>
-                        <p className="text-sm text-gray-600 mt-2 italic">Point toward Mecca</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </TabsContent>
+                        {/* Qibla Arrow */}
+                        <div 
+                          className="absolute top-4 left-1/2 w-1 h-12 bg-gradient-to-t from-green-600 to-green-400 origin-bottom transform -translate-x-1/2 rounded-full shadow-lg"
+                          style={{ transform: `translateX(-50%) rotate(${qiblaDirection}deg)` }}
+                        />
+                        
+                        {/* Center Point */}
+                        <div className="absolute top-1/2 left-1/2 w-3 h-3 bg-green-600 rounded-full transform -translate-x-1/2 -translate-y-1/2 shadow-lg" />
+                      </div>
+                    </div>
+                    
+                    <div className="text-2xl font-bold text-green-700 mb-2">
+                      {Math.round(qiblaDirection)}°
+                    </div>
+                    <p className="text-sm text-gray-600">from North towards Mecca</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )}
+          </TabsContent>
 
-            {/* Deen Tab Content - Enhanced */}
-            <TabsContent value="deen" className="space-y-6">
-              {/* Daily Duas - Enhanced */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="bg-gradient-to-br from-white via-amber-50 to-white border-amber-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 via-orange-500/5 to-yellow-500/5"></div>
-                  <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <motion.div
-                        className="p-3 bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg"
-                        whileHover={{ scale: 1.1, rotate: 10 }}
-                      >
-                        <Book className="h-6 w-6 text-white" />
-                      </motion.div>
-                      <span className="bg-gradient-to-r from-amber-700 to-orange-600 bg-clip-text text-transparent font-bold">
-                        Daily Duas
-                      </span>
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }}
-                        transition={{ duration: 3, repeat: 999999 }}
-                      >
-                        <Star className="w-5 h-5 text-amber-500" />
-                      </motion.div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative space-y-6">
-                    {dailyDuas.map((dua, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.2 }}
-                        whileHover={{ scale: 1.02, x: 10 }}
-                        className="p-6 bg-gradient-to-r from-white via-amber-50 to-white rounded-2xl border border-amber-200/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="relative space-y-3">
-                          <div className="flex items-center gap-2">
-                            <motion.div
-                              animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 8, repeat: 999999, ease: "linear", delay: index }}
-                            >
-                              <Gem className="w-5 h-5 text-amber-500" />
-                            </motion.div>
-                            <h4 className="font-bold text-lg text-amber-700">{dua.title}</h4>
-                          </div>
-                          <div className="text-right text-2xl font-arabic leading-relaxed text-gray-800 p-4 bg-white/60 rounded-xl backdrop-blur-sm">
-                            {dua.arabic}
-                          </div>
-                          <div className="text-sm italic text-amber-600 font-medium bg-amber-50 p-3 rounded-lg">
-                            {dua.transliteration}
-                          </div>
-                          <div className="text-sm text-gray-700 leading-relaxed">
-                            {dua.translation}
-                          </div>
+          {/* Deen Tab Content */}
+          <TabsContent value="deen" className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-amber-500 to-orange-500 rounded-lg">
+                      <Book className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-amber-700">Daily Duas</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {dailyDuas.map((dua, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Gem className="w-4 h-4 text-amber-500" />
+                          <h4 className="font-semibold text-lg text-amber-700">{dua.title}</h4>
                         </div>
-                      </motion.div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Islamic Reminders - Enhanced */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Card className="bg-gradient-to-br from-white via-green-50 to-white border-green-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-emerald-500/5 to-teal-500/5"></div>
-                  <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <motion.div
-                        className="p-3 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl shadow-lg"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: 999999 }}
-                      >
-                        <Heart className="h-6 w-6 text-white" />
-                      </motion.div>
-                      <span className="bg-gradient-to-r from-green-700 to-emerald-600 bg-clip-text text-transparent font-bold">
-                        Daily Reminders
-                      </span>
-                      <motion.div
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 2, repeat: 999999 }}
-                      >
-                        <Sparkles className="w-5 h-5 text-green-500" />
-                      </motion.div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative space-y-4">
-                    {[
-                      "And it is He who created the heavens and earth in truth. And the day He says, 'Be,' and it is, His word is the truth. - Quran 6:73",
-                      "The believer is not one who eats his fill while his neighbor goes hungry. - Prophet Muhammad (PBUH)"
-                    ].map((reminder, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.2 }}
-                        whileHover={{ scale: 1.02, y: -5 }}
-                        className="p-6 bg-gradient-to-r from-white via-green-50 to-emerald-50 rounded-2xl border border-green-200/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="flex items-start gap-3 relative">
-                          <motion.div
-                            animate={{ rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 4, repeat: 999999, delay: index }}
-                          >
-                            <Eye className="w-6 h-6 text-green-500 flex-shrink-0 mt-1" />
-                          </motion.div>
-                          <p className="text-sm text-gray-700 leading-relaxed italic">{reminder}</p>
+                        <div className="text-right text-xl font-arabic leading-relaxed text-gray-800 p-4 bg-white/60 rounded-lg">
+                          {dua.arabic}
                         </div>
-                      </motion.div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-
-            {/* Safety Tab Content - Enhanced */}
-            <TabsContent value="safety" className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="bg-gradient-to-br from-white via-red-50 to-white border-red-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-pink-500/5 to-rose-500/5"></div>
-                  <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <motion.div
-                        className="p-3 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: 999999 }}
-                      >
-                        <Shield className="h-6 w-6 text-white" />
-                      </motion.div>
-                      <span className="bg-gradient-to-r from-red-700 to-red-600 bg-clip-text text-transparent font-bold">
-                        Safety Guidelines
-                      </span>
-                      <motion.div
-                        animate={{ rotate: [0, 5, -5, 0] }}
-                        transition={{ duration: 3, repeat: 999999 }}
-                      >
-                        <Zap className="w-5 h-5 text-red-500" />
-                      </motion.div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative grid gap-6">
-                    {safetyTips.map((tip, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        whileHover={{ scale: 1.02, x: 10 }}
-                        className="flex gap-4 p-6 bg-gradient-to-r from-white via-red-50 to-white rounded-2xl border border-red-200/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-pink-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <motion.div
-                          className="p-3 bg-gradient-to-br from-red-500 to-red-600 rounded-2xl shadow-lg flex-shrink-0"
-                          whileHover={{ scale: 1.1, rotate: 10 }}
-                        >
-                          <tip.icon className="h-6 w-6 text-white" />
-                        </motion.div>
-                        <div className="relative">
-                          <h4 className="font-bold text-lg text-red-700 mb-2">{tip.title}</h4>
-                          <p className="text-sm text-gray-700 leading-relaxed">{tip.description}</p>
+                        <div className="text-sm italic text-amber-600 font-medium bg-amber-100 p-3 rounded-lg">
+                          {dua.transliteration}
                         </div>
-                      </motion.div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              {/* Emergency Contacts - Enhanced */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Card className="bg-gradient-to-br from-white via-orange-50 to-white border-orange-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 via-red-500/5 to-pink-500/5"></div>
-                  <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <motion.div
-                        className="p-3 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl shadow-lg"
-                        animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0] }}
-                        transition={{ duration: 3, repeat: 999999 }}
-                      >
-                        <Phone className="h-6 w-6 text-white" />
-                      </motion.div>
-                      <span className="bg-gradient-to-r from-orange-700 to-red-600 bg-clip-text text-transparent font-bold">
-                        Emergency Resources
-                      </span>
-                      <motion.div
-                        animate={{ scale: [1, 1.3, 1] }}
-                        transition={{ duration: 2, repeat: 999999 }}
-                      >
-                        <AlertTriangle className="w-5 h-5 text-orange-500" />
-                      </motion.div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative space-y-4">
-                    {[
-                      { label: "Emergency Services", contact: "911", variant: "destructive" as const },
-                      { label: "Crisis Text Line", contact: "Text HOME to 741741", variant: "secondary" as const },
-                      { label: "National Domestic Violence Hotline", contact: "1-800-799-7233", variant: "secondary" as const }
-                    ].map((item, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        className="flex justify-between items-center p-4 bg-gradient-to-r from-white via-orange-50 to-white rounded-2xl border border-orange-200/50 shadow-lg hover:shadow-xl transition-all duration-300 group"
-                      >
-                        <span className="font-semibold text-gray-800">{item.label}</span>
-                        <Badge variant={item.variant} className="text-sm font-mono">
-                          {item.contact}
-                        </Badge>
-                      </motion.div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-
-            {/* Guidance Tab Content - Enhanced */}
-            <TabsContent value="guidance" className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
-              >
-                <Card className="bg-gradient-to-br from-white via-purple-50 to-white border-purple-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 via-indigo-500/5 to-blue-500/5"></div>
-                  <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <motion.div
-                        className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg"
-                        whileHover={{ scale: 1.1, rotate: -10 }}
-                      >
-                        <BookOpen className="h-6 w-6 text-white" />
-                      </motion.div>
-                      <span className="bg-gradient-to-r from-purple-700 to-purple-600 bg-clip-text text-transparent font-bold">
-                        Islamic Marriage Guidance
-                      </span>
-                      <motion.div
-                        animate={{ scale: [1, 1.2, 1] }}
-                        transition={{ duration: 2, repeat: 999999 }}
-                      >
-                        <Crown className="w-5 h-5 text-purple-500" />
-                      </motion.div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative space-y-6">
-                    {islamicGuidance.map((guide, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.2 }}
-                        whileHover={{ scale: 1.02, x: 10 }}
-                        className="p-6 bg-gradient-to-r from-white via-purple-50 to-white rounded-2xl border border-purple-200/50 shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="relative space-y-3">
-                          <div className="flex items-center gap-2">
-                            <motion.div
-                              animate={{ rotate: [0, 360] }}
-                              transition={{ duration: 10, repeat: 999999, ease: "linear", delay: index }}
-                            >
-                              <Star className="w-5 h-5 text-purple-500" />
-                            </motion.div>
-                            <h4 className="font-bold text-lg text-purple-700">{guide.title}</h4>
-                          </div>
-                          <p className="text-sm text-gray-700 leading-relaxed">
-                            {guide.content}
-                          </p>
+                        <div className="text-sm text-gray-700 leading-relaxed">
+                          {dua.translation}
                         </div>
-                      </motion.div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
 
-              {/* Helpful Resources - Enhanced */}
-              <motion.div
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              >
-                <Card className="bg-gradient-to-br from-white via-blue-50 to-white border-blue-200/50 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5"></div>
-                  <CardHeader className="relative">
-                    <CardTitle className="flex items-center gap-3 text-xl">
-                      <motion.div
-                        className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: 999999 }}
+            {/* Islamic Reminders */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg">
+                      <Heart className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-green-700">Daily Reminders</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {[
+                    "And it is He who created the heavens and earth in truth. And the day He says, 'Be,' and it is, His word is the truth. - Quran 6:73",
+                    "The believer is not one who eats his fill while his neighbor goes hungry. - Prophet Muhammad (PBUH)"
+                  ].map((reminder, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200"
+                    >
+                      <div className="flex items-start gap-3">
+                        <Eye className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        <p className="text-sm text-gray-700 leading-relaxed italic">{reminder}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+
+          {/* Safety Tab Content */}
+          <TabsContent value="safety" className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
+                      <Shield className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-red-700">Safety Guidelines</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {safetyTips.map((tip, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="flex gap-4 p-4 bg-gradient-to-r from-red-50 to-pink-50 rounded-xl border border-red-200"
+                    >
+                      <div className="p-2 bg-gradient-to-br from-red-500 to-red-600 rounded-lg flex-shrink-0">
+                        <tip.icon className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <h4 className="font-semibold text-lg text-red-700 mb-1">{tip.title}</h4>
+                        <p className="text-sm text-gray-700 leading-relaxed">{tip.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Emergency Contacts */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg">
+                      <Phone className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-orange-700">Emergency Resources</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {[
+                    { label: "Emergency Services", contact: "911", variant: "destructive" as const },
+                    { label: "Crisis Text Line", contact: "Text HOME to 741741", variant: "secondary" as const },
+                    { label: "National Domestic Violence Hotline", contact: "1-800-799-7233", variant: "secondary" as const }
+                  ].map((item, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="flex justify-between items-center p-3 bg-gradient-to-r from-orange-50 to-red-50 rounded-lg border border-orange-200"
+                    >
+                      <span className="font-medium text-gray-800">{item.label}</span>
+                      <Badge variant={item.variant} className="text-xs font-mono">
+                        {item.contact}
+                      </Badge>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+
+          {/* Guidance Tab Content */}
+          <TabsContent value="guidance" className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg">
+                      <BookOpen className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-purple-700">Islamic Marriage Guidance</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  {islamicGuidance.map((guide, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="p-6 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-200"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Star className="w-4 h-4 text-purple-500" />
+                          <h4 className="font-semibold text-lg text-purple-700">{guide.title}</h4>
+                        </div>
+                        <p className="text-sm text-gray-700 leading-relaxed">
+                          {guide.content}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Helpful Resources */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Card className="bg-white/80 backdrop-blur-md border shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-blue-500 to-indigo-500 rounded-lg">
+                      <Info className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-blue-700">Helpful Resources</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  {[
+                    { icon: MapPin, label: "Find Nearby Mosques", color: "green" },
+                    { icon: BookOpen, label: "Islamic Library", color: "blue" },
+                    { icon: Users, label: "Community Groups", color: "purple" },
+                    { icon: Phone, label: "Islamic Counseling", color: "orange" }
+                  ].map((resource, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                    >
+                      <Button 
+                        variant="outline" 
+                        className="w-full justify-start h-12 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 hover:shadow-md transition-all duration-300"
                       >
-                        <Info className="h-6 w-6 text-white" />
-                      </motion.div>
-                      <span className="bg-gradient-to-r from-blue-700 to-blue-600 bg-clip-text text-transparent font-bold">
-                        Helpful Resources
-                      </span>
-                      <motion.div
-                        animate={{ y: [0, -5, 0] }}
-                        transition={{ duration: 2, repeat: 999999 }}
-                      >
-                        <Sparkles className="w-5 h-5 text-blue-500" />
-                      </motion.div>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="relative space-y-4">
-                    {[
-                      { icon: MapPin, label: "Find Nearby Mosques", color: "from-green-500 to-emerald-500" },
-                      { icon: BookOpen, label: "Islamic Library", color: "from-blue-500 to-indigo-500" },
-                      { icon: Users, label: "Community Groups", color: "from-purple-500 to-pink-500" },
-                      { icon: Phone, label: "Islamic Counseling", color: "from-orange-500 to-red-500" }
-                    ].map((resource, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Button 
-                          variant="outline" 
-                          className="w-full justify-start h-16 bg-gradient-to-r from-white via-blue-50 to-white border-blue-200/50 hover:shadow-lg transition-all duration-300 group relative overflow-hidden"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                          <motion.div
-                            className={`p-2 bg-gradient-to-br ${resource.color} rounded-xl shadow-lg mr-3 relative`}
-                            whileHover={{ scale: 1.1, rotate: 5 }}
-                          >
-                            <resource.icon className="h-5 w-5 text-white" />
-                          </motion.div>
-                          <span className="font-semibold text-gray-800 relative">{resource.label}</span>
-                          <motion.div
-                            className="ml-auto relative"
-                            animate={{ x: [0, 5, 0] }}
-                            transition={{ duration: 2, repeat: 999999 }}
-                          >
-                            <ArrowUp className="h-4 w-4 text-blue-500 rotate-45" />
-                          </motion.div>
-                        </Button>
-                      </motion.div>
-                    ))}
-                  </CardContent>
-                </Card>
-              </motion.div>
-            </TabsContent>
-          </Tabs>
-        </motion.div>
+                        <div className={`p-2 bg-gradient-to-br from-${resource.color}-500 to-${resource.color}-600 rounded-lg mr-3`}>
+                          <resource.icon className="h-4 w-4 text-white" />
+                        </div>
+                        <span className="font-medium text-gray-800">{resource.label}</span>
+                      </Button>
+                    </motion.div>
+                  ))}
+                </CardContent>
+              </Card>
+            </motion.div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
