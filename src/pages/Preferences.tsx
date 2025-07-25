@@ -111,9 +111,9 @@ const Preferences = () => {
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       setUserProfile(data);
     } catch (error) {
       console.error('Error fetching user profile:', error);
@@ -128,25 +128,43 @@ const Preferences = () => {
         .from('user_preferences')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
-      if (error && error.code !== 'PGRST116') throw error;
+      if (error) throw error;
       
       if (data) {
+        // Parse the deal_breakers JSON properly
+        const dealBreakers = data.deal_breakers as any || {};
+        
         setPreferences({
           age_range_min: data.age_range_min || 22,
           age_range_max: data.age_range_max || 35,
           max_distance_km: data.max_distance_km || 50,
           looking_for: data.looking_for || "marriage",
           show_me: data.show_me || "opposite",
-          deal_breakers: (typeof data.deal_breakers === 'object' && data.deal_breakers !== null) ? data.deal_breakers as any : preferences.deal_breakers,
-          religion_preferences: (data.deal_breakers as any)?.religion_preferences || preferences.religion_preferences,
-          lifestyle_preferences: (data.deal_breakers as any)?.lifestyle_preferences || preferences.lifestyle_preferences,
-          family_preferences: (data.deal_breakers as any)?.family_preferences || preferences.family_preferences,
+          deal_breakers: {
+            smoking: dealBreakers.smoking || false,
+            drinking: dealBreakers.drinking || false,
+            has_children: dealBreakers.has_children || false,
+            previous_marriage: dealBreakers.previous_marriage || false,
+            different_religion_level: dealBreakers.different_religion_level || false,
+            different_madhab: dealBreakers.different_madhab || false,
+            no_hijab: dealBreakers.no_hijab || false,
+            non_practicing: dealBreakers.non_practicing || false,
+            different_prayer_frequency: dealBreakers.different_prayer_frequency || false,
+          },
+          religion_preferences: dealBreakers.religion_preferences || preferences.religion_preferences,
+          lifestyle_preferences: dealBreakers.lifestyle_preferences || preferences.lifestyle_preferences,
+          family_preferences: dealBreakers.family_preferences || preferences.family_preferences,
         });
       }
     } catch (error) {
       console.error('Error fetching preferences:', error);
+      toast({
+        title: "Error loading preferences",
+        description: "Failed to load your saved preferences. Using defaults.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -155,34 +173,51 @@ const Preferences = () => {
     
     setLoading(true);
     try {
+      // Prepare the data structure for saving
+      const preferencesData = {
+        user_id: user.id,
+        age_range_min: preferences.age_range_min,
+        age_range_max: preferences.age_range_max,
+        max_distance_km: preferences.max_distance_km,
+        looking_for: preferences.looking_for,
+        show_me: preferences.show_me,
+        deal_breakers: {
+          // Basic deal breakers
+          smoking: preferences.deal_breakers.smoking,
+          drinking: preferences.deal_breakers.drinking,
+          has_children: preferences.deal_breakers.has_children,
+          previous_marriage: preferences.deal_breakers.previous_marriage,
+          different_religion_level: preferences.deal_breakers.different_religion_level,
+          different_madhab: preferences.deal_breakers.different_madhab,
+          no_hijab: preferences.deal_breakers.no_hijab,
+          non_practicing: preferences.deal_breakers.non_practicing,
+          different_prayer_frequency: preferences.deal_breakers.different_prayer_frequency,
+          
+          // Extended preferences stored within deal_breakers JSON
+          religion_preferences: preferences.religion_preferences,
+          lifestyle_preferences: preferences.lifestyle_preferences,
+          family_preferences: preferences.family_preferences,
+        },
+        updated_at: new Date().toISOString(),
+      };
+
       const { error } = await supabase
         .from('user_preferences')
-        .upsert({
-          user_id: user.id,
-          age_range_min: preferences.age_range_min,
-          age_range_max: preferences.age_range_max,
-          max_distance_km: preferences.max_distance_km,
-          looking_for: preferences.looking_for,
-          show_me: preferences.show_me,
-          deal_breakers: {
-            ...preferences.deal_breakers,
-            religion_preferences: preferences.religion_preferences,
-            lifestyle_preferences: preferences.lifestyle_preferences,
-            family_preferences: preferences.family_preferences,
-          },
+        .upsert(preferencesData, {
+          onConflict: 'user_id'
         });
 
       if (error) throw error;
       
       toast({
-        title: "Preferences saved",
-        description: "Your preferences have been successfully updated.",
+        title: "Preferences saved successfully! ✅",
+        description: "Your matching preferences have been updated and will be used to find compatible matches.",
       });
     } catch (error) {
       console.error('Error saving preferences:', error);
       toast({
-        title: "Error",
-        description: "Failed to save preferences. Please try again.",
+        title: "Failed to save preferences",
+        description: "There was an error saving your preferences. Please try again.",
         variant: "destructive",
       });
     } finally {
