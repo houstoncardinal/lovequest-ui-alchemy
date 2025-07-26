@@ -33,7 +33,7 @@ import PremiumFeatures from "./pages/PremiumFeatures";
 import AdvancedSearch from "./pages/AdvancedSearch";
 import Verification from "./pages/Verification";
 import FamilyFeatures from "./pages/FamilyFeatures";
-import MatchInsights from "./pages/MatchInsights";
+import MatchInsightsWrapper from "./pages/MatchInsightsWrapper";
 import EnhancedMatching from "./pages/EnhancedMatching";
 import AdminDashboard from "./pages/AdminDashboard";
 import Messages from "./pages/Messages";
@@ -82,7 +82,7 @@ const AppWithNavigation = () => {
           <Route path="/advanced-search" element={<ProtectedRoute><AdvancedSearch /></ProtectedRoute>} />
           <Route path="/verification" element={<ProtectedRoute><Verification /></ProtectedRoute>} />
           <Route path="/family-features" element={<ProtectedRoute><FamilyFeatures /></ProtectedRoute>} />
-          <Route path="/match-insights/:id" element={<ProtectedRoute><MatchInsights matchId="" onBack={() => {}} /></ProtectedRoute>} />
+          <Route path="/match-insights/:id" element={<ProtectedRoute><MatchInsightsWrapper /></ProtectedRoute>} />
           <Route path="/enhanced-matching" element={<ProtectedRoute><EnhancedMatching /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
