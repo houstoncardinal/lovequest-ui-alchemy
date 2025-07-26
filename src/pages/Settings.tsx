@@ -1,16 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, Bell, Shield, User, Globe, Moon, Download, Trash2, LogOut, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/components/Logo";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Settings = () => {
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [userSettings, setUserSettings] = useState<any>(null);
+  
   const [notifications, setNotifications] = useState({
     newMatches: true,
     messages: true,
@@ -21,7 +33,7 @@ const Settings = () => {
   });
 
   const [privacy, setPrivacy] = useState({
-    profileVisibility: "all",
+    profileVisibility: "everyone",
     showOnlineStatus: true,
     showLastSeen: false,
     allowMessages: "matched",
@@ -36,15 +48,153 @@ const Settings = () => {
     hapticFeedback: true,
   });
 
-  const handleLogout = () => {
-    // Handle logout logic
-    navigate("/welcome");
+  useEffect(() => {
+    fetchUserData();
+  }, [user]);
+
+  const fetchUserData = async () => {
+    if (!user) return;
+    
+    try {
+      // Fetch user profile
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (profileError) throw profileError;
+      setUserProfile(profileData);
+
+      // Fetch user settings
+      const { data: settingsData, error: settingsError } = await supabase
+        .from('user_settings')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (settingsError && settingsError.code !== 'PGRST116') throw settingsError;
+      
+      if (settingsData) {
+        setUserSettings(settingsData);
+        setPrivacy({
+          profileVisibility: settingsData.profile_visibility || "everyone",
+          showOnlineStatus: settingsData.show_active_status || true,
+          showLastSeen: settingsData.show_distance || false,
+          allowMessages: "matched", // Default since this isn't in schema
+          locationSharing: "approximate", // Default since this isn't in schema
+        });
+        setAppSettings(prev => ({
+          ...prev,
+          soundEffects: settingsData.sound_enabled || true,
+          hapticFeedback: settingsData.vibration_enabled || true,
+        }));
+      }
+
+      // Fetch notification preferences
+      const { data: notificationData, error: notificationError } = await supabase
+        .from('notification_preferences')
+        .select('*')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      if (notificationError && notificationError.code !== 'PGRST116') throw notificationError;
+      
+      if (notificationData) {
+        setNotifications({
+          newMatches: notificationData.new_matches || true,
+          messages: notificationData.new_messages || true,
+          likes: notificationData.super_likes || true,
+          events: false, // Not in schema
+          safety: true, // Default
+          marketing: notificationData.marketing_emails || false,
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load settings.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const saveSettings = async () => {
+    if (!user) return;
+    
+    setLoading(true);
+    try {
+      // Save user settings
+      const { error: settingsError } = await supabase
+        .from('user_settings')
+        .upsert({
+          user_id: user.id,
+          profile_visibility: privacy.profileVisibility,
+          show_active_status: privacy.showOnlineStatus,
+          show_distance: privacy.showLastSeen,
+          sound_enabled: appSettings.soundEffects,
+          vibration_enabled: appSettings.hapticFeedback,
+          updated_at: new Date().toISOString()
+        });
+
+      if (settingsError) throw settingsError;
+
+      // Save notification preferences
+      const { error: notificationError } = await supabase
+        .from('notification_preferences')
+        .upsert({
+          user_id: user.id,
+          new_matches: notifications.newMatches,
+          new_messages: notifications.messages,
+          super_likes: notifications.likes,
+          marketing_emails: notifications.marketing,
+          updated_at: new Date().toISOString()
+        });
+
+      if (notificationError) throw notificationError;
+
+      toast({
+        title: "Settings saved",
+        description: "Your settings have been updated successfully.",
+      });
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save settings. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Signed out",
+        description: "You've been signed out successfully.",
+      });
+      navigate("/welcome");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to sign out. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDeleteAccount = () => {
-    // Handle account deletion logic
     if (confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
-      navigate("/welcome");
+      // TODO: Implement account deletion logic
+      toast({
+        title: "Account deletion",
+        description: "Account deletion feature will be implemented soon.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -86,36 +236,37 @@ const Settings = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">Email</p>
-                <p className="text-sm text-gray-500">user@example.com</p>
+                <p className="text-sm text-gray-500">{user?.email || "No email provided"}</p>
               </div>
-              <Button variant="outline" size="sm">Change</Button>
+              <Button variant="outline" size="sm" disabled>
+                Change
+              </Button>
             </div>
             
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-gray-900">Password</p>
-                <p className="text-sm text-gray-500">
-                  {showPassword ? "••••••••" : "••••••••"}
-                </p>
+                <p className="text-sm text-gray-500">••••••••</p>
               </div>
-              <div className="flex items-center gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </Button>
-                <Button variant="outline" size="sm">Change</Button>
-              </div>
+              <Button variant="outline" size="sm" disabled>
+                Change
+              </Button>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Phone Number</p>
-                <p className="text-sm text-gray-500">+1 (555) 123-4567</p>
+                <p className="font-medium text-gray-900">Profile Name</p>
+                <p className="text-sm text-gray-500">
+                  {userProfile?.display_name || userProfile?.first_name || "Not set"}
+                </p>
               </div>
-              <Button variant="outline" size="sm">Change</Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => navigate('/edit-profile')}
+              >
+                Edit
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -151,9 +302,11 @@ const Settings = () => {
                 </div>
                 <Switch
                   checked={value}
-                  onCheckedChange={(checked) =>
-                    setNotifications(prev => ({ ...prev, [key]: checked }))
-                  }
+                  onCheckedChange={(checked) => {
+                    setNotifications(prev => ({ ...prev, [key]: checked }));
+                    // Auto-save settings
+                    setTimeout(saveSettings, 500);
+                  }}
                 />
               </div>
             ))}
@@ -179,15 +332,22 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Profile Visibility</p>
                 <p className="text-sm text-gray-500">Who can see your profile</p>
               </div>
-              <select
-                value={privacy.profileVisibility}
-                onChange={(e) => setPrivacy(prev => ({ ...prev, profileVisibility: e.target.value }))}
-                className="text-sm border border-gray-200 rounded-md px-3 py-1"
+              <Select 
+                value={privacy.profileVisibility} 
+                onValueChange={(value) => {
+                  setPrivacy(prev => ({ ...prev, profileVisibility: value }));
+                  setTimeout(saveSettings, 500);
+                }}
               >
-                <option value="all">Everyone</option>
-                <option value="matched">Matched Only</option>
-                <option value="friends">Friends Only</option>
-              </select>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="everyone">Everyone</SelectItem>
+                  <SelectItem value="matched_only">Matched Only</SelectItem>
+                  <SelectItem value="premium_only">Premium Only</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center justify-between">
@@ -197,9 +357,10 @@ const Settings = () => {
               </div>
               <Switch
                 checked={privacy.showOnlineStatus}
-                onCheckedChange={(checked) =>
-                  setPrivacy(prev => ({ ...prev, showOnlineStatus: checked }))
-                }
+                onCheckedChange={(checked) => {
+                  setPrivacy(prev => ({ ...prev, showOnlineStatus: checked }));
+                  setTimeout(saveSettings, 500);
+                }}
               />
             </div>
 
@@ -208,15 +369,22 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Location Sharing</p>
                 <p className="text-sm text-gray-500">How precise your location is shared</p>
               </div>
-              <select
-                value={privacy.locationSharing}
-                onChange={(e) => setPrivacy(prev => ({ ...prev, locationSharing: e.target.value }))}
-                className="text-sm border border-gray-200 rounded-md px-3 py-1"
+              <Select 
+                value={privacy.locationSharing} 
+                onValueChange={(value) => {
+                  setPrivacy(prev => ({ ...prev, locationSharing: value }));
+                  setTimeout(saveSettings, 500);
+                }}
               >
-                <option value="approximate">Approximate</option>
-                <option value="city">City Only</option>
-                <option value="none">Don't Share</option>
-              </select>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="approximate">Approximate</SelectItem>
+                  <SelectItem value="city">City Only</SelectItem>
+                  <SelectItem value="none">Don't Share</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </CardContent>
         </Card>
@@ -242,9 +410,14 @@ const Settings = () => {
               </div>
               <Switch
                 checked={appSettings.darkMode}
-                onCheckedChange={(checked) =>
-                  setAppSettings(prev => ({ ...prev, darkMode: checked }))
-                }
+                onCheckedChange={(checked) => {
+                  setAppSettings(prev => ({ ...prev, darkMode: checked }));
+                  // TODO: Implement theme switching
+                  toast({
+                    title: "Theme preference saved",
+                    description: "Dark mode will be implemented soon.",
+                  });
+                }}
               />
             </div>
 
@@ -253,16 +426,26 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Language</p>
                 <p className="text-sm text-gray-500">App language</p>
               </div>
-              <select
-                value={appSettings.language}
-                onChange={(e) => setAppSettings(prev => ({ ...prev, language: e.target.value }))}
-                className="text-sm border border-gray-200 rounded-md px-3 py-1"
+              <Select 
+                value={appSettings.language} 
+                onValueChange={(value) => {
+                  setAppSettings(prev => ({ ...prev, language: value }));
+                  toast({
+                    title: "Language preference saved",
+                    description: "Multi-language support will be implemented soon.",
+                  });
+                }}
               >
-                <option value="English">English</option>
-                <option value="Arabic">العربية</option>
-                <option value="Urdu">اردو</option>
-                <option value="French">Français</option>
-              </select>
+                <SelectTrigger className="w-32">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="English">English</SelectItem>
+                  <SelectItem value="Arabic">العربية</SelectItem>
+                  <SelectItem value="Urdu">اردو</SelectItem>
+                  <SelectItem value="French">Français</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center justify-between">
@@ -272,9 +455,10 @@ const Settings = () => {
               </div>
               <Switch
                 checked={appSettings.soundEffects}
-                onCheckedChange={(checked) =>
-                  setAppSettings(prev => ({ ...prev, soundEffects: checked }))
-                }
+                onCheckedChange={(checked) => {
+                  setAppSettings(prev => ({ ...prev, soundEffects: checked }));
+                  setTimeout(saveSettings, 500);
+                }}
               />
             </div>
 
@@ -285,9 +469,10 @@ const Settings = () => {
               </div>
               <Switch
                 checked={appSettings.hapticFeedback}
-                onCheckedChange={(checked) =>
-                  setAppSettings(prev => ({ ...prev, hapticFeedback: checked }))
-                }
+                onCheckedChange={(checked) => {
+                  setAppSettings(prev => ({ ...prev, hapticFeedback: checked }));
+                  setTimeout(saveSettings, 500);
+                }}
               />
             </div>
           </CardContent>
@@ -300,12 +485,27 @@ const Settings = () => {
             <CardDescription>Manage your data and privacy</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Button variant="outline" className="w-full justify-start" size="sm">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start" 
+              size="sm"
+              onClick={() => {
+                toast({
+                  title: "Data export",
+                  description: "Data export feature will be implemented soon.",
+                });
+              }}
+            >
               <Download className="h-4 w-4 mr-2" />
               Export My Data
             </Button>
             
-            <Button variant="outline" className="w-full justify-start" size="sm">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start text-red-600 hover:text-red-700" 
+              size="sm"
+              onClick={handleDeleteAccount}
+            >
               <Trash2 className="h-4 w-4 mr-2" />
               Delete Account
             </Button>
@@ -322,6 +522,19 @@ const Settings = () => {
             >
               <LogOut className="h-4 w-4 mr-2" />
               Log Out
+            </Button>
+          </CardContent>
+        </Card>
+
+        {/* Save Settings Button */}
+        <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
+          <CardContent className="pt-6">
+            <Button 
+              onClick={saveSettings}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white"
+            >
+              {loading ? "Saving..." : "Save All Settings"}
             </Button>
           </CardContent>
         </Card>
