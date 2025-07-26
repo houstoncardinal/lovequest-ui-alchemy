@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal } from "lucide-react";
+import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Hash } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -19,6 +19,8 @@ interface PostCardProps {
     content: string;
     image_url?: string;
     location?: string;
+    hashtags?: string[];
+    mood?: string;
     is_trending: boolean;
     likes_count: number;
     comments_count: number;
@@ -44,6 +46,18 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
   const [likesCount, setLikesCount] = useState(post.likes_count);
   const [showHearts, setShowHearts] = useState(false);
 
+  // Predefined moods with emojis (same as in CreatePostModal)
+  const moods = [
+    { id: "happy", emoji: "😊", label: "Happy" },
+    { id: "grateful", emoji: "🙏", label: "Grateful" },
+    { id: "blessed", emoji: "✨", label: "Blessed" },
+    { id: "excited", emoji: "🎉", label: "Excited" },
+    { id: "peaceful", emoji: "☮️", label: "Peaceful" },
+    { id: "thoughtful", emoji: "🤔", label: "Thoughtful" },
+    { id: "inspired", emoji: "💡", label: "Inspired" },
+    { id: "hopeful", emoji: "🌟", label: "Hopeful" },
+  ];
+
   const handleLike = () => {
     const newLikedState = !isLiked;
     setIsLiked(newLikedState);
@@ -62,6 +76,8 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
     'Unknown User';
 
   const initials = post.profiles?.first_name?.[0] + (post.profiles?.last_name?.[0] || '');
+
+  const selectedMood = post.mood ? moods.find(mood => mood.id === post.mood) : null;
 
   return (
     <motion.div
@@ -94,6 +110,12 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
                   <h3 className="font-semibold text-foreground text-sm truncate hover:text-primary transition-colors">
                     {displayName}
                   </h3>
+                  {selectedMood && (
+                    <Badge variant="outline" className="bg-background/50 border-border/30 text-xs">
+                      <span className="mr-1">{selectedMood.emoji}</span>
+                      {selectedMood.label}
+                    </Badge>
+                  )}
                   {post.is_trending && (
                     <Badge variant="secondary" className="bg-gradient-primary/10 text-primary border-primary/20 text-xs shadow-sm">
                       ✨ Trending
@@ -128,6 +150,22 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
           <p className="text-foreground leading-relaxed whitespace-pre-wrap text-sm line-clamp-3 hover:line-clamp-none transition-all duration-300 cursor-pointer">
             {post.content}
           </p>
+          
+          {/* Hashtags */}
+          {post.hashtags && post.hashtags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-3">
+              {post.hashtags.map((tag, index) => (
+                <Badge
+                  key={index}
+                  variant="outline"
+                  className="bg-primary/5 border-primary/20 text-primary hover:bg-primary/10 transition-colors cursor-pointer text-xs"
+                >
+                  <Hash className="w-2.5 h-2.5 mr-0.5" />
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Post Image */}

@@ -17,6 +17,8 @@ interface Post {
   content: string;
   image_url?: string;
   location?: string;
+  hashtags?: string[];
+  mood?: string;
   is_trending: boolean;
   likes_count: number;
   comments_count: number;

@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Upload, Image, MapPin, X } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Upload, Image, MapPin, X, Hash, Smile } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -17,10 +18,25 @@ interface CreatePostModalProps {
 const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalProps) => {
   const [content, setContent] = useState("");
   const [location, setLocation] = useState("");
+  const [hashtags, setHashtags] = useState<string[]>([]);
+  const [hashtagInput, setHashtagInput] = useState("");
+  const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [image, setImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const { toast } = useToast();
+
+  // Predefined moods with emojis
+  const moods = [
+    { id: "happy", emoji: "😊", label: "Happy" },
+    { id: "grateful", emoji: "🙏", label: "Grateful" },
+    { id: "blessed", emoji: "✨", label: "Blessed" },
+    { id: "excited", emoji: "🎉", label: "Excited" },
+    { id: "peaceful", emoji: "☮️", label: "Peaceful" },
+    { id: "thoughtful", emoji: "🤔", label: "Thoughtful" },
+    { id: "inspired", emoji: "💡", label: "Inspired" },
+    { id: "hopeful", emoji: "🌟", label: "Hopeful" },
+  ];
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,6 +62,21 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
   const removeImage = () => {
     setImage(null);
     setImagePreview(null);
+  };
+
+  const addHashtag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      const tag = hashtagInput.trim().replace('#', '');
+      if (tag && !hashtags.includes(tag) && hashtags.length < 10) {
+        setHashtags([...hashtags, tag]);
+        setHashtagInput('');
+      }
+    }
+  };
+
+  const removeHashtag = (tagToRemove: string) => {
+    setHashtags(hashtags.filter(tag => tag !== tagToRemove));
   };
 
   const uploadImage = async (file: File) => {
@@ -95,6 +126,8 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
           content: content.trim(),
           location: location.trim() || null,
           image_url: imageUrl,
+          hashtags: hashtags,
+          mood: selectedMood,
           user_id: user.id,
         });
 
@@ -107,6 +140,9 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
 
       setContent("");
       setLocation("");
+      setHashtags([]);
+      setHashtagInput("");
+      setSelectedMood(null);
       setImage(null);
       setImagePreview(null);
       onOpenChange(false);
@@ -141,6 +177,7 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
 
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
           <div className="flex-1 overflow-y-auto space-y-6 pt-8 px-4 sm:px-0 pb-4">
+            {/* Content Input */}
             <div className="space-y-3">
               <Label htmlFor="content" className="text-sm font-medium text-foreground">
                 What's on your mind?
@@ -158,6 +195,69 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
               </div>
             </div>
 
+            {/* Mood Selection */}
+            <div className="space-y-3">
+              <Label className="text-sm font-medium text-foreground">
+                <Smile className="w-4 h-4 inline mr-2" />
+                How are you feeling? (optional)
+              </Label>
+              <div className="flex flex-wrap gap-2">
+                {moods.map((mood) => (
+                  <Button
+                    key={mood.id}
+                    type="button"
+                    variant={selectedMood === mood.id ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setSelectedMood(selectedMood === mood.id ? null : mood.id)}
+                    className={`text-sm ${
+                      selectedMood === mood.id 
+                        ? 'bg-gradient-primary text-primary-foreground border-0' 
+                        : 'border-border/50 hover:bg-primary/5'
+                    }`}
+                  >
+                    <span className="mr-1">{mood.emoji}</span>
+                    {mood.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* Hashtags */}
+            <div className="space-y-3">
+              <Label htmlFor="hashtags" className="text-sm font-medium text-foreground">
+                <Hash className="w-4 h-4 inline mr-2" />
+                Hashtags (optional)
+              </Label>
+              <Input
+                id="hashtags"
+                value={hashtagInput}
+                onChange={(e) => setHashtagInput(e.target.value)}
+                onKeyDown={addHashtag}
+                placeholder="Type a hashtag and press Enter or Space..."
+                className="border border-border/50 focus:border-primary/50 bg-background/50 py-3 rounded-xl"
+                maxLength={50}
+              />
+              {hashtags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {hashtags.map((tag, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="bg-primary/10 text-primary hover:bg-primary/20 cursor-pointer"
+                      onClick={() => removeHashtag(tag)}
+                    >
+                      #{tag}
+                      <X className="w-3 h-3 ml-1" />
+                    </Badge>
+                  ))}
+                </div>
+              )}
+              <p className="text-xs text-muted-foreground">
+                {hashtags.length}/10 hashtags • Click a hashtag to remove it
+              </p>
+            </div>
+
+            {/* Location Input */}
             <div className="space-y-3">
               <Label htmlFor="location" className="text-sm font-medium text-foreground">
                 Location (optional)
@@ -175,6 +275,7 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
               </div>
             </div>
 
+            {/* Image Upload */}
             <div className="space-y-3">
               <Label className="text-sm font-medium text-foreground">Image (optional)</Label>
               {imagePreview ? (
@@ -217,10 +318,13 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
                 </div>
               )}
             </div>
+
+            {/* Extra space to ensure content is not cut off */}
+            <div className="h-24"></div>
           </div>
           
-          {/* Action Buttons - Always visible at bottom */}
-          <div className="flex gap-3 pt-6 border-t border-border/30 p-4 bg-white sticky bottom-0 left-0 w-full z-10 shadow-lg rounded-b-xl">
+          {/* Action Buttons - Fixed at bottom */}
+          <div className="flex gap-3 pt-6 border-t border-border/30 p-4 bg-white z-10 shadow-lg">
             <Button
               type="button"
               variant="outline"

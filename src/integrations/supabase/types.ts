@@ -329,11 +329,13 @@ export type Database = {
           comments_count: number | null
           content: string
           created_at: string
+          hashtags: string[] | null
           id: string
           image_url: string | null
           is_trending: boolean | null
           likes_count: number | null
           location: string | null
+          mood: string | null
           updated_at: string
           user_id: string
         }
@@ -341,11 +343,13 @@ export type Database = {
           comments_count?: number | null
           content: string
           created_at?: string
+          hashtags?: string[] | null
           id?: string
           image_url?: string | null
           is_trending?: boolean | null
           likes_count?: number | null
           location?: string | null
+          mood?: string | null
           updated_at?: string
           user_id: string
         }
@@ -353,11 +357,13 @@ export type Database = {
           comments_count?: number | null
           content?: string
           created_at?: string
+          hashtags?: string[] | null
           id?: string
           image_url?: string | null
           is_trending?: boolean | null
           likes_count?: number | null
           location?: string | null
+          mood?: string | null
           updated_at?: string
           user_id?: string
         }
