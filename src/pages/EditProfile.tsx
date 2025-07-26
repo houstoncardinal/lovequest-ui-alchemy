@@ -939,7 +939,10 @@ const EditProfile = () => {
             </p>
             
             {!recordingVoice && !audioUrl && (
-              <Button onClick={startVoiceRecording} className="w-full bg-gradient-primary">
+              <Button 
+                onClick={startVoiceRecording} 
+                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 shadow-lg"
+              >
                 <Mic className="w-4 h-4 mr-2" />
                 Start Recording
               </Button>
