@@ -127,7 +127,7 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md bg-white border border-border/50 shadow-lg h-screen max-h-screen flex flex-col p-0 sm:p-6 rounded-none sm:rounded-lg">
-        <DialogHeader className="pb-4 border-b border-border/30">
+        <DialogHeader className="pb-4 border-b border-border/30 px-4 pt-6 sm:px-0 sm:pt-0">
           <DialogTitle className="flex items-center gap-3 text-xl">
             <div className="p-2 rounded-xl bg-gradient-primary shadow-elegant">
               <Upload className="w-5 h-5 text-primary-foreground" />
@@ -140,7 +140,7 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="flex flex-col h-full">
-          <div className="flex-1 overflow-y-auto space-y-6 pt-6 px-4 sm:px-0">
+          <div className="flex-1 overflow-y-auto space-y-6 pt-8 px-4 sm:px-0 pb-4">
             <div className="space-y-3">
               <Label htmlFor="content" className="text-sm font-medium text-foreground">
                 What's on your mind?
@@ -218,6 +218,8 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
               )}
             </div>
           </div>
+          
+          {/* Action Buttons - Always visible at bottom */}
           <div className="flex gap-3 pt-6 border-t border-border/30 p-4 bg-white sticky bottom-0 left-0 w-full z-10 shadow-lg rounded-b-xl">
             <Button
               type="button"
@@ -230,7 +232,11 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
             </Button>
             <Button
               type="submit"
-              className="flex-1 bg-gradient-primary hover:shadow-glow transition-all duration-300 text-primary-foreground font-medium rounded-xl border-0"
+              className={`flex-1 font-medium rounded-xl border-0 transition-all duration-300 ${
+                content.trim() 
+                  ? 'bg-gradient-primary hover:shadow-glow text-primary-foreground opacity-100' 
+                  : 'bg-muted text-muted-foreground cursor-not-allowed opacity-60'
+              }`}
               disabled={uploading || !content.trim()}
             >
               {uploading ? "Posting..." : "Share Post"}
