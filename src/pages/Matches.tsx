@@ -416,9 +416,9 @@ const Chat = () => {
     const currentUser = currentMatch;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20 flex flex-col">
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 flex flex-col h-screen max-h-screen relative">
         {/* Chat Header */}
-        <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 px-4 py-4 shadow-sm">
+        <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 px-4 py-4 shadow-sm flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button 
@@ -428,13 +428,13 @@ const Chat = () => {
                 <ArrowLeft className="w-6 h-6 text-emerald-600" />
               </button>
               
-                <div className="relative mr-4">
+                <div className="relative mr-3 sm:mr-4">
                 <img 
                   src={currentUser?.avatar_url || profile1} 
                   alt={currentUser?.display_name}
-                  className="w-12 h-12 rounded-2xl object-cover ring-2 ring-emerald-100"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl object-cover ring-2 ring-emerald-100"
                 />
-                <div className="absolute bottom-0 right-0 w-4 h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
+                <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
               </div>
               
               <div className="flex-1">
@@ -464,7 +464,7 @@ const Chat = () => {
         </div>
 
         {/* Messages */}
-        <div className="flex-1 px-4 py-6 space-y-4 overflow-y-auto">
+        <div className="flex-1 px-4 pb-40 sm:pb-32 space-y-4 overflow-y-auto min-h-0" style={{ WebkitOverflowScrolling: 'touch' }}>
           {messages.map((message) => (
             <div
               key={message.id}
@@ -507,7 +507,13 @@ const Chat = () => {
         </div>
 
         {/* Message Input */}
-        <div className="bg-white/80 backdrop-blur-sm border-t border-emerald-100 px-4 py-4 relative">
+        <div
+          className="bg-white/90 backdrop-blur-sm border-t-2 border-emerald-200 px-4 py-4 fixed bottom-0 left-0 w-full z-50 shadow-lg"
+          style={{
+            // Increase this value if the input is still hidden on your device
+            paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6rem)'
+          }}
+        >
           {/* Voice Recorder */}
           {showVoiceRecorder && (
             <VoiceRecorder
@@ -632,7 +638,7 @@ const Chat = () => {
       </div>
 
       {/* Matches List */}
-      <div className="px-6 py-2">
+      <div className="py-2 max-h-[80vh] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
         {loading ? (
           <div className="text-center py-8">
             <p className="text-gray-500">Loading matches...</p>
@@ -646,44 +652,44 @@ const Chat = () => {
             <div
               key={match.match_id}
               onClick={() => setSelectedChat(match.matched_user_id)}
-              className="flex items-center py-4 px-4 cursor-pointer hover:bg-white hover:rounded-3xl hover:shadow-lg transition-all duration-300 mb-3 group animate-fade-in"
+              className="flex items-center w-full max-w-md mx-auto py-4 px-3 sm:px-6 cursor-pointer bg-white rounded-2xl shadow-md border border-emerald-100 mb-4 group animate-fade-in transition-all duration-300 hover:shadow-lg hover:border-emerald-200"
+              style={{ boxSizing: 'border-box' }}
             >
               <div className="relative mr-4">
                 <div className="relative overflow-hidden">
                   <img 
                     src={match.avatar_url || profile1} 
                     alt={match.display_name}
-                    className="w-18 h-18 rounded-full object-cover ring-4 ring-emerald-100 shadow-lg group-hover:ring-emerald-200 transition-all duration-300 hover-scale"
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-2 ring-emerald-100 shadow-md group-hover:ring-emerald-200 transition-all duration-300"
                   />
                   {/* Online indicator */}
-                  <div className="absolute bottom-1 right-1 w-5 h-5 bg-emerald-500 border-3 border-white rounded-full shadow-sm animate-pulse"></div>
+                  <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
                   {/* Premium crown overlay */}
-                  <div className="absolute -top-1 -right-1 w-6 h-6 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full flex items-center justify-center shadow-md">
-                    <Crown className="w-3 h-3 text-white" />
+                  <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full flex items-center justify-center shadow-md">
+                    <Crown className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
                   </div>
                 </div>
               </div>
               
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center space-x-2">
-                    <h3 className="font-bold text-gray-900 text-lg group-hover:text-emerald-600 transition-colors truncate">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center space-x-1 sm:space-x-2">
+                    <h3 className="font-semibold text-gray-900 text-base sm:text-lg group-hover:text-emerald-600 transition-colors truncate">
                       {match.display_name}
                     </h3>
-                    <Badge className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-xs px-2 py-1 rounded-full">
+                    <Badge className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full">
                       {match.match_score}% match
                     </Badge>
                   </div>
-                  <span className="text-xs text-gray-500 flex-shrink-0">
+                  <span className="text-[10px] sm:text-xs text-gray-400 flex-shrink-0">
                     {new Date(match.matched_at).toLocaleDateString()}
                   </span>
                 </div>
-                
                 <div className="flex items-center justify-between">
-                  <p className="text-sm text-gray-600 truncate flex-1 mr-3 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-gray-600 truncate flex-1 mr-2 leading-relaxed">
                     {match.bio || "Start a conversation..."}
                   </p>
-                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs rounded-full w-7 h-7 flex items-center justify-center font-medium shadow-sm flex-shrink-0">
+                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[10px] sm:text-xs rounded-full w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center font-medium shadow-sm flex-shrink-0">
                     ✓
                   </Badge>
                 </div>

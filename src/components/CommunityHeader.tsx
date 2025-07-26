@@ -16,7 +16,7 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
     <div className="sticky top-0 z-20 backdrop-blur-xl bg-background/80 border-b border-border/50">
       <div className="max-w-md mx-auto px-6 py-4">
         {/* Header Title */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-3 sm:gap-0">
           <motion.div 
             className="flex items-center gap-3"
             initial={{ opacity: 0, x: -20 }}
@@ -31,10 +31,10 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
             </div>
             
             <div>
-              <h1 className="text-2xl font-bold text-gradient">
+              <h1 className="text-lg sm:text-2xl font-bold text-gradient">
                 Community
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {postsCount > 0 ? `${postsCount} posts shared` : "Share your moments"}
               </p>
             </div>
@@ -44,14 +44,14 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative z-10"
+            className="relative z-10 w-full sm:w-auto"
           >
             <Button
               onClick={onCreatePost}
-              size="lg"
-              className="rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-lg hover:scale-105 transition-all duration-300 px-6 py-3 font-semibold text-white shadow-md border-0 animate-fade-in"
+              size="sm"
+              className="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-lg hover:scale-105 transition-all duration-300 px-4 py-2 sm:px-6 sm:py-3 font-semibold text-white shadow-md border-0 animate-fade-in text-base sm:text-lg"
             >
-              <Plus className="w-5 h-5 mr-2" />
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               New Post
             </Button>
           </motion.div>
