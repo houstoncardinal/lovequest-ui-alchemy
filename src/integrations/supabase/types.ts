@@ -440,6 +440,7 @@ export type Database = {
           children_preference: string | null
           community_involvement_level: string | null
           created_at: string
+          date_of_birth: string | null
           dietary_preferences: string[] | null
           display_name: string | null
           education_level: string | null
@@ -447,6 +448,7 @@ export type Database = {
           family_size_preference: string | null
           financial_readiness: string | null
           first_name: string | null
+          gender: string | null
           hajj_umrah_experience: boolean | null
           has_children: boolean | null
           height_cm: number | null
@@ -454,6 +456,7 @@ export type Database = {
           hobbies_interests: string[] | null
           id: string
           income_range: string | null
+          interests: string[] | null
           is_verified: boolean | null
           islamic_knowledge_level: string | null
           languages_spoken: string[] | null
@@ -492,6 +495,7 @@ export type Database = {
           children_preference?: string | null
           community_involvement_level?: string | null
           created_at?: string
+          date_of_birth?: string | null
           dietary_preferences?: string[] | null
           display_name?: string | null
           education_level?: string | null
@@ -499,6 +503,7 @@ export type Database = {
           family_size_preference?: string | null
           financial_readiness?: string | null
           first_name?: string | null
+          gender?: string | null
           hajj_umrah_experience?: boolean | null
           has_children?: boolean | null
           height_cm?: number | null
@@ -506,6 +511,7 @@ export type Database = {
           hobbies_interests?: string[] | null
           id?: string
           income_range?: string | null
+          interests?: string[] | null
           is_verified?: boolean | null
           islamic_knowledge_level?: string | null
           languages_spoken?: string[] | null
@@ -544,6 +550,7 @@ export type Database = {
           children_preference?: string | null
           community_involvement_level?: string | null
           created_at?: string
+          date_of_birth?: string | null
           dietary_preferences?: string[] | null
           display_name?: string | null
           education_level?: string | null
@@ -551,6 +558,7 @@ export type Database = {
           family_size_preference?: string | null
           financial_readiness?: string | null
           first_name?: string | null
+          gender?: string | null
           hajj_umrah_experience?: boolean | null
           has_children?: boolean | null
           height_cm?: number | null
@@ -558,6 +566,7 @@ export type Database = {
           hobbies_interests?: string[] | null
           id?: string
           income_range?: string | null
+          interests?: string[] | null
           is_verified?: boolean | null
           islamic_knowledge_level?: string | null
           languages_spoken?: string[] | null
@@ -1043,6 +1052,10 @@ export type Database = {
       get_user_plan: {
         Args: { user_id_param?: string }
         Returns: Database["public"]["Enums"]["user_plan_type"]
+      }
+      grant_app_access_for_complete_profiles: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
       }
       has_feature_access: {
         Args: { feature_name: string; user_id_param?: string }
