@@ -1,62 +1,142 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, X, Star, RotateCcw, SlidersHorizontal, MapPin, Users, Crown } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import { useRealTimeMatches } from "@/hooks/useRealTimeMatches";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import Logo from "@/components/Logo";
 import { Badge } from "@/components/ui/badge";
 import profile1 from "@/assets/profile-1.jpg";
 import profile2 from "@/assets/profile-2.jpg";
 
+interface MatchProfile {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  display_name: string;
+  age: number;
+  gender: string;
+  location: string;
+  bio: string;
+  avatar_url: string;
+  religion_level: string;
+  prayer_frequency: string;
+  hijab_status: string;
+  education_level: string;
+  career_field: string;
+  marital_status: string;
+  smoking_status: string;
+  has_children: boolean;
+  children_preference: string;
+  is_verified: boolean;
+  interests: string[];
+  match_score: number;
+}
+
 const Home = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [currentProfileIndex, setCurrentProfileIndex] = useState(0);
   const [isLiking, setIsLiking] = useState(false);
+  const [profiles, setProfiles] = useState<MatchProfile[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [noMoreProfiles, setNoMoreProfiles] = useState(false);
   
-  const profiles = [
-    {
-      id: "1",
-      name: "Ayesha Siddiqui",
-      age: 25,
-      distance: "3 km away",
-      commonInterests: 5,
-      bio: "Entrepreneur, passionate about faith, family, and art. Looking for a meaningful halal connection.",
-      image: profile2,
-      isPotentialMatch: true,
-      isPremium: true
-    },
-    {
-      id: "2",
-      name: "Omar Farooq", 
-      age: 28,
-      distance: "2 km away",
-      commonInterests: 4,
-      bio: "Finance professional, enjoys travel and community service. Seeking a partner for a blessed marriage journey.",
-      image: profile1,
-      isPotentialMatch: false,
-      isPremium: false
+  // Enable real-time match notifications
+  useRealTimeMatches();
+
+  useEffect(() => {
+    if (user) {
+      fetchProfiles();
     }
-  ];
+  }, [user]);
+
+  const fetchProfiles = async () => {
+    if (!user) return;
+    
+    try {
+      setLoading(true);
+      const { data, error } = await supabase.rpc('get_enhanced_match_recommendations_with_gender', {
+        target_user_id: user.id,
+        limit_count: 10
+      });
+
+      if (error) {
+        console.error('Error fetching profiles:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load profiles. Please try again.",
+          variant: "destructive"
+        });
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        setNoMoreProfiles(true);
+        setProfiles([]);
+      } else {
+        setProfiles(data);
+        setCurrentProfileIndex(0);
+        setNoMoreProfiles(false);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error", 
+        description: "Something went wrong. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const currentProfile = profiles[currentProfileIndex];
 
-  const handleSwipe = (direction: 'left' | 'right') => {
+  const handleSwipe = async (direction: 'left' | 'right') => {
+    if (!user || !currentProfile) return;
+
     if (direction === 'right') {
-      // Trigger heart animation
-      setIsLiking(true);
-      setTimeout(() => setIsLiking(false), 1000);
+      // Record the like
+      try {
+        const { error } = await supabase
+          .from('user_likes')
+          .insert({
+            liker_id: user.id,
+            liked_id: currentProfile.user_id
+          });
+
+        if (error) {
+          console.error('Error recording like:', error);
+        } else {
+          // Trigger heart animation
+          setIsLiking(true);
+          setTimeout(() => setIsLiking(false), 1000);
+          
+          toast({
+            title: "Like sent!",
+            description: `You liked ${currentProfile.display_name}`,
+          });
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
     
+    // Move to next profile or fetch more
     if (currentProfileIndex < profiles.length - 1) {
       setCurrentProfileIndex(currentProfileIndex + 1);
     } else {
-      setCurrentProfileIndex(0);
+      // Reached end, fetch more profiles
+      await fetchProfiles();
     }
   };
 
   const handleLike = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsLiking(true);
-    setTimeout(() => setIsLiking(false), 1000);
     handleSwipe('right');
   };
 
@@ -70,6 +150,66 @@ const Home = () => {
   const handleFilters = () => {
     // Open filters modal or navigate to filters page
     navigate("/preferences");
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
+        <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-sm border-b border-emerald-100">
+          <Logo size="md" />
+        </div>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Finding your perfect matches...</p>
+          </div>
+        </div>
+        <InteractiveMenu />
+      </div>
+    );
+  }
+
+  if (noMoreProfiles) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
+        <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-sm border-b border-emerald-100">
+          <Logo size="md" />
+        </div>
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center max-w-md mx-auto p-6">
+            <Heart className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">No More Profiles</h2>
+            <p className="text-gray-600 mb-6">You've seen all available matches in your area. Check back later for new profiles!</p>
+            <button 
+              onClick={fetchProfiles}
+              className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300"
+            >
+              Refresh
+            </button>
+          </div>
+        </div>
+        <InteractiveMenu />
+      </div>
+    );
+  }
+
+  if (!currentProfile) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
+        <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-sm border-b border-emerald-100">
+          <Logo size="md" />
+        </div>
+        <InteractiveMenu />
+      </div>
+    );
+  }
+
+  const getCommonInterests = (interests: string[]) => {
+    return interests ? interests.length : 0;
+  };
+
+  const getDisplayName = (profile: MatchProfile) => {
+    return profile.display_name || `${profile.first_name} ${profile.last_name}`;
   };
 
   return (
@@ -101,21 +241,30 @@ const Home = () => {
           {/* Profile Card */}
           <div 
             className="bg-white rounded-3xl shadow-xl overflow-hidden border border-emerald-100 group cursor-pointer"
-            onClick={() => navigate(`/profile/${currentProfile.id}`)}
+            onClick={() => navigate(`/profile/${currentProfile.user_id}`)}
           >
             <div className="relative" style={{ height: '460px' }}>
               <img 
-                src={currentProfile.image} 
-                alt={currentProfile.name}
+                src={currentProfile.avatar_url || (currentProfile.gender === 'female' ? profile2 : profile1)} 
+                alt={getDisplayName(currentProfile)}
                 className="w-full h-full object-cover"
               />
               
-              {/* Premium Badge */}
-              {currentProfile.isPremium && (
+              {/* Verification Badge */}
+              {currentProfile.is_verified && (
                 <div className="absolute top-4 right-4">
-                  <Badge className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-3 py-1 text-xs font-medium shadow-lg">
+                  <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 text-xs font-medium shadow-lg">
                     <Crown className="w-3 h-3 mr-1" />
-                    Premium
+                    Verified
+                  </Badge>
+                </div>
+              )}
+              
+              {/* Match Score Badge */}
+              {currentProfile.match_score >= 80 && (
+                <div className="absolute top-4 left-4">
+                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1 text-xs font-medium shadow-lg">
+                    {currentProfile.match_score}% Match
                   </Badge>
                 </div>
               )}
@@ -129,10 +278,10 @@ const Home = () => {
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-1">
-                        <h2 className="text-lg font-bold text-gray-900">{currentProfile.name}, {currentProfile.age}</h2>
-                        {currentProfile.isPotentialMatch && (
+                        <h2 className="text-lg font-bold text-gray-900">{getDisplayName(currentProfile)}, {currentProfile.age}</h2>
+                        {currentProfile.match_score >= 70 && (
                           <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-xs font-medium">
-                            Match
+                            Great Match
                           </Badge>
                         )}
                       </div>
@@ -140,11 +289,11 @@ const Home = () => {
                       <div className="flex items-center text-xs text-gray-600 gap-3 mb-2">
                         <span className="flex items-center gap-1">
                           <MapPin className="w-3 h-3 text-emerald-500" />
-                          {currentProfile.distance}
+                          {currentProfile.location}
                         </span>
                         <span className="flex items-center gap-1">
                           <Users className="w-3 h-3 text-emerald-500" />
-                          {currentProfile.commonInterests} interests
+                          {getCommonInterests(currentProfile.interests)} interests
                         </span>
                       </div>
                     </div>
@@ -176,7 +325,7 @@ const Home = () => {
               <Heart className="w-8 h-8 text-white fill-current" />
             </button>
             <button 
-              onClick={() => navigate(`/profile/${currentProfile.id}`)}
+              onClick={() => navigate(`/profile/${currentProfile.user_id}`)}
               className="w-14 h-14 rounded-full bg-white shadow-lg border border-gray-200 flex items-center justify-center hover:bg-gray-50 hover:shadow-xl transition-all duration-300 active:scale-95"
             >
               <Star className="w-7 h-7 text-gray-400" />

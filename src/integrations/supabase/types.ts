@@ -987,6 +987,32 @@ export type Database = {
           match_score: number
         }[]
       }
+      get_enhanced_match_recommendations_with_gender: {
+        Args: { target_user_id: string; limit_count?: number }
+        Returns: {
+          user_id: string
+          first_name: string
+          last_name: string
+          display_name: string
+          age: number
+          gender: string
+          location: string
+          bio: string
+          avatar_url: string
+          religion_level: string
+          prayer_frequency: string
+          hijab_status: string
+          education_level: string
+          career_field: string
+          marital_status: string
+          smoking_status: string
+          has_children: boolean
+          children_preference: string
+          is_verified: boolean
+          interests: string[]
+          match_score: number
+        }[]
+      }
       get_location_based_matches: {
         Args: {
           target_user_id: string
