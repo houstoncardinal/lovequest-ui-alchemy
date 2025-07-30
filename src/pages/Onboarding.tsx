@@ -41,6 +41,7 @@ const Onboarding = () => {
     firstName: "",
     lastName: "",
     age: "",
+    gender: "",
     location: "",
     occupation: "",
     education: "",
@@ -426,6 +427,18 @@ const Onboarding = () => {
               onChange={(e) => setProfileData({...profileData, age: e.target.value})}
               placeholder="Enter your age"
             />
+          </div>
+          <div>
+            <Label htmlFor="gender">Gender</Label>
+            <Select value={profileData.gender || ""} onValueChange={(value) => setProfileData({...profileData, gender: value})}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select your gender" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label htmlFor="occupation">Occupation</Label>
@@ -817,10 +830,10 @@ const Onboarding = () => {
     }
 
     if (currentStep === 6) {
-      if (profileData.bio.length < 50) {
+      if (profileData.bio.length < 20) {
         toast({
           title: "Bio Too Short",
-          description: "Please write at least 50 characters in your bio.",
+          description: "Please write at least 20 characters in your bio.",
           variant: "destructive",
         });
         return;
@@ -859,27 +872,51 @@ const Onboarding = () => {
     if (!user) return;
 
     try {
+      // Calculate age from date of birth if provided
+      let calculatedAge = profileData.age ? parseInt(profileData.age) : null;
+      let dateOfBirth = null;
+      
+      if (profileData.age) {
+        // Create a date of birth based on age (approximate)
+        const today = new Date();
+        const birthYear = today.getFullYear() - parseInt(profileData.age);
+        dateOfBirth = `${birthYear}-01-01`;
+      }
+
+      // Update profile data with required fields for matching
+      const updates: any = {
+        user_id: user.id,
+        first_name: profileData.firstName,
+        last_name: profileData.lastName,
+        display_name: `${profileData.firstName} ${profileData.lastName}`,
+        age: calculatedAge,
+        gender: profileData.gender,
+        date_of_birth: dateOfBirth,
+        bio: profileData.bio,
+        career_field: profileData.occupation,
+        education_level: profileData.education,
+        religion_level: profileData.religionLevel,
+        prayer_frequency: profileData.prayerFrequency,
+        hijab_status: profileData.hijabStatus,
+        marital_status: profileData.maritalStatus,
+        smoking_status: profileData.smokingStatus,
+        children_preference: profileData.childrenPreference,
+        madhab: profileData.madhab,
+        interests: profileData.interests,
+        last_active: new Date().toISOString(),
+        can_access_app: true, // Allow app access once profile is complete
+        verification_required: false, // Basic verification completed through profile setup
+        updated_at: new Date().toISOString()
+      };
+
+      // Only update avatar if we have photos
+      if (photoUploads.filter(photo => photo !== null).length > 0) {
+        updates.avatar_url = photoUploads.find(photo => photo !== null);
+      }
+
       const { error } = await supabase
         .from('profiles')
-        .upsert({
-          user_id: user.id,
-          first_name: profileData.firstName,
-          last_name: profileData.lastName,
-          display_name: `${profileData.firstName} ${profileData.lastName}`,
-          age: parseInt(profileData.age),
-          bio: profileData.bio,
-          career_field: profileData.occupation,
-          education_level: profileData.education,
-          religion_level: profileData.religionLevel,
-          prayer_frequency: profileData.prayerFrequency,
-          hijab_status: profileData.hijabStatus,
-          marital_status: profileData.maritalStatus,
-          smoking_status: profileData.smokingStatus,
-          children_preference: profileData.childrenPreference,
-          madhab: profileData.madhab,
-          hobbies_interests: profileData.interests,
-          updated_at: new Date().toISOString()
-        });
+        .upsert(updates);
 
       if (error) throw error;
 
@@ -927,15 +964,15 @@ const Onboarding = () => {
       case 3:
         return true; // Location can be skipped
       case 4:
-        return profileData.firstName && profileData.lastName && profileData.age;
+        return profileData.firstName && profileData.lastName && profileData.age && profileData.gender;
       case 5:
         return profileData.religionLevel && profileData.prayerFrequency;
       case 6:
-        return profileData.bio.length >= 50;
+        return profileData.bio.length >= 20; // Reduced from 50 to 20 for easier completion
       case 7:
         return profileData.interests.length >= 3;
       case 8:
-        return true; // Photos are optional
+        return photoUploads.filter(photo => photo !== null).length >= 1; // Require at least 1 photo
       case 9:
         return true; // Voice note is optional
       default:

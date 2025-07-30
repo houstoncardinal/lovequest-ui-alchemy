@@ -5,9 +5,12 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useRealTimeMatches } from "@/hooks/useRealTimeMatches";
+import { useLikesLimit } from "@/hooks/useLikesLimit";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import Logo from "@/components/Logo";
 import { Badge } from "@/components/ui/badge";
+import LikeLimitModal from "@/components/LikeLimitModal";
+import LikesCounter from "@/components/LikesCounter";
 import profile1 from "@/assets/profile-1.jpg";
 import profile2 from "@/assets/profile-2.jpg";
 
@@ -44,9 +47,11 @@ const Home = () => {
   const [profiles, setProfiles] = useState<MatchProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [noMoreProfiles, setNoMoreProfiles] = useState(false);
+  const [showLimitModal, setShowLimitModal] = useState(false);
   
-  // Enable real-time match notifications
+  // Enable real-time match notifications and likes limit tracking
   useRealTimeMatches();
+  const { likesUsage, recordLike } = useLikesLimit();
 
   useEffect(() => {
     if (user) {
@@ -100,6 +105,12 @@ const Home = () => {
     if (!user || !currentProfile) return;
 
     if (direction === 'right') {
+      // Check if user can like
+      if (!likesUsage.canLike && !likesUsage.isUnlimited) {
+        setShowLimitModal(true);
+        return;
+      }
+
       // Record the like
       try {
         const { error } = await supabase
@@ -112,6 +123,9 @@ const Home = () => {
         if (error) {
           console.error('Error recording like:', error);
         } else {
+          // Update local likes count
+          recordLike();
+          
           // Trigger heart animation
           setIsLiking(true);
           setTimeout(() => setIsLiking(false), 1000);
@@ -216,7 +230,10 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
       {/* Header */}
       <div className="flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm shadow-sm border-b border-emerald-100">
-        <Logo size="md" />
+        <div className="flex items-center gap-3">
+          <Logo size="md" />
+          <LikesCounter />
+        </div>
         <div className="flex items-center space-x-3">
           <button 
             onClick={handleRewind}
@@ -335,6 +352,12 @@ const Home = () => {
       </div>
 
       <InteractiveMenu />
+      
+      <LikeLimitModal 
+        isOpen={showLimitModal}
+        onClose={() => setShowLimitModal(false)}
+        resetTime={likesUsage.resetTime}
+      />
     </div>
   );
 };

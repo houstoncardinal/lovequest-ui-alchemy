@@ -157,7 +157,7 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
         .from('profiles')
         .update({
           verification_required: true,
-          can_access_app: false
+          can_access_app: true // Allow limited access while verification is pending
         })
         .eq('user_id', user.id);
 
