@@ -222,15 +222,15 @@ const IslamicFeatures = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 bg-primary rounded-3xl shadow-lg flex items-center justify-center">
-              <Star className="w-10 h-10 text-primary-foreground" />
+          <div className="flex justify-center mb-4">
+            <div className="w-14 h-14 bg-primary rounded-2xl shadow-elegant flex items-center justify-center">
+              <Star className="w-6 h-6 text-primary-foreground" />
             </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
             Islamic Features
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-sm max-w-xl mx-auto leading-relaxed">
             Essential tools for your Islamic lifestyle and spiritual journey
           </p>
         </motion.div>
@@ -276,8 +276,8 @@ const IslamicFeatures = () => {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-center space-y-6">
-                      <div className="text-5xl md:text-6xl font-mono font-bold text-foreground">
+                    <div className="text-center space-y-4">
+                      <div className="text-2xl md:text-3xl font-mono font-semibold text-foreground">
                         {currentTime.toLocaleString('en-US', {
                           hour: 'numeric',
                           minute: '2-digit',
@@ -286,12 +286,12 @@ const IslamicFeatures = () => {
                         })}
                       </div>
                       {islamicDate && (
-                        <div className="space-y-3 p-6 bg-muted rounded-2xl">
-                          <div className="text-muted-foreground">
+                        <div className="space-y-2 p-4 bg-muted rounded-xl">
+                          <div className="text-xs text-muted-foreground">
                             {islamicDate.gregorian}
                           </div>
-                          <div className="text-lg font-semibold text-foreground flex items-center justify-center gap-2">
-                            <Moon className="w-5 h-5" />
+                          <div className="text-sm font-medium text-foreground flex items-center justify-center gap-2">
+                            <Moon className="w-4 h-4" />
                             {islamicDate.hijri} AH
                           </div>
                         </div>
@@ -318,10 +318,10 @@ const IslamicFeatures = () => {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="text-center">
-                      <div className="text-2xl font-bold text-foreground mb-3">
+                      <div className="text-lg font-semibold text-foreground mb-2">
                         {nextPrayer.name}
                       </div>
-                      <div className="text-3xl font-mono font-bold text-foreground p-4 bg-muted rounded-xl">
+                      <div className="text-xl font-mono font-semibold text-foreground p-3 bg-muted rounded-lg">
                         {formatTime(nextPrayer.time)}
                       </div>
                     </CardContent>
@@ -358,16 +358,16 @@ const IslamicFeatures = () => {
                       ].map((prayer) => (
                         <div
                           key={prayer.name}
-                          className="p-4 bg-muted rounded-xl hover:bg-accent hover:text-accent-foreground transition-all duration-300 group"
+                          className="p-3 bg-muted rounded-lg hover:bg-accent hover:text-accent-foreground transition-all duration-300 group"
                         >
                           <div className="flex items-center justify-between">
                             <div>
-                              <div className="font-semibold text-lg text-foreground group-hover:text-accent-foreground">{prayer.name}</div>
-                              <div className="font-mono text-sm text-muted-foreground group-hover:text-accent-foreground/80">
+                              <div className="font-medium text-sm text-foreground group-hover:text-accent-foreground">{prayer.name}</div>
+                              <div className="font-mono text-xs text-muted-foreground group-hover:text-accent-foreground/80">
                                 {formatTime(prayer.time)}
                               </div>
                             </div>
-                            <prayer.icon className="w-6 h-6 text-muted-foreground group-hover:text-accent-foreground/80" />
+                            <prayer.icon className="w-4 h-4 text-muted-foreground group-hover:text-accent-foreground/80" />
                           </div>
                         </div>
                       ))}
@@ -403,20 +403,20 @@ const IslamicFeatures = () => {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ duration: 0.5, delay: index * 0.1 }}
-                          className="p-6 bg-muted rounded-xl"
+                          className="p-4 bg-muted rounded-lg"
                         >
                           <div className="space-y-4">
                             <div className="flex items-center gap-2">
-                              <Gem className="w-5 h-5 text-primary" />
-                              <h4 className="font-semibold text-lg text-foreground">{dua.title}</h4>
+                              <Gem className="w-4 h-4 text-primary" />
+                              <h4 className="font-medium text-sm text-foreground">{dua.title}</h4>
                             </div>
-                            <div className="text-right text-2xl leading-relaxed text-foreground p-4 bg-card rounded-lg">
+                            <div className="text-right text-lg leading-relaxed text-foreground p-3 bg-card rounded-lg">
                               {dua.arabic}
                             </div>
-                            <div className="text-sm italic text-muted-foreground font-medium bg-accent/20 p-3 rounded-lg">
+                            <div className="text-xs italic text-muted-foreground font-medium bg-accent/20 p-2 rounded-lg">
                               {dua.transliteration}
                             </div>
-                            <div className="text-sm text-muted-foreground leading-relaxed">
+                            <div className="text-xs text-muted-foreground leading-relaxed">
                               {dua.translation}
                             </div>
                           </div>
