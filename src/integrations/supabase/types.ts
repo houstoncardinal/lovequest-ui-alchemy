@@ -954,6 +954,10 @@ export type Database = {
         Args: { user1_id: string; user2_id: string }
         Returns: number
       }
+      delete_user_account: {
+        Args: { target_user_id: string }
+        Returns: undefined
+      }
       get_compatibility_insights: {
         Args: { user1_id: string; user2_id: string }
         Returns: {
