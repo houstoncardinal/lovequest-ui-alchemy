@@ -187,14 +187,32 @@ const Settings = () => {
     }
   };
 
-  const handleDeleteAccount = () => {
+  const handleDeleteAccount = async () => {
     if (confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
-      // TODO: Implement account deletion logic
-      toast({
-        title: "Account deletion",
-        description: "Account deletion feature will be implemented soon.",
-        variant: "destructive",
-      });
+      try {
+        // Call the delete account function
+        const { error } = await supabase.rpc('delete_user_account', {
+          target_user_id: user?.id
+        });
+        
+        if (error) throw error;
+        
+        toast({
+          title: "Account deleted",
+          description: "Your account has been permanently deleted.",
+        });
+        
+        // Sign out and redirect
+        await signOut();
+        navigate('/welcome');
+      } catch (error) {
+        console.error('Error deleting account:', error);
+        toast({
+          title: "Error",
+          description: "Failed to delete account. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 
@@ -412,10 +430,20 @@ const Settings = () => {
                 checked={appSettings.darkMode}
                 onCheckedChange={(checked) => {
                   setAppSettings(prev => ({ ...prev, darkMode: checked }));
-                  // TODO: Implement theme switching
+                  
+                  // Toggle dark mode class on document
+                  if (checked) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                  
+                  // Store preference
+                  localStorage.setItem('darkMode', checked.toString());
+                  
                   toast({
-                    title: "Theme preference saved",
-                    description: "Dark mode will be implemented soon.",
+                    title: "Theme updated",
+                    description: `Switched to ${checked ? 'dark' : 'light'} mode.`,
                   });
                 }}
               />
