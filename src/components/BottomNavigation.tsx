@@ -1,12 +1,15 @@
 import { Home, Users, Heart, MessageCircle, User, Sparkles, Moon } from "lucide-react";
 import { NavLink } from "react-router-dom";
+import { useNotificationCounts } from "@/hooks/useNotificationCounts";
 
 const BottomNavigation = () => {
+  const { counts, loading } = useNotificationCounts();
+
   const navItems = [
     { icon: Home, label: "Home", path: "/", count: 0 },
-    { icon: Heart, label: "Like You", path: "/like-you", count: 54 },
-    { icon: MessageCircle, label: "Matches", path: "/matches", count: 12 },
-    { icon: Sparkles, label: "Community", path: "/community", count: 0 },
+    { icon: Heart, label: "Like You", path: "/like-you", count: counts.likeYou },
+    { icon: MessageCircle, label: "Matches", path: "/matches", count: counts.matches },
+    { icon: Sparkles, label: "Community", path: "/community", count: counts.community },
     { icon: Moon, label: "Deen", path: "/islamic-features", count: 0 },
     { icon: User, label: "Account", path: "/account", count: 0 },
   ];
