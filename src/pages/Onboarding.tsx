@@ -266,7 +266,7 @@ const Onboarding = () => {
 
   const onboardingSteps = [
     {
-      title: "Welcome to Jaan",
+      title: "Welcome to LoveQuest",
       subtitle: "Find your perfect match in a respectful, halal environment",
       content: () => (
         <div className="text-center space-y-6">
@@ -752,7 +752,7 @@ const Onboarding = () => {
           <div className="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mb-4">
             <Check className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to Jaan!</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to LoveQuest!</h2>
           <p className="text-gray-600">
             Your profile has been created successfully. You can start browsing profiles while we review your verification documents.
           </p>

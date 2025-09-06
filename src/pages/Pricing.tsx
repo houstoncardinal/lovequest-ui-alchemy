@@ -284,7 +284,7 @@ const Pricing = () => {
 
           {/* Feature Comparison */}
           <div className="mt-16 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-emerald-100 p-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Why Choose Jaan?</h3>
+            <h3 className="text-2xl font-bold text-gray-900 mb-8 text-center">Why Choose LoveQuest?</h3>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-4">

@@ -1,8 +1,8 @@
-# Jaan: The Luxury Muslim Dating & Marriage App
+# LoveQuest: The Luxury Muslim Dating & Marriage App
 
 ## Project info
 
-**Description**: Jaan is the premier Muslim dating and marriage app, offering a luxury experience for Muslims seeking meaningful, halal relationships.
+**Description**: LoveQuest is the premier Muslim dating and marriage app, offering a luxury experience for Muslims seeking meaningful, halal relationships.
 
 **URL**: https://lovable.dev/projects/028f224e-f54d-4dbc-80d9-96b50706374e
 

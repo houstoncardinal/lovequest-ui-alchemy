@@ -43,15 +43,15 @@ const TermsOfService = () => {
         {/* Introduction */}
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
-            <CardTitle className="text-lg">Welcome to Jaan</CardTitle>
+            <CardTitle className="text-lg">Welcome to LoveQuest</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-gray-700 leading-relaxed">
-              Jaan is a premium Muslim dating platform designed to help Muslims find meaningful relationships 
+              LoveQuest is a premium Muslim dating platform designed to help Muslims find meaningful relationships 
               in accordance with Islamic values. By using our service, you agree to these terms and conditions.
             </p>
             <p className="text-gray-700 leading-relaxed">
-              These terms govern your use of Jaan's website, mobile applications, and services. 
+              These terms govern your use of LoveQuest's website, mobile applications, and services.
               Please read them carefully before using our platform.
             </p>
           </CardContent>
@@ -69,7 +69,7 @@ const TermsOfService = () => {
             <div className="space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
-                <p className="text-gray-700">You must be at least 18 years old to use Jaan</p>
+                <p className="text-gray-700">You must be at least 18 years old to use LoveQuest</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
@@ -161,7 +161,7 @@ const TermsOfService = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-gray-700 leading-relaxed">
-              Jaan offers premium subscription plans with enhanced features. Subscription terms and 
+              LoveQuest offers premium subscription plans with enhanced features. Subscription terms and 
               billing practices are as follows:
             </p>
             <div className="space-y-2">
@@ -270,16 +270,16 @@ const TermsOfService = () => {
           <CardContent className="space-y-4">
             <div className="space-y-3">
               <div>
-                <p className="font-medium text-gray-900">Jaan Dating Platform</p>
-                <p className="text-sm text-gray-500">support@jaan.com</p>
+                <p className="font-medium text-gray-900">LoveQuest Dating Platform</p>
+                <p className="text-sm text-gray-500">support@lovequest.com</p>
               </div>
               <div>
                 <p className="font-medium text-gray-900">Legal Department</p>
-                <p className="text-sm text-gray-500">legal@jaan.com</p>
+                <p className="text-sm text-gray-500">legal@lovequest.com</p>
               </div>
               <div>
                 <p className="font-medium text-gray-900">Privacy Officer</p>
-                <p className="text-sm text-gray-500">privacy@jaan.com</p>
+                <p className="text-sm text-gray-500">privacy@lovequest.com</p>
               </div>
             </div>
           </CardContent>
@@ -288,7 +288,7 @@ const TermsOfService = () => {
         {/* Agreement */}
         <div className="text-center space-y-4">
           <p className="text-sm text-gray-600">
-            By using Jaan, you acknowledge that you have read, understood, and agree to these Terms of Service.
+            By using LoveQuest, you acknowledge that you have read, understood, and agree to these Terms of Service.
           </p>
           <Button
             className="bg-emerald-600 hover:bg-emerald-700"

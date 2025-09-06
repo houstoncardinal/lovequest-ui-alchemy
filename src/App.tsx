@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BottomNavigation from "@/components/BottomNavigation";
+import DesktopNavigation from "@/components/DesktopNavigation";
 import Home from "./pages/Home";
 import LikeYou from "./pages/LikeYou";
 import ForYou from "./pages/ForYou";
@@ -51,7 +52,12 @@ const AppWithNavigation = () => {
 
   return (
     <>
-      <Routes>
+      {/* Desktop Navigation - only shown on desktop */}
+      {showNavigation && <DesktopNavigation />}
+      
+      {/* Main Content with responsive padding */}
+      <div className="pb-20 md:pb-0 md:pt-20">
+        <Routes>
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
@@ -88,7 +94,10 @@ const AppWithNavigation = () => {
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
-        {showNavigation && <BottomNavigation />}
+      </div>
+      
+      {/* Mobile Bottom Navigation - only shown on mobile */}
+      {showNavigation && <BottomNavigation />}
     </>
   );
 };

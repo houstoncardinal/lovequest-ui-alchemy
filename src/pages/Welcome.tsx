@@ -41,7 +41,7 @@ const Welcome = () => {
     },
     {
       title: "Luxury Experience, Faithful Connections",
-      subtitle: "Jaan offers a premium, safe, and sophisticated space designed exclusively for Muslim singles seeking marriage.",
+      subtitle: "LoveQuest offers a premium, safe, and sophisticated space designed exclusively for Muslim singles seeking marriage.",
       icon: Crown,
       color: "from-amber-500 via-amber-600 to-amber-700",
       bgGradient: "from-amber-50 via-white to-amber-100",
@@ -102,7 +102,7 @@ const Welcome = () => {
             </div>
           </div>
           <div className="ml-4">
-            <h1 className="text-2xl font-bold text-gray-900">Jaan</h1>
+            <h1 className="text-2xl font-bold text-gray-900">LoveQuest</h1>
             <p className="text-xs text-emerald-600 font-medium">Premium Halal Dating</p>
           </div>
         </div>

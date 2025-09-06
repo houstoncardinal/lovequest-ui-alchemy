@@ -278,7 +278,7 @@ const PremiumFeatures = () => {
             <PremiumBadge plan={currentPlan} size="md" />
           </div>
           <p className="text-muted-foreground">
-            Unlock the full potential of your Jaan experience
+            Unlock the full potential of your LoveQuest experience
           </p>
         </div>
 

@@ -115,7 +115,7 @@ const SignUp = () => {
             </div>
           </div>
           <div className="ml-4">
-            <h1 className="text-2xl font-bold text-gray-900">Jaan</h1>
+            <h1 className="text-2xl font-bold text-gray-900">LoveQuest</h1>
             <p className="text-xs text-emerald-600 font-medium">Premium Halal Dating</p>
           </div>
         </div>
@@ -127,7 +127,7 @@ const SignUp = () => {
         <div className="max-w-md mx-auto w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-emerald-100 p-8">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
-            <p className="text-emerald-600">Join Jaan and find your soulmate</p>
+            <p className="text-emerald-600">Join LoveQuest and find your soulmate</p>
             <Badge className="mt-4 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-4 py-1 text-xs font-bold shadow-lg inline-flex items-center">
               <Sparkles className="w-3 h-3 mr-1" />
               Premium Experience

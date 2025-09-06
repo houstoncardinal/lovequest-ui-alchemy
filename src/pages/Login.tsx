@@ -67,7 +67,7 @@ const Login = () => {
           <div className="w-10 h-10 bg-gradient-to-br from-primary to-emerald-600 rounded-xl flex items-center justify-center mr-3 shadow-lg">
             <Heart className="w-6 h-6 text-white fill-current" />
           </div>
-          <h1 className="text-xl font-bold text-foreground">Jaan</h1>
+          <h1 className="text-xl font-bold text-foreground">LoveQuest</h1>
         </div>
       </div>
 
