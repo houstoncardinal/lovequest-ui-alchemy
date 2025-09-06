@@ -30,8 +30,8 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
         xmlns="http://www.w3.org/2000/svg"
         className="rounded-xl shadow-sm"
       >
-        {/* Background with enhanced gradient */}
-        <circle cx="16" cy="16" r="16" fill="url(#emeraldGradient)" />
+        {/* Background with luxury gradient */}
+        <circle cx="16" cy="16" r="16" fill="url(#luxuryGradient)" />
         
         {/* Outer ring for premium feel */}
         <circle cx="16" cy="16" r="15" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5" />
@@ -39,39 +39,30 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
         {/* Inner glow ring */}
         <circle cx="16" cy="16" r="13" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
         
-        {/* Refined stylized 'J' with better proportions */}
+        {/* Beautiful heart design */}
         <path
-          d="M11 8v9c0 2.21 1.79 4 4 4s4-1.79 4-4V8"
-          stroke="#ffffff"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-        
-        {/* Elegant heart accent with better positioning */}
-        <path
-          d="M16 19.5c-1.1-1.1-1.8-2.2-1.8-3.2 0-1.1 0.7-1.8 1.8-1.8s1.8 0.7 1.8 1.8c0 1-0.7 2.1-1.8 3.2z"
+          d="M16 23.5c-5-4.5-8-7.5-8-11 0-2.5 2-4.5 4.5-4.5 1.5 0 2.8 0.8 3.5 2 0.7-1.2 2-2 3.5-2 2.5 0 4.5 2 4.5 4.5 0 3.5-3 6.5-8 11z"
           fill="#ffffff"
-          fillOpacity="0.9"
+          fillOpacity="0.95"
         />
         
-        {/* Subtle decorative elements */}
-        <circle cx="16" cy="8" r="1" fill="rgba(255,255,255,0.3)" />
-        <circle cx="16" cy="24" r="0.8" fill="rgba(255,255,255,0.2)" />
+        {/* Subtle sparkle accents */}
+        <circle cx="12" cy="11" r="1" fill="rgba(255,255,255,0.4)" />
+        <circle cx="20" cy="13" r="0.8" fill="rgba(255,255,255,0.3)" />
+        <circle cx="18" cy="9" r="0.6" fill="rgba(255,255,255,0.5)" />
         
         <defs>
-          <linearGradient id="emeraldGradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#10b981" />
-            <stop offset="0.4" stopColor="#059669" />
-            <stop offset="0.8" stopColor="#047857" />
-            <stop offset="1" stopColor="#065f46" />
+          <linearGradient id="luxuryGradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#ec4899" />
+            <stop offset="0.3" stopColor="#f97316" />
+            <stop offset="0.7" stopColor="#dc2626" />
+            <stop offset="1" stopColor="#be185d" />
           </linearGradient>
         </defs>
       </svg>
       
       {showText && (
-        <div className="flex flex-col">
+        <div className="flex items-center gap-2">
           <span
             className={`font-bold ${textSizes[size]} tracking-tight leading-none`}
             style={{
@@ -81,10 +72,22 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
               fontWeight: '700',
             }}
           >
-            <span style={{ color: "#059669" }}>J</span>aan
+            LoveQuest
           </span>
+          <svg width="20" height="18" viewBox="0 0 20 18" fill="none" className="ml-1">
+            <path
+              d="M10 17c-4.5-4-7-6.5-7-9.5 0-2.2 1.8-4 4-4 1.3 0 2.5 0.7 3 1.8C10.5 4.2 11.7 3.5 13 3.5c2.2 0 4 1.8 4 4 0 3-2.5 5.5-7 9.5z"
+              fill="url(#heartGradient)"
+            />
+            <defs>
+              <linearGradient id="heartGradient" x1="0" y1="0" x2="20" y2="18" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#ec4899" />
+                <stop offset="1" stopColor="#dc2626" />
+              </linearGradient>
+            </defs>
+          </svg>
           <span
-            className="text-xs font-medium tracking-wide"
+            className="text-xs font-medium tracking-wide ml-2"
             style={{
               color: "#6b7280",
               fontFamily: 'Inter, ui-sans-serif, system-ui, sans-serif',
@@ -93,7 +96,7 @@ const Logo = ({ size = "md", showText = true, className = "" }: LogoProps) => {
               fontSize: '0.65rem',
             }}
           >
-            Premium Dating
+            Luxury Dating
           </span>
         </div>
       )}

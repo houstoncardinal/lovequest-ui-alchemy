@@ -29,11 +29,11 @@ import Settings from "./pages/Settings";
 import AdvancedFilters from "./pages/AdvancedFilters";
 import BlockReport from "./pages/BlockReport";
 import TermsOfService from "./pages/TermsOfService";
-import IslamicFeatures from "./pages/IslamicFeatures";
+import LifestyleFeatures from "./pages/LifestyleFeatures";
 import PremiumFeatures from "./pages/PremiumFeatures";
 import AdvancedSearch from "./pages/AdvancedSearch";
 import Verification from "./pages/Verification";
-import FamilyFeatures from "./pages/FamilyFeatures";
+import RelationshipFeatures from "./pages/RelationshipFeatures";
 import MatchInsightsWrapper from "./pages/MatchInsightsWrapper";
 import EnhancedMatching from "./pages/EnhancedMatching";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -83,11 +83,11 @@ const AppWithNavigation = () => {
           <Route path="/advanced-filters" element={<ProtectedRoute><AdvancedFilters /></ProtectedRoute>} />
           <Route path="/block-report/:id" element={<ProtectedRoute><BlockReport /></ProtectedRoute>} />
           <Route path="/terms-of-service" element={<ProtectedRoute><TermsOfService /></ProtectedRoute>} />
-          <Route path="/islamic-features" element={<ProtectedRoute><IslamicFeatures /></ProtectedRoute>} />
+          <Route path="/lifestyle-features" element={<ProtectedRoute><LifestyleFeatures /></ProtectedRoute>} />
           <Route path="/premium-features" element={<ProtectedRoute><PremiumFeatures /></ProtectedRoute>} />
           <Route path="/advanced-search" element={<ProtectedRoute><AdvancedSearch /></ProtectedRoute>} />
           <Route path="/verification" element={<ProtectedRoute><Verification /></ProtectedRoute>} />
-          <Route path="/family-features" element={<ProtectedRoute><FamilyFeatures /></ProtectedRoute>} />
+          <Route path="/relationship-features" element={<ProtectedRoute><RelationshipFeatures /></ProtectedRoute>} />
           <Route path="/match-insights/:id" element={<ProtectedRoute><MatchInsightsWrapper /></ProtectedRoute>} />
           <Route path="/enhanced-matching" element={<ProtectedRoute><EnhancedMatching /></ProtectedRoute>} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

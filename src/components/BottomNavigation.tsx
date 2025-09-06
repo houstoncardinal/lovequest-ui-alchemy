@@ -1,4 +1,4 @@
-import { Home, Users, Heart, MessageCircle, User, Sparkles, Moon } from "lucide-react";
+import { Home, Users, Heart, MessageCircle, User, Sparkles, Star } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useNotificationCounts } from "@/hooks/useNotificationCounts";
 
@@ -10,7 +10,7 @@ const BottomNavigation = () => {
     { icon: Heart, label: "Like You", path: "/like-you", count: counts.likeYou },
     { icon: MessageCircle, label: "Matches", path: "/matches", count: counts.matches },
     { icon: Sparkles, label: "Community", path: "/community", count: counts.community },
-    { icon: Moon, label: "Deen", path: "/islamic-features", count: 0 },
+    { icon: Star, label: "Lifestyle", path: "/lifestyle-features", count: 0 },
     { icon: User, label: "Account", path: "/account", count: 0 },
   ];
 
