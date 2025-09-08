@@ -47,8 +47,8 @@ const TermsOfService = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-gray-700 leading-relaxed">
-              LoveQuest is a premium Muslim dating platform designed to help Muslims find meaningful relationships 
-              in accordance with Islamic values. By using our service, you agree to these terms and conditions.
+              LoveQuest is a premium dating platform designed to help singles find meaningful relationships. 
+              By using our service, you agree to these terms and conditions.
             </p>
             <p className="text-gray-700 leading-relaxed">
               These terms govern your use of LoveQuest's website, mobile applications, and services.
@@ -81,7 +81,7 @@ const TermsOfService = () => {
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
-                <p className="text-gray-700">You must respect Islamic values and community guidelines</p>
+                <p className="text-gray-700">You must respect community guidelines and treat others with respect</p>
               </div>
             </div>
           </CardContent>
@@ -105,7 +105,7 @@ const TermsOfService = () => {
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
-                  <p className="text-gray-700">Maintain appropriate Islamic behavior and dress</p>
+                  <p className="text-gray-700">Maintain appropriate behavior and respectful interactions</p>
                 </div>
                 <div className="flex items-start gap-3">
                   <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />

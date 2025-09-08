@@ -51,7 +51,7 @@ const DEMO_MESSAGES: Message[] = [
     id: 'demo-1',
     sender_id: 'demo-user-1',
     receiver_id: 'current-user',
-    content: "Assalamu alaikum! I noticed we both love reading Islamic literature. What's your favorite book?",
+    content: "Hello! I noticed we both love reading personal development books. What's your favorite book?",
     message_type: 'text',
     is_read: true,
     created_at: new Date(Date.now() - 3600000).toISOString(),

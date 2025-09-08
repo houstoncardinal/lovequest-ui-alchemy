@@ -267,7 +267,7 @@ const Onboarding = () => {
   const onboardingSteps = [
     {
       title: "Welcome to LoveQuest",
-      subtitle: "Find your perfect match in a respectful, halal environment",
+      subtitle: "Find your perfect match in a respectful, premium environment",
       content: () => (
         <div className="text-center space-y-6">
           <div className="relative">
@@ -282,7 +282,7 @@ const Onboarding = () => {
           </div>
           <h2 className="text-3xl font-bold text-gray-900">Start Your Journey</h2>
           <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
-            Join thousands of Muslims finding meaningful relationships. 
+            Join thousands of singles finding meaningful relationships. 
             Our platform prioritizes respect, privacy, and authentic connections.
           </p>
           <div className="grid grid-cols-3 gap-4 mt-8">
@@ -302,7 +302,7 @@ const Onboarding = () => {
               <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
                 <Heart className="w-6 h-6 text-emerald-600" />
               </div>
-              <p className="text-xs text-gray-600 font-medium">Halal Dating</p>
+              <p className="text-xs text-gray-600 font-medium">Premium Dating</p>
             </div>
           </div>
         </div>
@@ -469,7 +469,7 @@ const Onboarding = () => {
       )
     },
     {
-      title: "Islamic Practice",
+      title: "Personal Preferences",
       subtitle: "Help us understand your religious practice",
       content: () => (
         <div className="space-y-6 max-w-md mx-auto">
@@ -822,7 +822,7 @@ const Onboarding = () => {
       if (!profileData.religionLevel || !profileData.prayerFrequency) {
         toast({
           title: "Required Fields",
-          description: "Please complete your Islamic practice information.",
+          description: "Please complete your personal preferences.",
           variant: "destructive",
         });
         return;

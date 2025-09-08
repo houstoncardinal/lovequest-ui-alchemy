@@ -116,7 +116,7 @@ const SignUp = () => {
           </div>
           <div className="ml-4">
             <h1 className="text-2xl font-bold text-gray-900">LoveQuest</h1>
-            <p className="text-xs text-emerald-600 font-medium">Premium Halal Dating</p>
+            <p className="text-xs text-emerald-600 font-medium">Premium Dating</p>
           </div>
         </div>
         <div></div>

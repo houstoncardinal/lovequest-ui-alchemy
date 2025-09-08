@@ -375,7 +375,7 @@ const EditProfile = () => {
     "Travel", "Fitness", "Reading", "Cooking", "Music", "Art", 
     "Nature", "Gaming", "Coffee", "Education", "Photography", 
     "Sports", "Movies", "Technology", "Fashion", "Volunteering",
-    "Islamic Studies", "Charity Work", "Family Time", "Writing"
+    "Personal Development", "Charity Work", "Family Time", "Writing"
   ];
 
   const languages = [
@@ -389,7 +389,7 @@ const EditProfile = () => {
   ];
 
   const dietaryPrefs = [
-    "Halal Only", "Vegetarian", "Vegan", "No Restrictions", "Organic"
+    "No Restrictions", "Vegetarian", "Vegan", "Organic", "Pescatarian"
   ];
 
   const relationshipGoals = [
@@ -580,7 +580,7 @@ const EditProfile = () => {
                 <SelectItem value="business">Business</SelectItem>
                 <SelectItem value="engineering">Engineering</SelectItem>
                 <SelectItem value="arts">Arts & Creative</SelectItem>
-                <SelectItem value="islamic_studies">Islamic Studies</SelectItem>
+                <SelectItem value="personal_development">Personal Development</SelectItem>
                 <SelectItem value="finance">Finance</SelectItem>
                 <SelectItem value="legal">Legal</SelectItem>
                 <SelectItem value="other">Other</SelectItem>
@@ -625,13 +625,13 @@ const EditProfile = () => {
           </div>
         </Card>
 
-        {/* Islamic Practice */}
+        {/* Personal Values */}
         <Card className="p-6 space-y-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Church className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Islamic Practice</h3>
+            <h3 className="font-semibold text-gray-900">Personal Values</h3>
           </div>
           
           <div>
@@ -699,10 +699,10 @@ const EditProfile = () => {
           </div>
 
           <div>
-            <Label htmlFor="islamicKnowledgeLevel">Islamic Knowledge Level</Label>
+            <Label htmlFor="islamicKnowledgeLevel">Personal Values Level</Label>
             <Select value={formData.islamicKnowledgeLevel} onValueChange={(value) => handleSelectChange('islamicKnowledgeLevel', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select your Islamic knowledge level" />
+                <SelectValue placeholder="Select your personal values level" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="basic">Basic</SelectItem>

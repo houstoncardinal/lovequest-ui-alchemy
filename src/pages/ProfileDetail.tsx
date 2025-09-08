@@ -92,7 +92,7 @@ const ProfileDetail = () => {
       isPremium: false,
       details: {
         gender: "Woman",
-        religion: "Muslims",
+        religion: "All Backgrounds",
         zodiac: "Taurus",
         drinking: "Never",
         smoking: "Sometimes",
@@ -111,7 +111,7 @@ const ProfileDetail = () => {
       lifestyle: {
         pets: "No pets yet",
         workout: "Boxing & Running",
-        diet: "Halal",
+        diet: "No Restrictions",
         socialLevel: "Extrovert"
       },
       values: [

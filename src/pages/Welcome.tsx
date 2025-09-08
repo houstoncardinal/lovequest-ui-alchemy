@@ -18,8 +18,8 @@ const Welcome = () => {
 
   const slides = [
     {
-      title: "Find Your Halal Match",
-      subtitle: "Connect with Muslims who share your values and marriage goals in a premium, respectful environment.",
+      title: "Find Your Perfect Match",
+      subtitle: "Connect with singles who share your values and relationship goals in a premium, respectful environment.",
       icon: Heart,
       color: "from-emerald-500 via-emerald-600 to-emerald-700",
       bgGradient: "from-emerald-50 via-white to-emerald-100",
@@ -29,7 +29,7 @@ const Welcome = () => {
       badge: (
         <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-1 text-xs font-bold shadow-lg flex items-center gap-1">
           <Sparkles className="w-3 h-3" />
-          Halal & Premium
+          Premium & Secure
         </Badge>
       ),
       microDecor: (
@@ -41,7 +41,7 @@ const Welcome = () => {
     },
     {
       title: "Luxury Experience, Faithful Connections",
-      subtitle: "LoveQuest offers a premium, safe, and sophisticated space designed exclusively for Muslim singles seeking marriage.",
+      subtitle: "LoveQuest offers a premium, safe, and sophisticated space designed for singles seeking meaningful relationships.",
       icon: Crown,
       color: "from-amber-500 via-amber-600 to-amber-700",
       bgGradient: "from-amber-50 via-white to-amber-100",
@@ -103,7 +103,7 @@ const Welcome = () => {
           </div>
           <div className="ml-4">
             <h1 className="text-2xl font-bold text-gray-900">LoveQuest</h1>
-            <p className="text-xs text-emerald-600 font-medium">Premium Halal Dating</p>
+            <p className="text-xs text-emerald-600 font-medium">Premium Dating</p>
           </div>
         </div>
         
@@ -180,7 +180,7 @@ const Welcome = () => {
           {/* Social proof */}
           <div className="flex items-center justify-center space-x-2 text-gray-500 text-sm">
             <Users className="w-4 h-4" />
-            <span>Join 50,000+ Muslims finding love</span>
+            <span>Join 50,000+ singles finding love</span>
           </div>
         </div>
       </div>

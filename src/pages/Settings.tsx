@@ -570,7 +570,7 @@ const Settings = () => {
         {/* Version Info */}
         <div className="text-center text-sm text-gray-500">
           <p>LoveQuest v1.0.0</p>
-          <p className="mt-1">Premium Muslim Dating</p>
+          <p className="mt-1">Premium Dating</p>
         </div>
       </div>
     </div>

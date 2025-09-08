@@ -275,7 +275,7 @@ const Preferences = () => {
     { value: 'business', label: 'Business' },
     { value: 'engineering', label: 'Engineering' },
     { value: 'arts', label: 'Arts & Creative' },
-    { value: 'islamic_studies', label: 'Islamic Studies' },
+    { value: 'personal_development', label: 'Personal Development' },
     { value: 'other', label: 'Other' },
   ];
 
@@ -397,7 +397,7 @@ const Preferences = () => {
               </Select>
             </div>
 
-            {/* Show Me - Automatically set to opposite gender for Islamic compliance */}
+            {/* Show Me - Based on user preferences */}
             {userProfile && (
               <div className="space-y-4">
                 <Label className="text-sm font-medium">Show Me</Label>
@@ -411,7 +411,7 @@ const Preferences = () => {
                         {userProfile.gender === 'male' ? 'Women' : 'Men'}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Islamic guidelines - opposite gender only
+                        Based on your preferences
                       </p>
                     </div>
                   </div>
@@ -529,7 +529,7 @@ const Preferences = () => {
                 { key: 'has_children', label: 'Has children', icon: '👶' },
                 { key: 'previous_marriage', label: 'Previously married', icon: '💍' },
                 { key: 'different_religion_level', label: 'Very different religion level', icon: '📿' },
-                { key: 'non_practicing', label: 'Non-practicing Muslim', icon: '🕌' },
+                { key: 'spiritual', label: 'Spiritual/Religious', icon: '🙏' },
                 ...(userProfile?.gender === 'male' ? [{ key: 'no_hijab', label: 'Does not wear hijab', icon: '🧕' }] : []),
               ].map((item) => (
                 <div key={item.key} className="flex items-center justify-between p-4 rounded-xl border border-border/30 hover:border-primary/30 transition-colors">

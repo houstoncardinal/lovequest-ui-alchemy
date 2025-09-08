@@ -297,15 +297,15 @@ const Pricing = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Heart className="w-8 h-8 text-emerald-600" />
                 </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Halal Dating</h4>
-                <p className="text-sm text-gray-600">Respectful platform designed for Muslim marriage seekers.</p>
+                <h4 className="font-semibold text-gray-900 mb-2">Premium Dating</h4>
+                <p className="text-sm text-gray-600">Respectful platform designed for serious relationship seekers.</p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
                   <Users className="w-8 h-8 text-emerald-600" />
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-2">50k+ Members</h4>
-                <p className="text-sm text-gray-600">Join thousands of Muslims finding meaningful relationships.</p>
+                <p className="text-sm text-gray-600">Join thousands of singles finding meaningful relationships.</p>
               </div>
             </div>
           </div>

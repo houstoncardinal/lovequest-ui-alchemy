@@ -61,7 +61,7 @@ const AdvancedFilters = () => {
   ];
 
   const interestOptions = [
-    "Reading Quran", "Islamic Studies", "Community Service", "Travel",
+    "Reading", "Personal Development", "Community Service", "Travel",
     "Cooking", "Sports", "Technology", "Arts", "Nature", "Fitness",
     "Photography", "Music", "Dancing", "Gaming", "Pets"
   ];
