@@ -17,6 +17,7 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
   const [step, setStep] = useState<'id' | 'face' | 'complete'>('id');
   const [isUploading, setIsUploading] = useState(false);
   const [idDocument, setIdDocument] = useState<File | null>(null);
+  const [idPreviewUrl, setIdPreviewUrl] = useState<string | null>(null);
   const [facePhoto, setFacePhoto] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -93,7 +94,15 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
         return;
       }
 
+      // Clean up previous preview URL
+      if (idPreviewUrl) {
+        URL.revokeObjectURL(idPreviewUrl);
+      }
+
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
       setIdDocument(file);
+      setIdPreviewUrl(previewUrl);
     }
   };
 
@@ -185,17 +194,28 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-          {idDocument ? (
+        <div className="border-2 border-dashed border-border rounded-lg overflow-hidden">
+          {idDocument && idPreviewUrl ? (
             <div className="space-y-2">
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto" />
-              <p className="text-sm font-medium">{idDocument.name}</p>
-              <p className="text-xs text-muted-foreground">
-                {(idDocument.size / 1024 / 1024).toFixed(2)} MB
-              </p>
+              <div className="relative">
+                <img
+                  src={idPreviewUrl}
+                  alt="ID Document Preview"
+                  className="w-full h-64 object-contain bg-muted"
+                />
+                <div className="absolute top-2 right-2 bg-green-500 rounded-full p-1">
+                  <CheckCircle className="w-5 h-5 text-white" />
+                </div>
+              </div>
+              <div className="px-4 pb-4">
+                <p className="text-sm font-medium">{idDocument.name}</p>
+                <p className="text-xs text-muted-foreground">
+                  {(idDocument.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-4 p-8 text-center">
               <Upload className="w-12 h-12 text-muted-foreground mx-auto" />
               <div>
                 <p className="text-sm font-medium">Click to upload your ID</p>
@@ -224,13 +244,22 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
           {idDocument ? 'Change Document' : 'Select Document'}
         </Button>
 
-        <Button 
+        <Button
           onClick={() => setStep('face')}
           className="w-full"
           disabled={!idDocument || isUploading}
         >
           Continue to Face Verification
           <ArrowRight className="w-4 h-4 ml-2" />
+        </Button>
+
+        <Button
+          onClick={onComplete}
+          variant="ghost"
+          className="w-full"
+          disabled={isUploading}
+        >
+          Skip Verification
         </Button>
       </CardContent>
     </Card>
@@ -316,14 +345,24 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
           )}
         </div>
 
-        <Button 
-          onClick={() => setStep('id')}
-          variant="ghost" 
-          className="w-full"
-          disabled={isUploading}
-        >
-          Back to ID Upload
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            onClick={() => setStep('id')}
+            variant="ghost"
+            className="flex-1"
+            disabled={isUploading}
+          >
+            Back to ID Upload
+          </Button>
+          <Button
+            onClick={onComplete}
+            variant="outline"
+            className="flex-1"
+            disabled={isUploading}
+          >
+            Skip Verification
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
@@ -370,8 +409,12 @@ const VerificationFlow: React.FC<VerificationFlowProps> = ({ onComplete }) => {
   React.useEffect(() => {
     return () => {
       stopCamera();
+      // Clean up preview URL on unmount
+      if (idPreviewUrl) {
+        URL.revokeObjectURL(idPreviewUrl);
+      }
     };
-  }, [stopCamera]);
+  }, [stopCamera, idPreviewUrl]);
 
   switch (step) {
     case 'id':

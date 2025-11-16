@@ -115,7 +115,7 @@ const Home = () => {
           gender: userData.gender,
           location: userData.location || 'Unknown',
           bio: userData.bio || '',
-          photoURL: userData.photoURL,
+          photoURL: (userData.photos && userData.photos[0]) || null,
           religionLevel: userData.religionLevel,
           prayerFrequency: userData.prayerFrequency,
           hijabStatus: userData.hijabStatus,

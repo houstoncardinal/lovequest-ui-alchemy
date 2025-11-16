@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { db, collection, query, where, getDocs, addDoc, deleteDoc, doc, updateDoc, orderBy as firestoreOrderBy } from '@/integrations/firebase';
+import { db, collection, query, where, getDocs, addDoc, deleteDoc, doc, updateDoc, orderBy as firestoreOrderBy, getDoc } from '@/integrations/firebase';
 import { storage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from '@/integrations/firebase';
-import { updateUserProfile } from '@/lib/firestore/users';
+import { updateUserProfile, getUserProfile } from '@/lib/firestore/users';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 
@@ -113,6 +113,15 @@ export const usePhotoVerification = () => {
         ...uploadRecord
       };
 
+      // Sync with users.photos[] array (single source of truth)
+      const userProfile = await getUserProfile(user.uid);
+      const currentPhotos = userProfile?.photos || [];
+
+      // Add new photo to the beginning of the array
+      await updateUserProfile(user.uid, {
+        photos: [publicUrl, ...currentPhotos]
+      });
+
       // TODO: Trigger content moderation via Cloud Function
       console.log('Photo uploaded, moderation will be implemented via Cloud Functions');
 
@@ -121,7 +130,7 @@ export const usePhotoVerification = () => {
 
       toast({
         title: "Photo uploaded",
-        description: "Your photo is being reviewed and will be available soon",
+        description: "Your photo has been added to your profile",
       });
 
       return photoUpload;
@@ -157,6 +166,15 @@ export const usePhotoVerification = () => {
 
       // Delete from Firestore
       await deleteDoc(doc(db, 'photoUploads', uploadId));
+
+      // Sync with users.photos[] array - remove the photo URL
+      const userProfile = await getUserProfile(user.uid);
+      const currentPhotos = userProfile?.photos || [];
+      const updatedPhotos = currentPhotos.filter(photoUrl => photoUrl !== upload.fileUrl);
+
+      await updateUserProfile(user.uid, {
+        photos: updatedPhotos
+      });
 
       // Update local state
       setUploads(prev => prev.filter(u => u.id !== uploadId));
@@ -216,9 +234,18 @@ export const usePhotoVerification = () => {
         updatedAt: new Date().toISOString()
       });
 
-      // Update profile avatar
+      // Sync with users.photos[] array - move primary photo to index 0
+      const userProfile = await getUserProfile(user.uid);
+      const currentPhotos = userProfile?.photos || [];
+
+      // Remove the photo from its current position and add it to the beginning
+      const updatedPhotos = [
+        upload.fileUrl,
+        ...currentPhotos.filter(photoUrl => photoUrl !== upload.fileUrl)
+      ];
+
       await updateUserProfile(user.uid, {
-        photoURL: upload.fileUrl
+        photos: updatedPhotos
       });
 
       // Update local state

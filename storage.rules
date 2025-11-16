@@ -72,6 +72,23 @@ service firebase.storage {
       allow delete: if isSignedIn() && isOwner(userId);
     }
 
+    match /verification-documents/{userId}/{documentId} {
+      // Read: Owner or admin only (via Firebase Admin SDK)
+      allow read: if isSignedIn() && isOwner(userId);
+
+      // Upload: Owner only, must be image, max 10MB
+      allow create: if isSignedIn() &&
+                      isOwner(userId) &&
+                      isImage() &&
+                      isValidImageSize();
+
+      // Update: Not allowed
+      allow update: if false;
+
+      // Delete: Owner or admin only (via Firebase Admin SDK)
+      allow delete: if isSignedIn() && isOwner(userId);
+    }
+
     // ============================================
     // MESSAGE ATTACHMENTS
     // ============================================

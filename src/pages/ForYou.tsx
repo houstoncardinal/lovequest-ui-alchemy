@@ -43,39 +43,11 @@ const ForYou = () => {
           displayName: profile.displayName || `${profile.firstName} ${profile.lastName}`,
           age: profile.age,
           location: profile.location || '2.1 km away',
-          avatarUrl: profile.photoURL,
+          avatarUrl: (profile.photos && profile.photos[0]) || null,
           bio: profile.bio || 'Great personality match'
         }));
 
-      // Add mock data for demo purposes if no profiles found
-      const mockProfiles = [
-        {
-          id: "p1",
-          displayName: "Emma Watson",
-          age: 24,
-          location: "1.5 km away",
-          avatarUrl: profile1,
-          bio: "Perfect personality alignment"
-        },
-        {
-          id: "p2",
-          displayName: "Sophia Chen",
-          age: 22,
-          location: "2.3 km away",
-          avatarUrl: profile2,
-          bio: "Similar communication style"
-        },
-        {
-          id: "p3",
-          displayName: "Maya Rodriguez",
-          age: 26,
-          location: "3.1 km away",
-          avatarUrl: profile3,
-          bio: "8 shared interests"
-        }
-      ];
-
-      setProfiles(userProfiles.length > 0 ? userProfiles : mockProfiles);
+      setProfiles(userProfiles);
     } catch (error) {
       console.error('Error fetching profiles:', error);
     } finally {
@@ -90,82 +62,6 @@ const ForYou = () => {
     { name: "Location", icon: Users, color: "bg-green-500" },
     { name: "Chemistry", icon: Zap, color: "bg-red-500" },
   ];
-
-  const matchProfiles = {
-    Personality: [
-      {
-        id: "p1",
-        name: "Emma Watson",
-        age: 24,
-        distance: "1.5 km away",
-        image: profile1,
-        matchScore: 98,
-        matchReason: "Perfect personality alignment"
-      },
-      {
-        id: "p2", 
-        name: "Sophia Chen",
-        age: 22,
-        distance: "2.3 km away",
-        image: profile2,
-        matchScore: 95,
-        matchReason: "Similar communication style"
-      }
-    ],
-    Interest: [
-      {
-        id: "i1",
-        name: "Maya Rodriguez",
-        age: 26,
-        distance: "3.1 km away", 
-        image: profile3,
-        matchScore: 92,
-        matchReason: "8 shared interests"
-      },
-      {
-        id: "i2",
-        name: "Luna Park",
-        age: 23,
-        distance: "1.8 km away",
-        image: profile1,
-        matchScore: 89,
-        matchReason: "Music & art lover"
-      }
-    ],
-    Horoscope: [
-      {
-        id: "h1",
-        name: "Aria Johnson",
-        age: 25,
-        distance: "2.7 km away",
-        image: profile2,
-        matchScore: 88,
-        matchReason: "Libra compatibility"
-      }
-    ],
-    Location: [
-      {
-        id: "l1",
-        name: "Zoe Williams",
-        age: 21,
-        distance: "0.8 km away",
-        image: profile3,
-        matchScore: 85,
-        matchReason: "Same neighborhood"
-      }
-    ],
-    Chemistry: [
-      {
-        id: "c1",
-        name: "Nova Smith",
-        age: 27,
-        distance: "4.2 km away",
-        image: profile1,
-        matchScore: 96,
-        matchReason: "Instant connection predicted"
-      }
-    ]
-  };
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">

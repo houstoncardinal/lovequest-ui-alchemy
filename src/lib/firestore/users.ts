@@ -70,9 +70,8 @@ export interface UserProfile {
   verificationRequired?: boolean;
   canAccessApp: boolean;
 
-  // Premium
-  isPremium: boolean;
-  premiumTier: 'free' | 'basic' | 'premium' | 'elite';
+  // Premium status is now managed through userRoles collection
+  // Use useUserRole() hook to access premium features
 
   // Metadata
   createdAt: Timestamp;

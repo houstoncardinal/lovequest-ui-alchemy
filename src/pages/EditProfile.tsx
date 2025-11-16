@@ -92,7 +92,7 @@ const EditProfile = () => {
           age: data.age?.toString() || "",
           bio: data.bio || "",
           location: data.location || "",
-          avatarUrl: data.photoURL || "",
+          avatarUrl: (data.photos && data.photos[0]) || "",
 
           careerField: data.careerField || "",
           educationLevel: data.educationLevel || "",
@@ -288,14 +288,13 @@ const EditProfile = () => {
 
     setLoading(true);
     try {
-      const profileData = {
+      const profileData: any = {
         firstName: formData.firstName,
         lastName: formData.lastName,
         displayName: formData.displayName || `${formData.firstName} ${formData.lastName}`,
         age: formData.age ? parseInt(formData.age) : undefined,
         bio: formData.bio,
         location: formData.location,
-        photoURL: formData.avatarUrl,
 
         careerField: formData.careerField,
         educationLevel: formData.educationLevel,
@@ -330,6 +329,17 @@ const EditProfile = () => {
 
         updatedAt: new Date().toISOString()
       };
+
+      // Update photos array if avatar URL changed
+      if (formData.avatarUrl) {
+        const currentData = await getUserProfile(user.uid);
+        const currentPhotos = currentData?.photos || [];
+
+        // If avatar URL is new or different from first photo, update photos array
+        if (!currentPhotos.includes(formData.avatarUrl)) {
+          profileData.photos = [formData.avatarUrl, ...currentPhotos.filter(p => p !== formData.avatarUrl)];
+        }
+      }
 
       await updateUserProfile(user.uid, profileData);
 

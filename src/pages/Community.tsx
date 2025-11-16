@@ -1,7 +1,7 @@
 // ✅ MIGRATED TO FIREBASE - Terminal 2 - 2025-11-15
 import { useState, useEffect } from "react";
 import { db } from "@/integrations/firebase";
-import { collection, query, where, getDocs, addDoc, updateDoc, deleteDoc, doc, orderBy, limit } from "firebase/firestore";
+import { collection, query, where, getDocs, getDoc, addDoc, updateDoc, deleteDoc, doc, setDoc, orderBy, limit } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -81,8 +81,8 @@ const Community = () => {
 
       for (const userId of userIds) {
         const profileQuery = query(
-          collection(db, 'profiles'),
-          where('userId', '==', userId),
+          collection(db, 'users'),
+          where('uid', '==', userId),
           limit(1)
         );
         const profileSnapshot = await getDocs(profileQuery);
@@ -95,21 +95,21 @@ const Community = () => {
       }
 
       // Check which posts current user has liked
-      let userLikes: string[] = [];
-      if (user) {
-        const likesQuery = query(
-          collection(db, 'postLikes'),
-          where('userId', '==', user.uid)
-        );
-        const likesSnapshot = await getDocs(likesQuery);
-        userLikes = likesSnapshot.docs.map(doc => doc.data().postId);
-      }
+      const postsWithProfiles = await Promise.all(postsData.map(async (post) => {
+        let userLiked = false;
 
-      // Combine posts with profiles and like status
-      const postsWithProfiles = postsData.map(post => ({
-        ...post,
-        profiles: profilesData.find(profile => profile.userId === post.userId) || null,
-        userLiked: userLikes.includes(post.id)
+        if (user) {
+          // Check if user liked this post using subcollection pattern
+          const likeDocRef = doc(db, 'posts', post.id, 'likes', user.uid);
+          const likeDoc = await getDoc(likeDocRef);
+          userLiked = likeDoc.exists();
+        }
+
+        return {
+          ...post,
+          profiles: profilesData.find(profile => profile.userId === post.userId) || null,
+          userLiked
+        };
       }));
 
       setPosts(postsWithProfiles);
@@ -137,17 +137,9 @@ const Community = () => {
       }
 
       if (isLiked) {
-        // Find and delete the like document
-        const likesQuery = query(
-          collection(db, 'postLikes'),
-          where('postId', '==', postId),
-          where('userId', '==', user.uid)
-        );
-        const likesSnapshot = await getDocs(likesQuery);
-
-        for (const likeDoc of likesSnapshot.docs) {
-          await deleteDoc(doc(db, 'postLikes', likeDoc.id));
-        }
+        // Delete the like document from subcollection
+        const likeDocRef = doc(db, 'posts', postId, 'likes', user.uid);
+        await deleteDoc(likeDocRef);
 
         // Update post likesCount
         const postRef = doc(db, 'posts', postId);
@@ -158,9 +150,9 @@ const Community = () => {
           });
         }
       } else {
-        // Add new like
-        await addDoc(collection(db, 'postLikes'), {
-          postId,
+        // Add new like to subcollection using user ID as document ID
+        const likeDocRef = doc(db, 'posts', postId, 'likes', user.uid);
+        await setDoc(likeDocRef, {
           userId: user.uid,
           createdAt: new Date().toISOString()
         });

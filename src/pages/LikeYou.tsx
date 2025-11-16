@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -6,63 +6,110 @@ import Header from "@/components/Header";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import ProfileCard from "@/components/ProfileCard";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import { db, collection, query, where, getDocs, orderBy, limit as firestoreLimit, getDoc, doc } from "@/integrations/firebase";
 import profile1 from "@/assets/profile-1.jpg";
 import profile2 from "@/assets/profile-2.jpg";
-import profile3 from "@/assets/profile-3.jpg";
+
+interface ProfileData {
+  id: string;
+  name: string;
+  age?: number;
+  distance: string;
+  image: string | null;
+  createdAt?: string;
+}
 
 const LikeYou = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("Recent");
-  
-  const tabs = [
-    { name: "All", count: 200 },
-    { name: "Recent", count: 50 },
-    { name: "Nearby", count: 150 }
-  ];
+  const [profiles, setProfiles] = useState<ProfileData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [allProfiles, setAllProfiles] = useState<ProfileData[]>([]);
 
-  const profiles = [
-    {
-      id: "1",
-      name: "Shafa Asadel",
-      age: 20,
-      distance: "2 km away",
-      image: profile1,
-    },
-    {
-      id: "2", 
-      name: "Aura Alexandra",
-      age: 20,
-      distance: "2 km away",
-      image: profile3,
-    },
-    {
-      id: "3",
-      name: "Angkita Sekar",
-      age: 23,
-      distance: "3 km away", 
-      image: profile2,
-    },
-    {
-      id: "4",
-      name: "Sarah Johnson",
-      age: 25,
-      distance: "1 km away",
-      image: profile1,
-    },
-    {
-      id: "5",
-      name: "Emma Wilson",
-      age: 22,
-      distance: "4 km away",
-      image: profile3,
-    },
-    {
-      id: "6",
-      name: "Jessica Brown",
-      age: 24,
-      distance: "2 km away",
-      image: profile2,
+  useEffect(() => {
+    if (user) {
+      fetchLikes();
     }
+  }, [user]);
+
+  useEffect(() => {
+    // Filter profiles based on active tab
+    if (activeTab === "All") {
+      setProfiles(allProfiles);
+    } else if (activeTab === "Recent") {
+      // Show profiles from last 7 days
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const filtered = allProfiles.filter(p => {
+        if (!p.createdAt) return false;
+        return new Date(p.createdAt) >= sevenDaysAgo;
+      });
+      setProfiles(filtered);
+    } else if (activeTab === "Nearby") {
+      // For now, show all. In production, this would filter by geolocation
+      setProfiles(allProfiles);
+    }
+  }, [activeTab, allProfiles]);
+
+  const fetchLikes = async () => {
+    if (!user) return;
+
+    try {
+      setLoading(true);
+
+      // Query the likes collection where likedId is the current user
+      const likesQuery = query(
+        collection(db, 'likes'),
+        where('likedId', '==', user.uid),
+        orderBy('createdAt', 'desc')
+      );
+
+      const likesSnapshot = await getDocs(likesQuery);
+      const profilesData: ProfileData[] = [];
+
+      // Fetch user profile for each like
+      for (const likeDoc of likesSnapshot.docs) {
+        const likeData = likeDoc.data();
+        const likerId = likeData.likerId;
+
+        // Fetch the liker's profile from users collection
+        const userDocRef = doc(db, 'users', likerId);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+
+          profilesData.push({
+            id: userData.uid,
+            name: userData.displayName || `${userData.firstName} ${userData.lastName}`,
+            age: userData.age,
+            distance: userData.location || "Unknown",
+            image: (userData.photos && userData.photos[0]) || null,
+            createdAt: likeData.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+          });
+        }
+      }
+
+      setAllProfiles(profilesData);
+      setProfiles(profilesData);
+    } catch (error) {
+      console.error('Error fetching likes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const tabs = [
+    { name: "All", count: allProfiles.length },
+    { name: "Recent", count: allProfiles.filter(p => {
+      if (!p.createdAt) return false;
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      return new Date(p.createdAt) >= sevenDaysAgo;
+    }).length },
+    { name: "Nearby", count: allProfiles.length }
   ];
 
   return (
@@ -115,16 +162,36 @@ const LikeYou = () => {
 
       {/* Profile Grid */}
       <div className="p-4">
-        <div className="grid grid-cols-2 gap-4">
-          {profiles.map((profile) => (
-            <ProfileCard
-              key={profile.id}
-              {...profile}
-              onLike={(id) => console.log('Liked:', id)}
-              onClick={(id) => navigate(`/profile/${id}`)}
-            />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600 mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading profiles...</p>
+            </div>
+          </div>
+        ) : profiles.length === 0 ? (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center max-w-md mx-auto p-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">No Likes Yet</h2>
+              <p className="text-gray-600">When someone likes you, they'll appear here.</p>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 gap-4">
+            {profiles.map((profile) => (
+              <ProfileCard
+                key={profile.id}
+                id={profile.id}
+                name={profile.name}
+                age={profile.age}
+                distance={profile.distance}
+                image={profile.image || (profile.age && profile.age < 25 ? profile1 : profile2)}
+                onLike={(id) => console.log('Liked back:', id)}
+                onClick={(id) => navigate(`/profile/${id}`)}
+              />
+            ))}
+          </div>
+        )}
       </div>
 
       <InteractiveMenu />

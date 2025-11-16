@@ -21,131 +21,8 @@ const ProfileDetail = () => {
   const [activeTab, setActiveTab] = useState("About");
   const [playingVoiceNote, setPlayingVoiceNote] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [fetchedProfile, setFetchedProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<any>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-
-  // Mock profile data - in real app this would come from API based on id
-  const profiles = {
-    "1": {
-      name: "Roseane Rose",
-      age: 24,
-      distance: "3 km away",
-      commonInterests: 5,
-      bio: "Digital art and anime lover, ready to share creations and interesting stories. I'm passionate about bringing imagination to life through my artwork.",
-      image: profile2,
-      images: [profile2, profile1, profile3],
-      isPremium: true,
-      details: {
-        gender: "Woman",
-        religion: "Christians",
-        zodiac: "Pisces",
-        drinking: "Socially",
-        smoking: "Never",
-        height: "5'6\"",
-        education: "Bachelor's Degree",
-        jobTitle: "Digital Artist",
-        company: "Freelance"
-      },
-      interests: [
-        { icon: "🎨", label: "Digital Art", highlighted: true },
-        { icon: "📺", label: "Anime", highlighted: true },
-        { icon: "☕", label: "Coffee", highlighted: true },
-        { icon: "📚", label: "Reading" },
-        { icon: "🎮", label: "Gaming" },
-        { icon: "🎵", label: "Indie Music" }
-      ],
-      lifestyle: {
-        pets: "Cat lover 🐱",
-        workout: "Yoga & Pilates",
-        diet: "Vegetarian",
-        socialLevel: "Ambivert"
-      },
-      values: [
-        "Creativity", "Honesty", "Adventure", "Growth", "Humor"
-      ],
-      voiceNotes: [
-        {
-          id: "vn1",
-          prompt: "What's your perfect date idea?",
-          duration: "0:45",
-          audioUrl: null // Would be actual audio URL in real app
-        },
-        {
-          id: "vn2", 
-          prompt: "What makes you laugh?",
-          duration: "0:32",
-          audioUrl: null
-        },
-        {
-          id: "vn3",
-          prompt: "What are you passionate about?",
-          duration: "1:12",
-          audioUrl: null
-        }
-      ],
-      photos: [
-        { url: profile2, caption: "Coffee shop vibes ☕" },
-        { url: profile1, caption: "Working on my latest digital piece 🎨" },
-        { url: profile3, caption: "Sunday morning yoga 🧘‍♀️" }
-      ]
-    },
-    "2": {
-      name: "Shafa Asadel",
-      age: 20,
-      distance: "2 km away", 
-      commonInterests: 4,
-      bio: "Music enthusiast, always on the lookout for new tunes and ready to share playlists. Let's discover new sounds and enjoy the rhythm of life! ♥️✨",
-      image: profile1,
-      images: [profile1, profile2, profile3],
-      isPremium: false,
-      details: {
-        gender: "Woman",
-        religion: "All Backgrounds",
-        zodiac: "Taurus",
-        drinking: "Never",
-        smoking: "Sometimes",
-        height: "5'4\"",
-        education: "High School",
-        jobTitle: "Music Student",
-        company: "Local University"
-      },
-      interests: [
-        { icon: "🎵", label: "Pop Punk", highlighted: true },
-        { icon: "☕", label: "Coffee", highlighted: true },
-        { icon: "🥊", label: "Boxing" },
-        { icon: "📱", label: "Fifa Mobile" },
-        { icon: "⚽", label: "Real Madrid" }
-      ],
-      lifestyle: {
-        pets: "No pets yet",
-        workout: "Boxing & Running",
-        diet: "No Restrictions",
-        socialLevel: "Extrovert"
-      },
-      values: [
-        "Music", "Family", "Authenticity", "Fun", "Loyalty"
-      ],
-      voiceNotes: [
-        {
-          id: "vn1",
-          prompt: "What's your favorite music genre and why?",
-          duration: "1:03",
-          audioUrl: null
-        },
-        {
-          id: "vn2",
-          prompt: "Describe your dream concert experience",
-          duration: "0:58",
-          audioUrl: null
-        }
-      ],
-      photos: [
-        { url: profile1, caption: "Jamming to my favorite playlist 🎵" },
-        { url: profile2, caption: "Coffee and music - perfect combo" },
-        { url: profile3, caption: "Boxing training session 🥊" }
-      ]
-    }
-  };
 
   // Fetch profile from Firebase
   useEffect(() => {
@@ -160,7 +37,43 @@ const ProfileDetail = () => {
         const profileData = await getUserProfile(id);
 
         if (profileData) {
-          setFetchedProfile(profileData);
+          // Transform Firebase UserProfile to UI format
+          const transformedProfile = {
+            name: profileData.displayName || `${profileData.firstName} ${profileData.lastName}`,
+            age: profileData.age || 0,
+            distance: profileData.location || "Unknown location",
+            commonInterests: 0, // Would be calculated from matching interests
+            bio: profileData.bio || "No bio yet",
+            image: (profileData.photos && profileData.photos[0]) || (profileData.gender === 'female' ? profile2 : profile1),
+            images: profileData.photos || [],
+            isPremium: false, // Premium status from userRoles collection
+            details: {
+              gender: profileData.gender === 'male' ? 'Man' : profileData.gender === 'female' ? 'Woman' : 'Other',
+              religion: profileData.religionLevel || "Not specified",
+              zodiac: "Not specified",
+              drinking: "Not specified",
+              smoking: profileData.smokingStatus || "Not specified",
+              height: "Not specified",
+              education: profileData.educationLevel || "Not specified",
+              jobTitle: profileData.careerField || "Not specified",
+              company: "Not specified"
+            },
+            interests: [],
+            lifestyle: {
+              pets: profileData.hasChildren ? "Has children" : "No children mentioned",
+              workout: profileData.exerciseFrequency || "Not specified",
+              diet: profileData.dietPreferences?.join(", ") || "Not specified",
+              socialLevel: "Not specified"
+            },
+            values: [],
+            voiceNotes: [],
+            photos: (profileData.photos || []).map((url: string, index: number) => ({
+              url,
+              caption: ""
+            }))
+          };
+
+          setProfile(transformedProfile);
 
           // Check if current user already liked this profile
           if (user) {
@@ -172,7 +85,7 @@ const ProfileDetail = () => {
         console.error("Error fetching profile:", error);
         toast({
           title: "Error",
-          description: "Failed to load profile. Using demo data.",
+          description: "Failed to load profile.",
           variant: "destructive",
         });
       } finally {
@@ -182,9 +95,6 @@ const ProfileDetail = () => {
 
     fetchProfile();
   }, [id, user]);
-
-  // Use fetched profile if available, otherwise fallback to mock data
-  const profile = fetchedProfile || profiles[id as keyof typeof profiles];
 
   if (loading) {
     return (
@@ -286,51 +196,62 @@ const ProfileDetail = () => {
             </div>
 
             {/* Interests */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">Interests</h3>
-              <div className="flex flex-wrap gap-3">
-                {profile.interests.map((interest, index) => (
-                  <InterestTag
-                    key={index}
-                    icon={interest.icon}
-                    label={interest.label}
-                    variant={interest.highlighted ? 'highlighted' : 'default'}
-                  />
-                ))}
+            {profile.interests && profile.interests.length > 0 && (
+              <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">Interests</h3>
+                <div className="flex flex-wrap gap-3">
+                  {profile.interests.map((interest, index) => (
+                    <InterestTag
+                      key={index}
+                      icon={interest.icon}
+                      label={interest.label}
+                      variant={interest.highlighted ? 'highlighted' : 'default'}
+                    />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Values */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4">My Values</h3>
-              <div className="flex flex-wrap gap-3">
-                {profile.values.map((value, index) => (
-                  <Badge key={index} className="bg-emerald-100 text-emerald-700 border-emerald-200 font-medium">
-                    {value}
-                  </Badge>
-                ))}
+            {profile.values && profile.values.length > 0 && (
+              <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-4">My Values</h3>
+                <div className="flex flex-wrap gap-3">
+                  {profile.values.map((value, index) => (
+                    <Badge key={index} className="bg-emerald-100 text-emerald-700 border-emerald-200 font-medium">
+                      {value}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
 
       case "Photos":
         return (
           <div className="grid grid-cols-1 gap-4">
-            {profile.photos.map((photo, index) => (
-              <div key={index} className="relative bg-white rounded-3xl shadow-lg border border-emerald-100 overflow-hidden">
-                <img 
-                  src={photo.url} 
-                  alt={`${profile.name}'s photo ${index + 1}`}
-                  className="w-full aspect-[4/5] object-cover"
-                />
-                {photo.caption && (
-                  <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm rounded-2xl p-4">
-                    <p className="text-white text-sm font-medium">{photo.caption}</p>
-                  </div>
-                )}
+            {profile.photos && profile.photos.length > 0 ? (
+              profile.photos.map((photo, index) => (
+                <div key={index} className="relative bg-white rounded-3xl shadow-lg border border-emerald-100 overflow-hidden">
+                  <img
+                    src={photo.url}
+                    alt={`${profile.name}'s photo ${index + 1}`}
+                    className="w-full aspect-[4/5] object-cover"
+                  />
+                  {photo.caption && (
+                    <div className="absolute bottom-4 left-4 right-4 bg-black/60 backdrop-blur-sm rounded-2xl p-4">
+                      <p className="text-white text-sm font-medium">{photo.caption}</p>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-8 text-center">
+                <Camera className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600">No additional photos</p>
               </div>
-            ))}
+            )}
           </div>
         );
 
@@ -339,58 +260,68 @@ const ProfileDetail = () => {
           <div className="space-y-4">
             <div className="text-center mb-6 bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-2">Voice Notes</h3>
-              <p className="text-gray-600 text-sm">Get to know {profile.name.split(' ')[0]} better through her voice</p>
+              <p className="text-gray-600 text-sm">Get to know {profile.name.split(' ')[0]} better through their voice</p>
             </div>
-            
-            {profile.voiceNotes.map((note) => (
-              <div key={note.id} className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h4 className="font-bold text-gray-900">{note.prompt}</h4>
-                  <Badge className="bg-emerald-100 text-emerald-700 text-xs font-medium">
-                    {note.duration}
-                  </Badge>
-                </div>
-                
-                <div className="flex items-center space-x-4">
-                  <button
-                    onClick={() => playVoiceNote(note.id)}
-                    className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
-                      playingVoiceNote === note.id
-                        ? "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white"
-                        : "bg-emerald-50 border-2 border-emerald-200 text-emerald-600 hover:bg-emerald-100"
-                    }`}
-                  >
-                    {playingVoiceNote === note.id ? (
-                      <Pause className="w-6 h-6" />
-                    ) : (
-                      <Play className="w-6 h-6 ml-1" />
-                    )}
-                  </button>
-                  
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3">
-                      <Volume2 className="w-5 h-5 text-emerald-500" />
-                      <div className="flex-1 bg-emerald-100 rounded-full h-3 relative overflow-hidden">
-                        <div 
-                          className={`h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-300 ${
-                            playingVoiceNote === note.id ? "w-full" : "w-0"
-                          }`}
-                          style={{
-                            animation: playingVoiceNote === note.id ? "progress 3s linear" : "none"
-                          }}
-                        />
+
+            {profile.voiceNotes && profile.voiceNotes.length > 0 ? (
+              <>
+                {profile.voiceNotes.map((note) => (
+                  <div key={note.id} className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-bold text-gray-900">{note.prompt}</h4>
+                      <Badge className="bg-emerald-100 text-emerald-700 text-xs font-medium">
+                        {note.duration}
+                      </Badge>
+                    </div>
+
+                    <div className="flex items-center space-x-4">
+                      <button
+                        onClick={() => playVoiceNote(note.id)}
+                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
+                          playingVoiceNote === note.id
+                            ? "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white"
+                            : "bg-emerald-50 border-2 border-emerald-200 text-emerald-600 hover:bg-emerald-100"
+                        }`}
+                      >
+                        {playingVoiceNote === note.id ? (
+                          <Pause className="w-6 h-6" />
+                        ) : (
+                          <Play className="w-6 h-6 ml-1" />
+                        )}
+                      </button>
+
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3">
+                          <Volume2 className="w-5 h-5 text-emerald-500" />
+                          <div className="flex-1 bg-emerald-100 rounded-full h-3 relative overflow-hidden">
+                            <div
+                              className={`h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-300 ${
+                                playingVoiceNote === note.id ? "w-full" : "w-0"
+                              }`}
+                              style={{
+                                animation: playingVoiceNote === note.id ? "progress 3s linear" : "none"
+                              }}
+                            />
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                ))}
+
+                <div className="text-center mt-6 bg-emerald-50 rounded-3xl p-4">
+                  <p className="text-sm text-emerald-700 font-medium">
+                    👋 Voice notes help you connect on a deeper level
+                  </p>
                 </div>
+              </>
+            ) : (
+              <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-8 text-center">
+                <Music className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <p className="text-gray-600 mb-2">No voice notes yet</p>
+                <p className="text-sm text-gray-500">Voice notes are a premium feature coming soon</p>
               </div>
-            ))}
-            
-            <div className="text-center mt-6 bg-emerald-50 rounded-3xl p-4">
-              <p className="text-sm text-emerald-700 font-medium">
-                👋 Voice notes help you connect on a deeper level
-              </p>
-            </div>
+            )}
           </div>
         );
 

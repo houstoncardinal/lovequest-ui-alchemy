@@ -171,15 +171,22 @@ const Account = () => {
         <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6 mb-6 relative overflow-hidden">
           {/* Premium gradient overlay */}
           <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/20 to-emerald-600/20 rounded-full -translate-y-16 translate-x-16"></div>
-          
+
           <div className="flex items-center space-x-4 relative z-10">
             <div className="relative">
-              <img 
-                src={profile1} 
-                alt="Profile" 
-                className="w-20 h-20 rounded-2xl object-cover ring-4 ring-emerald-100 shadow-lg"
-              />
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg">
+              {loading ? (
+                <div className="w-20 h-20 rounded-2xl bg-gray-200 animate-pulse ring-4 ring-emerald-100 shadow-lg"></div>
+              ) : (
+                <img
+                  src={(profile?.photos && profile.photos[0]) || profile1}
+                  alt="Profile"
+                  className="w-20 h-20 rounded-2xl object-cover ring-4 ring-emerald-100 shadow-lg"
+                />
+              )}
+              <div
+                onClick={() => navigate("/manage-photos")}
+                className="absolute -bottom-1 -right-1 w-7 h-7 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-110 transition-transform"
+              >
                 <Edit3 className="w-4 h-4 text-white" />
               </div>
             </div>

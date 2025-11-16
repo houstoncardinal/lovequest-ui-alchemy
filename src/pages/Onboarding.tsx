@@ -415,9 +415,11 @@ const Onboarding = () => {
             <Input
               id="age"
               type="number"
+              min="18"
+              max="100"
               value={profileData.age}
               onChange={(e) => setProfileData({...profileData, age: e.target.value})}
-              placeholder="Enter your age"
+              placeholder="Enter your age (must be 18+)"
             />
           </div>
           <div>
@@ -808,6 +810,26 @@ const Onboarding = () => {
         });
         return;
       }
+
+      // Validate age is 18 or older
+      const age = parseInt(profileData.age);
+      if (isNaN(age) || age < 18) {
+        toast({
+          title: "Age Restriction",
+          description: "You must be at least 18 years old to use LoveQuest.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (age > 100) {
+        toast({
+          title: "Invalid Age",
+          description: "Please enter a valid age.",
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     if (currentStep === 5) {
@@ -901,14 +923,9 @@ const Onboarding = () => {
         canAccessApp: true, // Allow app access once profile is complete
         verificationRequired: false, // Basic verification completed through profile setup
         updatedAt: new Date().toISOString(),
-        voiceNoteUrl: profileData.voiceNoteUrl
+        voiceNoteUrl: profileData.voiceNoteUrl,
+        photos: photos // Store all photos in single array
       };
-
-      // Only update photoURL if we have photos
-      if (photos.length > 0) {
-        updates.photoURL = photos[0]; // First photo as main avatar
-        updates.photos = photos; // All photos array
-      }
 
       await updateUserProfile(user.uid, updates);
 
@@ -956,7 +973,8 @@ const Onboarding = () => {
       case 3:
         return true; // Location can be skipped
       case 4:
-        return profileData.firstName && profileData.lastName && profileData.age && profileData.gender;
+        const age = parseInt(profileData.age);
+        return profileData.firstName && profileData.lastName && profileData.age && profileData.gender && age >= 18 && age <= 100;
       case 5:
         return profileData.religionLevel && profileData.prayerFrequency;
       case 6:

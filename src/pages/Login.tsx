@@ -5,6 +5,7 @@ import { auth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, 
 import { setPersistence, browserLocalPersistence, browserSessionPersistence } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
 
+// Google Sign-In enabled
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -92,13 +93,11 @@ const Login = () => {
           firstName: nameParts[0] || '',
           lastName: nameParts.slice(1).join(' ') || '',
           displayName: user.displayName || '',
-          photoURL: user.photoURL || null,
+          photos: user.photoURL ? [user.photoURL] : [],
           bio: '',
           isVerified: user.emailVerified,
           verificationLevel: user.emailVerified ? 'email' : 'none',
           canAccessApp: false,
-          isPremium: false,
-          premiumTier: 'free',
           profileCompleteness: 20,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
