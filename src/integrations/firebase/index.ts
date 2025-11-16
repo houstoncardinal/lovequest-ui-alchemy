@@ -16,6 +16,10 @@ export {
   updateEmail,
   updatePassword,
   deleteUser,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithPopup,
+  GoogleAuthProvider,
   type User,
   type UserCredential,
 } from 'firebase/auth';
