@@ -123,18 +123,24 @@ const SignUp = () => {
 
 
   const handleGoogleSignIn = async () => {
+    console.log('🚀 Google Sign-Up: Starting...');
     setIsLoading(true);
     try {
       const provider = new GoogleAuthProvider();
+      console.log('🔐 Google Sign-Up: Opening popup...');
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+      console.log('✅ Google Sign-Up: User signed in:', user.email);
 
       // Check if user profile exists in Firestore
       const userDocRef = doc(db, 'users', user.uid);
+      console.log('📝 Google Sign-Up: Checking Firestore for existing user...');
       const userDoc = await getDoc(userDocRef);
+      console.log('📊 Google Sign-Up: User exists?', userDoc.exists());
 
       if (!userDoc.exists()) {
         // Create new user profile (first-time Google sign-up)
+        console.log('🆕 Google Sign-Up: Creating new user profile...');
         const nameParts = user.displayName?.split(' ') || ['', ''];
         await setDoc(userDocRef, {
           uid: user.uid,
@@ -155,6 +161,7 @@ const SignUp = () => {
           lastActive: serverTimestamp(),
         });
 
+        console.log('✨ Google Sign-Up: Profile created! Redirecting to onboarding...');
         toast({
           title: "Welcome!",
           description: "Let's complete your profile to get started.",
@@ -162,6 +169,7 @@ const SignUp = () => {
         navigate("/onboarding");
       } else {
         // User already exists, just sign them in
+        console.log('👤 Google Sign-Up: Existing user, signing in...');
         toast({
           title: "Welcome back!",
           description: "You've been signed in with Google.",
@@ -169,6 +177,10 @@ const SignUp = () => {
         navigate("/");
       }
     } catch (error: any) {
+      console.error('Google Sign-Up Error:', error);
+      console.error('Error code:', error?.code);
+      console.error('Error message:', error?.message);
+
       let errorMessage = "Failed to sign up with Google.";
 
       if (error.code === 'auth/popup-closed-by-user') {
@@ -177,6 +189,9 @@ const SignUp = () => {
         errorMessage = "Popup blocked. Please enable popups for this site.";
       } else if (error.code === 'auth/account-exists-with-different-credential') {
         errorMessage = "An account already exists with this email.";
+      } else {
+        // Show the actual error for debugging
+        errorMessage = `Failed to sign up: ${error?.message || 'Unknown error'}`;
       }
 
       toast({
