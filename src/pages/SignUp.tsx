@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, ArrowRight, Eye, EyeOff, Crown, Sparkles } from "lucide-react";
-import { auth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, db, doc, setDoc, serverTimestamp } from "@/integrations/firebase";
+import { auth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, db, doc, setDoc, serverTimestamp, signInWithPopup, GoogleAuthProvider, getDoc } from "@/integrations/firebase";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -119,6 +119,74 @@ const SignUp = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Check if user profile exists in Firestore
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+
+      if (!userDoc.exists()) {
+        // Create new user profile (first-time Google sign-up)
+        const nameParts = user.displayName?.split(' ') || ['', ''];
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          email: user.email,
+          firstName: nameParts[0] || '',
+          lastName: nameParts.slice(1).join(' ') || '',
+          displayName: user.displayName || '',
+          photoURL: user.photoURL || null,
+          bio: '',
+          isVerified: user.emailVerified,
+          verificationLevel: user.emailVerified ? 'email' : 'none',
+          canAccessApp: false,
+          isPremium: false,
+          premiumTier: 'free',
+          profileCompleteness: 20,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          lastActive: serverTimestamp(),
+        });
+
+        toast({
+          title: "Welcome!",
+          description: "Let's complete your profile to get started.",
+        });
+        navigate("/onboarding");
+      } else {
+        // User already exists, just sign them in
+        toast({
+          title: "Welcome back!",
+          description: "You've been signed in with Google.",
+        });
+        navigate("/");
+      }
+    } catch (error) {
+      let errorMessage = "Failed to sign up with Google.";
+
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = "Sign-up cancelled.";
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = "Popup blocked. Please enable popups for this site.";
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        errorMessage = "An account already exists with this email.";
+      }
+
+      toast({
+        title: "Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
