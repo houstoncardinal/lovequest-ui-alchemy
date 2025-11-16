@@ -1,3 +1,4 @@
+// Post detail view entrypoint; keep imports at the beginning to avoid syntax issues.
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
