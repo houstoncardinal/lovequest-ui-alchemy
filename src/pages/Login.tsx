@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, ArrowRight, Eye, EyeOff } from "lucide-react";
+import { Heart, ArrowRight, Eye, EyeOff, Zap } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { bypassAuth } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -57,6 +59,23 @@ const Login = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+  };
+
+  const handleBypass = async () => {
+    try {
+      await bypassAuth();
+      toast({
+        title: "Development Bypass",
+        description: "You've been signed in with a development account.",
+      });
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: "Bypass Error",
+        description: "Something went wrong with the bypass.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -145,6 +164,19 @@ const Login = () => {
               {isLoading ? "Signing In..." : "Sign In"}
             </button>
           </form>
+
+          {/* Development bypass button - only shown in development */}
+          {process.env.NODE_ENV === "development" && (
+            <div className="mt-4">
+              <button
+                onClick={handleBypass}
+                className="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-6 rounded-xl border border-gray-300 transition-all duration-200"
+              >
+                <Zap className="w-5 h-5 text-yellow-600" />
+                Development Bypass
+              </button>
+            </div>
+          )}
 
           <div className="mt-8 text-center">
             <p className="text-muted-foreground">

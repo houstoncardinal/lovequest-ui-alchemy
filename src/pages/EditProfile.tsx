@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Camera, Plus, X, Save, Loader2, User, Church, Heart, MapPin, Briefcase, GraduationCap, Upload, Mic, Play, Pause } from "lucide-react";
+import { ArrowLeft, Camera, Plus, X, Save, Loader2, User, Church, Heart, MapPin, Briefcase, GraduationCap, Upload, Mic, Play, Pause, Star } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -34,12 +34,12 @@ const EditProfile = () => {
     bio: "",
     location: "",
     avatarUrl: "",
-    
+
     // Professional Info
     careerField: "",
     educationLevel: "",
     incomeRange: "",
-    
+
     // Islamic Practice
     religionLevel: "",
     prayerFrequency: "",
@@ -47,7 +47,7 @@ const EditProfile = () => {
     madhab: "",
     islamicKnowledgeLevel: "",
     communityInvolvementLevel: "",
-    
+
     // Personal Details
     maritalStatus: "",
     smokingStatus: "",
@@ -56,21 +56,32 @@ const EditProfile = () => {
     bodyType: "",
     heightCm: "",
     exerciseFrequency: "",
-    
+
     // Family & Marriage
     marriageTimeline: "",
     financialReadiness: "",
     familySizePreference: "",
-    
+
     // Interests & Lifestyle
     hobbiesInterests: [] as string[],
     languagesSpoken: [] as string[],
     dietaryPreferences: [] as string[],
     personalityTraits: [] as string[],
     relationshipGoals: [] as string[],
-    
+
     // Voice Note
-    voiceNoteUrl: ""
+    voiceNoteUrl: "",
+
+    // Lifestyle Preferences
+    petsPreference: "",
+    workoutPreference: "",
+    dietPreference: "",
+    socialPreference: "",
+
+    // Zodiac & Values
+    zodiacSign: "",
+    drinkingStatus: "",
+    coreValues: [] as string[]
   });
 
   useEffect(() => {
@@ -98,18 +109,18 @@ const EditProfile = () => {
           bio: data.bio || "",
           location: data.location || "",
           avatarUrl: data.avatar_url || "",
-          
+
           careerField: data.career_field || "",
           educationLevel: data.education_level || "",
           incomeRange: data.income_range || "",
-          
+
           religionLevel: data.religion_level || "",
           prayerFrequency: data.prayer_frequency || "",
           hijabStatus: data.hijab_status || "",
           madhab: data.madhab || "",
           islamicKnowledgeLevel: data.islamic_knowledge_level || "",
           communityInvolvementLevel: data.community_involvement_level || "",
-          
+
           maritalStatus: data.marital_status || "",
           smokingStatus: data.smoking_status || "",
           hasChildren: data.has_children || false,
@@ -117,18 +128,29 @@ const EditProfile = () => {
           bodyType: data.body_type || "",
           heightCm: data.height_cm?.toString() || "",
           exerciseFrequency: data.exercise_frequency || "",
-          
+
           marriageTimeline: data.marriage_timeline || "",
           financialReadiness: data.financial_readiness || "",
           familySizePreference: data.family_size_preference || "",
-          
+
           hobbiesInterests: data.hobbies_interests || [],
           languagesSpoken: data.languages_spoken || [],
           dietaryPreferences: data.dietary_preferences || [],
           personalityTraits: data.personality_traits || [],
           relationshipGoals: data.relationship_goals || [],
-          
-          voiceNoteUrl: data.avatar_url || "" // Using avatar_url for now, will add voice_note_url to schema later
+
+          voiceNoteUrl: data.avatar_url || "", // Using avatar_url for now, will add voice_note_url to schema later
+
+          // Lifestyle Preferences
+          petsPreference: "", // Will be added to schema later
+          workoutPreference: "", // Will be added to schema later
+          dietPreference: "", // Will be added to schema later
+          socialPreference: "", // Will be added to schema later
+
+          // Zodiac & Values
+          zodiacSign: "", // Will be added to schema later
+          drinkingStatus: "", // Will be added to schema later
+          coreValues: [] // Will be added to schema later
         });
         
         // Check if there's a voice note in the avatar_url (temporary solution)
@@ -397,30 +419,186 @@ const EditProfile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
-      {/* Header */}
-      <div className="bg-white border-b border-gray-100">
-        <div className="flex items-center justify-between p-4">
-          <button onClick={() => navigate("/account")}>
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
-          </button>
-          <h1 className="text-xl font-bold text-gray-900">Edit Profile</h1>
-          <button 
-            onClick={handleSave}
-            disabled={loading}
-            className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
-          >
-            {loading ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Save className="w-4 h-4" />
-            )}
-            <span>{loading ? "Saving..." : "Save"}</span>
-          </button>
+    <>
+      {/* Desktop Layout */}
+      <div className="hidden md:block min-h-screen bg-gray-50">
+        {/* Enhanced Desktop Header */}
+        <div className="bg-white/98 backdrop-blur-xl border-b border-emerald-100/60 shadow-lg">
+          <div className="max-w-screen-2xl mx-auto px-8 py-6">
+            {/* Primary Row - Title and Main Actions */}
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-6">
+                <button
+                  onClick={() => navigate("/account")}
+                  className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 transition-colors group"
+                  title="Back to Account"
+                >
+                  <ArrowLeft className="w-5 h-5 text-emerald-600 group-hover:-translate-x-1 transition-transform" />
+                </button>
+
+                <div className="flex items-center gap-4">
+                  <User className="w-10 h-10 text-emerald-500" />
+                  <div>
+                    <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-emerald-800 bg-clip-text text-transparent">
+                      Edit Profile
+                    </h1>
+                    <p className="text-sm text-emerald-600 font-medium">Complete your profile for better matches</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                {/* Progress Indicator */}
+                <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
+                  <span className="font-semibold text-emerald-700">85%</span> complete
+                </div>
+
+                {/* Quick Actions */}
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => navigate("/edit-profile")}
+                    className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors text-sm font-medium"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    onClick={handleSave}
+                    disabled={loading}
+                    className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 disabled:opacity-50"
+                  >
+                    {loading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Save className="w-4 h-4" />
+                    )}
+                    <span>{loading ? "Saving..." : "Save Changes"}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Secondary Row - Section Navigation */}
+            <div className="bg-white/80 rounded-2xl border border-emerald-200/50 p-4">
+              <div className="flex items-center gap-8">
+                <h2 className="text-lg font-semibold text-gray-900">Profile Sections</h2>
+                <div className="flex items-center gap-4 text-sm">
+                  <button className="px-3 py-2 bg-emerald-100 text-emerald-800 rounded-lg font-medium">Basic Info</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Professional</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Personal Values</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Interests</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Lifestyle</button>
+                </div>
+
+                <div className="ml-auto flex items-center gap-4">
+                  {/* Tips */}
+                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <Star className="w-4 h-4 text-amber-500" />
+                    <span>Tip: Upload photos for 2x more matches!</span>
+                  </div>
+
+                  {/* Quick Help */}
+                  <button className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" title="Help">
+                    ❓
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Main Content */}
+        <div className="max-w-screen-xl mx-auto px-8 py-8">
+          {/* Progress Overview */}
+          <div className="bg-gradient-to-r from-emerald-50 via-white to-teal-50 rounded-3xl p-8 mb-8 border border-emerald-100/60">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 mb-2">Complete Your Profile</h2>
+                <p className="text-emerald-600">Fill out more sections to improve your match recommendations</p>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-bold text-emerald-600 mb-1">85%</div>
+                <div className="text-sm text-gray-600">Profile Complete</div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 gap-4">
+              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Camera className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div className="text-sm font-semibold text-gray-900 mb-1">Photos</div>
+                <div className="text-xs text-emerald-600">+15% matches</div>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+                </div>
+              </div>
+
+              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Church className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div className="text-sm font-semibold text-gray-900 mb-1">Values</div>
+                <div className="text-xs text-emerald-600">+10% matches</div>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+                </div>
+              </div>
+
+              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Heart className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div className="text-sm font-semibold text-gray-900 mb-1">Interests</div>
+                <div className="text-xs text-emerald-600">+20% matches</div>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '60%' }}></div>
+                </div>
+              </div>
+
+              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
+                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Mic className="w-6 h-6 text-emerald-600" />
+                </div>
+                <div className="text-sm font-semibold text-gray-900 mb-1">Voice</div>
+                <div className="text-xs text-emerald-600">+25% matches</div>
+                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                  <div className="bg-gray-200 h-2 rounded-full" style={{ width: '0%' }}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-8">
+          </div>
         </div>
       </div>
 
-      <div className="p-4 space-y-6">
+      {/* Mobile Layout */}
+      <div className="md:hidden min-h-screen bg-gray-50 pb-20">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-100">
+          <div className="flex items-center justify-between p-4">
+            <button onClick={() => navigate("/account")}>
+              <ArrowLeft className="w-6 h-6 text-gray-600" />
+            </button>
+            <h1 className="text-xl font-bold text-gray-900">Edit Profile</h1>
+            <button
+              onClick={handleSave}
+              disabled={loading}
+              className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+            >
+              {loading ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <Save className="w-4 h-4" />
+              )}
+              <span>{loading ? "Saving..." : "Save"}</span>
+            </button>
+          </div>
+        </div>
+
+        <div className="p-4 space-y-6">
         {/* Profile Photo */}
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -932,22 +1110,22 @@ const EditProfile = () => {
             </div>
             <h3 className="font-semibold text-gray-900">Voice Introduction</h3>
           </div>
-          
+
           <div className="space-y-4">
             <p className="text-sm text-gray-600">
               Record a short voice message to introduce yourself (up to 60 seconds)
             </p>
-            
+
             {!recordingVoice && !audioUrl && (
-              <Button 
-                onClick={startVoiceRecording} 
+              <Button
+                onClick={startVoiceRecording}
                 className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 shadow-lg"
               >
                 <Mic className="w-4 h-4 mr-2" />
                 Start Recording
               </Button>
             )}
-            
+
             {recordingVoice && (
               <div className="text-center space-y-3">
                 <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
@@ -958,7 +1136,7 @@ const EditProfile = () => {
                 </Button>
               </div>
             )}
-            
+
             {audioUrl && !recordingVoice && (
               <div className="space-y-3">
                 <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
@@ -976,8 +1154,8 @@ const EditProfile = () => {
                     Re-record
                   </Button>
                   {audioBlob && (
-                    <Button 
-                      onClick={uploadVoiceNote} 
+                    <Button
+                      onClick={uploadVoiceNote}
                       className="flex-1 bg-gradient-primary"
                     >
                       Save Voice Note
@@ -988,10 +1166,167 @@ const EditProfile = () => {
             )}
           </div>
         </Card>
-      </div>
 
-      <InteractiveMenu />
-    </div>
+        {/* Lifestyle Preferences */}
+        <Card className="p-6 space-y-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-xl bg-gradient-primary">
+              <User className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Lifestyle Preferences</h3>
+          </div>
+
+          <div>
+            <Label htmlFor="pets">Pet Preferences</Label>
+            <Select value={formData.petsPreference || ""} onValueChange={(value) => handleSelectChange('petsPreference', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Describe your relationship with pets" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="cat_lover">Cat lover 🐱</SelectItem>
+                <SelectItem value="dog_lover">Dog lover 🐕</SelectItem>
+                <SelectItem value="all_animals">Love all animals 🐾</SelectItem>
+                <SelectItem value="no_pets_yet">No pets yet</SelectItem>
+                <SelectItem value="allergic">Allergic to pets</SelectItem>
+                <SelectItem value="no_preference">No preference</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="workout">Fitness & Workout</Label>
+            <Select value={formData.workoutPreference || ""} onValueChange={(value) => handleSelectChange('workoutPreference', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="What's your fitness routine?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="gym_daily">Gym 5x/week</SelectItem>
+                <SelectItem value="yoga_pilate">Yoga & Pilates</SelectItem>
+                <SelectItem value="running_hiking">Running & Hiking</SelectItem>
+                <SelectItem value="sports">Team Sports</SelectItem>
+                <SelectItem value="home_workouts">Home workouts</SelectItem>
+                <SelectItem value="occasional">Occasional activity</SelectItem>
+                <SelectItem value="not_active">Not very active</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="diet">Dietary Preferences</Label>
+            <Select value={formData.dietPreference || ""} onValueChange={(value) => handleSelectChange('dietPreference', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="What's your diet preference?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="no_restrictions">No Restrictions</SelectItem>
+                <SelectItem value="vegetarian">Vegetarian</SelectItem>
+                <SelectItem value="vegan">Vegan</SelectItem>
+                <SelectItem value="halal_certified">Halal Certified</SelectItem>
+                <SelectItem value="organic">Organic</SelectItem>
+                <SelectItem value="pescatarian">Pescatarian</SelectItem>
+                <SelectItem value="low_carb">Low Carb</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="socialLevel">Social Level</Label>
+            <Select value={formData.socialPreference || ""} onValueChange={(value) => handleSelectChange('socialPreference', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="How social are you?" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="extrovert">Extrovert - love social gatherings</SelectItem>
+                <SelectItem value="ambivert">Ambivert - balance of both</SelectItem>
+                <SelectItem value="introvert">Introvert - prefer quiet settings</SelectItem>
+                <SelectItem value="social_butterfly">Social butterfly - always out</SelectItem>
+                <SelectItem value="homebody">Homebody - prefer staying in</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </Card>
+
+        {/* Zodiac & Values */}
+        <Card className="p-6 space-y-4">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2 rounded-xl bg-gradient-primary">
+              <Star className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <h3 className="font-semibold text-gray-900">Personality & Zodiac</h3>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="zodiacSign">Zodiac Sign</Label>
+              <Select value={formData.zodiacSign || ""} onValueChange={(value) => handleSelectChange('zodiacSign', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Your zodiac" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="aries">Aries ♈</SelectItem>
+                  <SelectItem value="taurus">Taurus ♉</SelectItem>
+                  <SelectItem value="gemini">Gemini ♊</SelectItem>
+                  <SelectItem value="cancer">Cancer ♋</SelectItem>
+                  <SelectItem value="leo">Leo ♌</SelectItem>
+                  <SelectItem value="virgo">Virgo ♍</SelectItem>
+                  <SelectItem value="libra">Libra ♎</SelectItem>
+                  <SelectItem value="scorpio">Scorpio ♏</SelectItem>
+                  <SelectItem value="sagittarius">Sagittarius ♐</SelectItem>
+                  <SelectItem value="capricorn">Capricorn ♑</SelectItem>
+                  <SelectItem value="aquarius">Aquarius ♒</SelectItem>
+                  <SelectItem value="pisces">Pisces ♓</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div>
+              <Label htmlFor="drinkingPreference">Drinking Habits</Label>
+              <Select value={formData.drinkingStatus || ""} onValueChange={(value) => handleSelectChange('drinkingStatus', value)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Alcohol?" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="never">Never</SelectItem>
+                  <SelectItem value="occasionally">Occasionally</SelectItem>
+                  <SelectItem value="socially">Socially</SelectItem>
+                  <SelectItem value="regularly">Regularly</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div>
+            <Label>Your Core Values (choose multiple)</Label>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              {[
+                "Creativity", "Honesty", "Adventure", "Growth", "Family",
+                "Knowledge", "Kindness", "Loyalty", "Fun", "Compassion",
+                "Ambition", "Faith", "Respect", "Empathy", "Health"
+              ].map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => handleArrayChange('coreValues', value)}
+                  className={`p-2 rounded-lg border text-sm font-medium transition-all ${
+                    (formData.coreValues || []).includes(value)
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-gray-200 bg-white text-gray-700 hover:border-primary/50'
+                  }`}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Selected: {(formData.coreValues || []).length} values
+            </p>
+          </div>
+        </Card>
+        </div>
+
+        <InteractiveMenu />
+      </div>
+    </>
   );
 };
 

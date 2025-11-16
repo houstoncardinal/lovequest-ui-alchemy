@@ -7,9 +7,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
-import { Send, Image, MoreVertical, Shield, Flag } from 'lucide-react';
+import { Send, Image, MoreVertical, Shield, Flag, Video, Mic } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import VideoCallModal from './VideoCallModal';
+import VoiceRecorder from './VoiceRecorder';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -121,7 +123,11 @@ export const MessagingInterface = () => {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [hasRealData, setHasRealData] = useState(false);
+  const [isVideoCallOpen, setIsVideoCallOpen] = useState(false);
+  const [isVoiceRecorderOpen, setIsVoiceRecorderOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+  const [isInputFocused, setIsInputFocused] = useState(false);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -332,11 +338,117 @@ export const MessagingInterface = () => {
     }
   };
 
+  const handleImageSelect = () => {
+    imageInputRef.current?.click();
+  };
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !selectedMatch || !user) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid File",
+        description: "Please select an image file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast({
+        title: "File Too Large",
+        description: "Please select an image smaller than 10MB",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      toast({
+        title: "Uploading Image",
+        description: "Please wait...",
+      });
+
+      // Create unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+      const filePath = `message-images/${fileName}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('uploads')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('uploads')
+        .getPublicUrl(filePath);
+
+      const matchedUserId = selectedMatch.user1_id === user.id
+        ? selectedMatch.user2_id
+        : selectedMatch.user1_id;
+
+      if (!hasRealData) {
+        // Demo mode - show image in chat
+        const demoMessage: Message = {
+          id: `demo-${Date.now()}`,
+          sender_id: user.id,
+          receiver_id: matchedUserId,
+          content: "",
+          message_type: 'image',
+          attachment_url: publicUrl,
+          is_read: false,
+          created_at: new Date().toISOString(),
+        };
+        setMessages(prev => [...prev, demoMessage]);
+        toast({
+          title: "Image Sent",
+          description: "Image shared in demo mode",
+        });
+      } else {
+        // Send image message to database
+        const { error: messageError } = await supabase
+          .from('messages')
+          .insert({
+            sender_id: user.id,
+            receiver_id: matchedUserId,
+            content: "",
+            message_type: 'image',
+            attachment_url: publicUrl
+          });
+
+        if (messageError) throw messageError;
+
+        toast({
+          title: "Image Sent",
+          description: "Your image has been shared",
+        });
+      }
+
+      // Clear file input
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      toast({
+        title: "Upload Failed",
+        description: "Failed to upload image. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const reportUser = async (reportType: string, reason?: string) => {
     if (!selectedMatch || !user) return;
 
-    const matchedUserId = selectedMatch.user1_id === user.id 
-      ? selectedMatch.user2_id 
+    const matchedUserId = selectedMatch.user1_id === user.id
+      ? selectedMatch.user2_id
       : selectedMatch.user1_id;
 
     try {
@@ -368,8 +480,8 @@ export const MessagingInterface = () => {
   const blockUser = async () => {
     if (!selectedMatch || !user) return;
 
-    const matchedUserId = selectedMatch.user1_id === user.id 
-      ? selectedMatch.user2_id 
+    const matchedUserId = selectedMatch.user1_id === user.id
+      ? selectedMatch.user2_id
       : selectedMatch.user1_id;
 
     try {
@@ -396,6 +508,85 @@ export const MessagingInterface = () => {
       toast({
         title: "Error",
         description: "Failed to block user",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleVoiceSelect = () => {
+    setIsVoiceRecorderOpen(true);
+  };
+
+  const handleVoiceSend = async (audioBlob: Blob, duration: number) => {
+    if (!selectedMatch || !user) return;
+
+    try {
+      toast({
+        title: "Processing Voice Message",
+        description: "Please wait...",
+      });
+
+      // Create unique file name for voice message
+      const fileName = `${user.id}-voice-${Date.now()}.wav`;
+      const filePath = `voice-messages/${fileName}`;
+
+      // Upload to Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from('uploads')
+        .upload(filePath, audioBlob);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('uploads')
+        .getPublicUrl(filePath);
+
+      const matchedUserId = selectedMatch.user1_id === user.id
+        ? selectedMatch.user2_id
+        : selectedMatch.user1_id;
+
+      if (!hasRealData) {
+        // Demo mode - show voice message in chat
+        const demoMessage: Message = {
+          id: `demo-${Date.now()}`,
+          sender_id: user.id,
+          receiver_id: matchedUserId,
+          content: `Voice message (${duration}s)`,
+          message_type: 'voice',
+          attachment_url: publicUrl,
+          is_read: false,
+          created_at: new Date().toISOString(),
+        };
+        setMessages(prev => [...prev, demoMessage]);
+        toast({
+          title: "Voice Message Sent",
+          description: "Voice message shared in demo mode",
+        });
+      } else {
+        // Send voice message to database
+        const { error: messageError } = await supabase
+          .from('messages')
+          .insert({
+            sender_id: user.id,
+            receiver_id: matchedUserId,
+            content: "",
+            message_type: 'voice',
+            attachment_url: publicUrl
+          });
+
+        if (messageError) throw messageError;
+
+        toast({
+          title: "Voice Message Sent",
+          description: "Your voice message has been shared",
+        });
+      }
+    } catch (error) {
+      console.error('Error sending voice message:', error);
+      toast({
+        title: "Upload Failed",
+        description: "Failed to send voice message. Please try again.",
         variant: "destructive",
       });
     }
@@ -460,7 +651,7 @@ export const MessagingInterface = () => {
         <Card className="md:col-span-2">
           {selectedMatch ? (
             <>
-              <CardHeader className="flex-row items-center justify-between">
+              <CardHeader className="flex-row items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border">
                 <div className="flex items-center gap-3">
                   <Avatar>
                     <AvatarImage src={selectedMatch.matched_user?.avatar_url} />
@@ -475,23 +666,34 @@ export const MessagingInterface = () => {
                     <p className="text-sm text-muted-foreground">Online now</p>
                   </div>
                 </div>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="sm">
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem onClick={() => reportUser('inappropriate_content')}>
-                      <Flag className="w-4 h-4 mr-2" />
-                      Report User
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={blockUser} className="text-destructive">
-                      <Shield className="w-4 h-4 mr-2" />
-                      Block User
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsVideoCallOpen(true)}
+                    className="bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700"
+                  >
+                    <Video className="w-4 h-4 mr-2" />
+                    Video Call
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm">
+                        <MoreVertical className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                      <DropdownMenuItem onClick={() => reportUser('inappropriate_content')}>
+                        <Flag className="w-4 h-4 mr-2" />
+                        Report User
+                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={blockUser} className="text-destructive">
+                        <Shield className="w-4 h-4 mr-2" />
+                        Block User
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </CardHeader>
               <CardContent className="p-0 flex flex-col h-[500px]">
                 {/* Messages */}
@@ -506,19 +708,35 @@ export const MessagingInterface = () => {
                           message.sender_id === user?.id ? 'justify-end' : 'justify-start'
                         }`}
                       >
-                        <div className={`max-w-[70%] ${
-                          message.sender_id === user?.id 
-                            ? 'bg-primary text-primary-foreground' 
-                            : 'bg-muted'
-                        } rounded-lg p-3`}>
-                          <p className="text-sm">{message.content}</p>
-                          <p className="text-xs opacity-70 mt-1">
-                            {new Date(message.created_at).toLocaleTimeString([], {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
-                          </p>
-                        </div>
+                        {message.message_type === 'image' && message.attachment_url ? (
+                          <div className="max-w-[70%] rounded-lg overflow-hidden">
+                            <img
+                              src={message.attachment_url}
+                              alt="Shared image"
+                              className="w-full h-auto rounded-lg max-h-64 object-cover"
+                            />
+                            <p className="text-xs opacity-70 mt-1 px-3 py-1">
+                              {new Date(message.created_at).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </p>
+                          </div>
+                        ) : (
+                          <div className={`max-w-[70%] ${
+                            message.sender_id === user?.id
+                              ? 'bg-primary text-primary-foreground'
+                              : 'bg-muted'
+                          } rounded-lg p-3`}>
+                            <p className="text-sm">{message.content}</p>
+                            <p className="text-xs opacity-70 mt-1">
+                              {new Date(message.created_at).toLocaleTimeString([], {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </p>
+                          </div>
+                        )}
                       </motion.div>
                     ))}
                   </AnimatePresence>
@@ -528,8 +746,21 @@ export const MessagingInterface = () => {
                 {/* Message Input */}
                 <div className="p-4 border-t">
                   <div className="flex gap-2">
-                    <Button variant="outline" size="sm">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleImageSelect}
+                      title="Send image"
+                    >
                       <Image className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleVoiceSelect}
+                      title="Send voice message"
+                    >
+                      <Mic className="w-4 h-4" />
                     </Button>
                     <Input
                       value={newMessage}
@@ -538,14 +769,23 @@ export const MessagingInterface = () => {
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                       className="flex-1"
                     />
-                    <Button 
-                      onClick={sendMessage} 
+                    <Button
+                      onClick={sendMessage}
                       disabled={!newMessage.trim() || loading}
                       size="sm"
                     >
                       <Send className="w-4 h-4" />
                     </Button>
                   </div>
+                  {/* Hidden file input for images */}
+                  <input
+                    type="file"
+                    ref={imageInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    capture="environment"
+                    className="hidden"
+                  />
                 </div>
               </CardContent>
             </>
@@ -560,6 +800,27 @@ export const MessagingInterface = () => {
           )}
         </Card>
       </div>
+
+      {/* Video Call Modal */}
+      {selectedMatch && (
+        <VideoCallModal
+          isOpen={isVideoCallOpen}
+          onClose={() => setIsVideoCallOpen(false)}
+          userName={selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.first_name} ${selectedMatch.matched_user?.last_name}` || 'User'}
+          userImage={selectedMatch.matched_user?.avatar_url || '/assets/profile-1.jpg'}
+        />
+      )}
+
+      {/* Voice Recorder */}
+      {isVoiceRecorderOpen && selectedMatch && (
+        <VoiceRecorder
+          onSend={(audioBlob, duration) => {
+            handleVoiceSend(audioBlob, duration);
+            setIsVoiceRecorderOpen(false);
+          }}
+          onClose={() => setIsVoiceRecorderOpen(false)}
+        />
+      )}
     </div>
   );
 };

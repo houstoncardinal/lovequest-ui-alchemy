@@ -1,4 +1,4 @@
-import { Home, Users, Heart, MessageCircle, User, Sparkles, Star } from "lucide-react";
+import { Home, MessageCircle, User, Sparkles } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useNotificationCounts } from "@/hooks/useNotificationCounts";
 
@@ -7,15 +7,13 @@ const BottomNavigation = () => {
 
   const navItems = [
     { icon: Home, label: "Home", path: "/", count: 0 },
-    { icon: Heart, label: "Like You", path: "/like-you", count: counts.likeYou },
     { icon: MessageCircle, label: "Matches", path: "/matches", count: counts.matches },
     { icon: Sparkles, label: "Community", path: "/community", count: counts.community },
-    { icon: Star, label: "Lifestyle", path: "/lifestyle-features", count: 0 },
     { icon: User, label: "Account", path: "/account", count: 0 },
   ];
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 px-2 py-2 z-50 md:hidden">
+    <div className="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-md border-t border-gray-200 px-2 py-2 z-50">
       <div className="flex justify-around items-center max-w-md mx-auto">
         {navItems.map((item) => (
           <NavLink

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown, Mic, Smile, Video, Phone, Settings, Shield, HelpCircle } from "lucide-react";
+import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown, Mic, Smile, Video, Phone, Settings, Shield, HelpCircle, Heart, Lock, Sparkles, SlidersHorizontal } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import EmojiPicker from "@/components/EmojiPicker";
 import VoiceRecorder from "@/components/VoiceRecorder";
@@ -56,6 +56,53 @@ const Chat = () => {
   const [matches, setMatches] = useState<MatchData[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isPremiumUser, setIsPremiumUser] = useState(false); // For demo purposes, assume user is not premium
+
+  // Demo data for people who liked you
+  const peopleWhoLikeYou = [
+    {
+      id: "like-1",
+      name: "Maya Chen",
+      age: 28,
+      location: "San Francisco, CA",
+      image: profile1,
+    },
+    {
+      id: "like-2",
+      name: "Amira Hassan",
+      age: 26,
+      location: "Seattle, WA",
+      image: profile3,
+    },
+    {
+      id: "like-3",
+      name: "Jessica Wang",
+      age: 29,
+      location: "Austin, TX",
+      image: profile2,
+    },
+    {
+      id: "like-4",
+      name: "Fatima Al-Zahra",
+      age: 25,
+      location: "Phoenix, AZ",
+      image: profile1,
+    },
+    {
+      id: "like-5",
+      name: "Layla Amiri",
+      age: 27,
+      location: "Dallas, TX",
+      image: profile2,
+    },
+    {
+      id: "like-6",
+      name: "Marya Khan",
+      age: 24,
+      location: "Nashville, TN",
+      image: profile3,
+    }
+  ];
   
   // Demo matches for when there's no real data
   const demoMatches: MatchData[] = [
@@ -597,8 +644,60 @@ const Chat = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
-      {/* Header */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
+      {/* Desktop Header */}
+      <div className="hidden md:flex bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
+        <div className="flex items-center justify-between p-6 w-full max-w-screen-2xl mx-auto">
+          <div className="flex items-center gap-4">
+            <h1 className="text-2xl font-bold text-gray-900">My Matches</h1>
+            <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1 text-sm font-medium">
+              {matches.length} conversations
+            </Badge>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-emerald-400" />
+              <input
+                type="text"
+                placeholder="Search conversations..."
+                className="pl-10 pr-4 py-2.5 bg-emerald-50 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 transition-all duration-200 w-80 text-sm"
+              />
+            </div>
+
+            {/* Filter Button */}
+            <button className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors duration-200" title="Filter conversations">
+              <SlidersHorizontal className="w-5 h-5 text-emerald-600" />
+            </button>
+
+            {/* More Options */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="p-3 rounded-xl hover:bg-emerald-50 transition-colors" title="More options">
+                  <MoreHorizontal className="w-5 h-5 text-emerald-600" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuItem onClick={() => navigate('/preferences')}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  Preferences
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/privacy-safety')}>
+                  <Shield className="w-4 h-4 mr-2" />
+                  Privacy & Safety
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/help-support')}>
+                  <HelpCircle className="w-4 h-4 mr-2" />
+                  Help & Support
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Header */}
+      <div className="md:hidden bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-bold text-gray-900">Matches</h1>
           <DropdownMenu>
@@ -623,8 +722,8 @@ const Chat = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        
-        {/* Search */}
+
+        {/* Mobile Search */}
         <div className="px-4 pb-4">
           <div className="relative">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-emerald-400" />
@@ -697,6 +796,101 @@ const Chat = () => {
             </div>
           ))
         )}
+
+        {/* People Who Like You Section */}
+        <div className="mt-8 mb-6">
+          <div className="px-4 mb-4">
+            <div className="flex items-center space-x-2">
+              <Heart className="w-5 h-5 text-emerald-500" />
+              <h2 className="text-lg font-semibold text-gray-900">People who liked you</h2>
+              <Badge className="bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-medium">
+                <Sparkles className="w-3 h-3 mr-1" />
+                Premium
+              </Badge>
+            </div>
+            <p className="text-sm text-gray-600 mt-1">
+              {isPremiumUser
+                ? "See who liked you and start connecting!"
+                : "Upgrade to see who liked you and unlock special matches!"
+              }
+            </p>
+          </div>
+
+          {/* Premium Upsell Card for non-premium users */}
+          {!isPremiumUser && (
+            <div className="mx-4 mb-4 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-200 p-6 text-center">
+              <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full mb-4">
+                <Lock className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                Unlock Secret Admirers
+              </h3>
+              <p className="text-gray-600 mb-4 text-sm">
+                Discover who liked your profile and get access to premium matches with better compatibility scores.
+              </p>
+              <button
+                onClick={() => navigate('/pricing')}
+                className="bg-gradient-to-r from-amber-500 to-amber-600 text-white px-6 py-3 rounded-full font-medium hover:shadow-lg transition-all duration-300"
+              >
+                <Sparkles className="w-4 h-4 mr-2 inline" />
+                Upgrade to Premium
+              </button>
+            </div>
+          )}
+
+          {/* Likers Grid */}
+          <div className="px-4">
+            <div className="grid grid-cols-2 gap-4">
+              {peopleWhoLikeYou.map((person) => (
+                <div
+                  key={person.id}
+                  className={`relative bg-white rounded-2xl shadow-md overflow-hidden border border-emerald-100 transition-all duration-300 ${
+                    isPremiumUser
+                      ? 'cursor-pointer hover:shadow-lg'
+                      : 'cursor-default opacity-75'
+                  }`}
+                  onClick={() => isPremiumUser && navigate(`/profile/${person.id}`)}
+                >
+                  {/* Blur overlay for non-premium users */}
+                  {!isPremiumUser && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-100/80 to-gray-200/80 backdrop-blur-sm flex items-center justify-center">
+                      <div className="text-center">
+                        <Lock className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+                        <p className="text-xs font-medium text-gray-600">Premium Only</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Profile Image */}
+                  <div className={`relative ${isPremiumUser ? '' : 'filter blur-sm'}`}>
+                    <img
+                      src={person.image}
+                      alt={person.name}
+                      className="w-full h-32 object-cover"
+                    />
+                    {/* Heart overlay */}
+                    <div className="absolute top-3 right-3 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
+                      <Heart className="w-3 h-3 text-white fill-current" />
+                    </div>
+                  </div>
+
+                  {/* Profile Info */}
+                  <div className={`p-3 ${isPremiumUser ? '' : 'filter blur-sm'}`}>
+                    <h4 className="font-semibold text-gray-900 text-sm truncate">{person.name}</h4>
+                    <p className="text-xs text-gray-600 mt-1">{person.age} • {person.location}</p>
+                    {isPremiumUser && (
+                      <button
+                        className="w-full mt-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2 rounded-lg text-xs font-medium hover:shadow-md transition-all duration-300"
+                      >
+                        Say Hi! 👋
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <InteractiveMenu />

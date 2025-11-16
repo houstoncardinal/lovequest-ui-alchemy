@@ -13,7 +13,6 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { id: "home", label: "Home", icon: Home, path: "/" },
   { id: "for-you", label: "For You", icon: Users, path: "/for-you" },
-  { id: "like-you", label: "Like You", icon: Heart, path: "/like-you", notificationCount: 54 },
   { id: "matches", label: "Matches", icon: MessageCircle, path: "/matches", notificationCount: 12 },
   { id: "account", label: "Account", icon: User, path: "/account" },
 ];

@@ -40,6 +40,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Messages from "./pages/Messages";
 import PhotoManager from "./pages/PhotoManager";
 import NotFound from "./pages/NotFound";
+import PostDetailView from "./components/PostDetailView";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +48,7 @@ const AppWithNavigation = () => {
   const location = useLocation();
   
   // Pages where we don't want to show the bottom navigation
-  const hideNavigationOn = ['/welcome', '/signup', '/login', '/onboarding'];
+  const hideNavigationOn = ['/welcome', '/signup', '/login'];
   const showNavigation = !hideNavigationOn.includes(location.pathname);
 
   return (
@@ -72,6 +73,7 @@ const AppWithNavigation = () => {
            <Route path="/photo-manager" element={<ProtectedRoute><PhotoManager /></ProtectedRoute>} />
            <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
           <Route path="/profile/:id" element={<ProtectedRoute><ProfileDetail /></ProtectedRoute>} />
+          <Route path="/post/:postId" element={<ProtectedRoute><PostDetailView /></ProtectedRoute>} />
           <Route path="/edit-profile" element={<ProtectedRoute><EditProfile /></ProtectedRoute>} />
           <Route path="/manage-photos" element={<ProtectedRoute><ManagePhotos /></ProtectedRoute>} />
           <Route path="/preferences" element={<ProtectedRoute><Preferences /></ProtectedRoute>} />

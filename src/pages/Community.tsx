@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Search, Heart, Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
@@ -11,6 +12,7 @@ import CommunityHeader from "@/components/CommunityHeader";
 import PostCard from "@/components/PostCard";
 import CommunityLoadingSkeleton from "@/components/CommunityLoadingSkeleton";
 import CommunityEmptyState from "@/components/CommunityEmptyState";
+import { Badge } from "@/components/ui/badge";
 
 interface Post {
   id: string;
@@ -32,6 +34,124 @@ interface Post {
   } | null;
   user_liked?: boolean;
 }
+
+// Demo posts for MVP showcase
+const DEMO_POSTS: Post[] = [
+  {
+    id: "demo-post-1",
+    content: "Alhamdulillah for another beautiful day! 🌅 Finding so much peace in the morning prayers and starting the day with Quran reflection. What's your favorite ayah right now? 🤲✨ #FaithJourney #IslamicLife",
+    location: "New York, NY",
+    hashtags: ["FaithJourney", "IslamicLife"],
+    mood: "Grateful",
+    is_trending: true,
+    likes_count: 24,
+    comments_count: 7,
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+    user_id: "demo-user-1",
+    profiles: {
+      display_name: "Sarah Johnson",
+      first_name: "Sarah",
+      last_name: "Johnson",
+      avatar_url: "/assets/profile-1.jpg"
+    },
+    user_liked: false
+  },
+  {
+    id: "demo-post-2",
+    content: "Trying out this incredible halal beauty brand! Their products are amazing and so gentle on the skin. Supporting Muslim entrepreneurs is so important 💄🕌 Loving the clean ingredient approach! #HalalBeauty #MuslimEntrepreneur",
+    location: "Los Angeles, CA",
+    hashtags: ["HalalBeauty", "MuslimEntrepreneur"],
+    mood: "Excited",
+    is_trending: false,
+    likes_count: 18,
+    comments_count: 5,
+    created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
+    user_id: "demo-user-3",
+    profiles: {
+      display_name: "Fatima Al-Sayed",
+      first_name: "Fatima",
+      last_name: "Al-Sayed",
+      avatar_url: "/assets/profile-3.jpg"
+    },
+    user_liked: false
+  },
+  {
+    id: "demo-post-3",
+    content: "Weekend thoughts: What's better than sitting with good company, discussing big ideas, and dreaming about making a positive impact? 🤝 Coffee not included, but highly recommended ☕️ This faith-first community is everything I've been searching for! #FaithFirst #Community",
+    location: "Chicago, IL",
+    hashtags: ["FaithFirst", "Community"],
+    mood: "Inspired",
+    is_trending: true,
+    likes_count: 31,
+    comments_count: 12,
+    created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+    user_id: "demo-user-2",
+    profiles: {
+      display_name: "Aisha Rahman",
+      first_name: "Aisha",
+      last_name: "Rahman",
+      avatar_url: "/assets/profile-2.jpg"
+    },
+    user_liked: false
+  },
+  {
+    id: "demo-post-4",
+    content: "Nature walks and dua time = perfect Sunday afternoon 🏞️ The outdoors always brings me closer to my Creator. Grateful for simple pleasures that remind us of His greatness. What's your favorite place to connect with Allah through His creation? 🌿🤲",
+    location: "Seattle, WA",
+    hashtags: [],
+    mood: "Peaceful",
+    is_trending: false,
+    likes_count: 16,
+    comments_count: 4,
+    created_at: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), // 8 hours ago
+    user_id: "demo-user-5",
+    profiles: {
+      display_name: "Zahra Ahmed",
+      first_name: "Zahra",
+      last_name: "Ahmed",
+      avatar_url: "/assets/profile-1.jpg"
+    },
+    user_liked: false
+  },
+  {
+    id: "demo-post-5",
+    content: "Proud to be part of this incredible tech community! Just pushed a major update to our app using clean code principles. When you build with intention and Islamic values, everything becomes a form of worship 💻🤲 #TechLife #IslamicValues",
+    location: "Houston, TX",
+    hashtags: ["TechLife", "IslamicValues"],
+    mood: "Accomplished",
+    is_trending: false,
+    likes_count: 13,
+    comments_count: 3,
+    created_at: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
+    user_id: "demo-user-4",
+    profiles: {
+      display_name: "Maryam Khan",
+      first_name: "Maryam",
+      last_name: "Khan",
+      avatar_url: "/assets/profile-2.jpg"
+    },
+    user_liked: false
+  },
+  {
+    id: "demo-post-6",
+    content: "Teaching moment: Always stay curious and never stop learning! Watching my students discover new concepts and ask amazing questions fills me with so much hope for the future 📚👩‍🏫 Education as ibadah, one lesson at a time. #Teaching #Education #IslamicEducation",
+    location: "Atlanta, GA",
+    hashtags: ["Teaching", "Education", "IslamicEducation"],
+    mood: "Hopeful",
+    is_trending: true,
+    likes_count: 28,
+    comments_count: 9,
+    created_at: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), // 18 hours ago
+    user_id: "demo-user-6",
+    profiles: {
+      display_name: "Layla Mohammed",
+      first_name: "Layla",
+      last_name: "Mohammed",
+      avatar_url: "/assets/profile-3.jpg"
+    },
+    user_liked: false
+  }
+];
 
 const Community = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -62,35 +182,42 @@ const Community = () => {
 
       const { data: postsData, error } = await query.limit(20);
 
-      if (error) throw error;
+      // Use demo posts for development or when no real data is available
+      if (error || !postsData || postsData.length === 0) {
+        console.log('Using demo posts for community feed');
+        setPosts(DEMO_POSTS.map(post => ({
+          ...post,
+          user_liked: false // Reset liked status for demo posts
+        })));
+      } else {
+        // Fetch profiles separately for now
+        const userIds = postsData?.map(post => post.user_id) || [];
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('user_id, display_name, avatar_url, first_name, last_name')
+          .in('user_id', userIds);
 
-      // Fetch profiles separately for now
-      const userIds = postsData?.map(post => post.user_id) || [];
-      const { data: profilesData } = await supabase
-        .from('profiles')
-        .select('user_id, display_name, avatar_url, first_name, last_name')
-        .in('user_id', userIds);
+        // Check which posts current user has liked
+        let userLikes = [];
+        if (user) {
+          const { data: likesData } = await supabase
+            .from('post_likes')
+            .select('post_id')
+            .eq('user_id', user.id)
+            .in('post_id', postsData?.map(p => p.id) || []);
 
-      // Check which posts current user has liked
-      let userLikes = [];
-      if (user) {
-        const { data: likesData } = await supabase
-          .from('post_likes')
-          .select('post_id')
-          .eq('user_id', user.id)
-          .in('post_id', postsData?.map(p => p.id) || []);
-        
-        userLikes = likesData?.map(like => like.post_id) || [];
+          userLikes = likesData?.map(like => like.post_id) || [];
+        }
+
+        // Combine posts with profiles and like status
+        const postsWithProfiles = postsData?.map(post => ({
+          ...post,
+          profiles: profilesData?.find(profile => profile.user_id === post.user_id) || null,
+          user_liked: userLikes.includes(post.id)
+        })) || [];
+
+        setPosts(postsWithProfiles);
       }
-
-      // Combine posts with profiles and like status
-      const postsWithProfiles = postsData?.map(post => ({
-        ...post,
-        profiles: profilesData?.find(profile => profile.user_id === post.user_id) || null,
-        user_liked: userLikes.includes(post.id)
-      })) || [];
-
-      setPosts(postsWithProfiles);
     } catch (error) {
       console.error('Error fetching posts:', error);
       toast({
@@ -174,49 +301,293 @@ const Community = () => {
 
   return (
     <div className="min-h-screen bg-gradient-subtle">
-      <CommunityHeader
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-        onCreatePost={() => setShowCreateModal(true)}
-        postsCount={posts.length}
-      />
+      {/* Desktop Layout */}
+      <div className="hidden md:block">
+        {/* Enhanced Desktop Header */}
+        <div className="bg-white/98 backdrop-blur-xl border-b border-emerald-100/60 shadow-lg sticky top-0 z-30">
+          <div className="max-w-screen-2xl mx-auto px-8 py-6">
+            {/* Primary Row - Main Controls */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-8">
+                <div className="flex items-center gap-4">
+                  <Heart className="w-10 h-10 text-emerald-500" />
+                  <div>
+                    <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-emerald-800 bg-clip-text text-transparent">
+                      Community Feed
+                    </h1>
+                    <p className="text-sm text-emerald-600 font-medium">Connect & share with fellow believers</p>
+                  </div>
+                </div>
 
-      {/* Posts Feed */}
-      <div className="max-w-md mx-auto px-6 pb-6">
-        <AnimatePresence mode="wait">
-          {posts.length === 0 ? (
-            <CommunityEmptyState onCreatePost={() => setShowCreateModal(true)} />
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.3 }}
-              className="space-y-6 pt-6"
-            >
-              {posts.map((post, index) => (
-                <motion.div
-                  key={post.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
-                >
-                  <PostCard
-                    post={post}
-                    currentUserId={user?.id}
-                    onLike={handleLike}
-                    onEdit={handleEditPost}
-                    onDelete={handleDeletePost}
-                    formatTimeAgo={formatTimeAgo}
+                {/* Filter Tabs */}
+                <div className="flex items-center gap-3 px-6 py-3 bg-white/60 rounded-2xl border border-emerald-200/50">
+                  <button
+                    onClick={() => setActiveTab("trending")}
+                    className={`px-5 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
+                      activeTab === "trending"
+                        ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg"
+                        : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    🔥 Trending
+                    <Badge className={`text-xs ${activeTab === "trending" ? "bg-emerald-200 text-emerald-800" : "bg-emerald-100 text-emerald-700"}`}>
+                      {posts.filter(p => p.is_trending).length}
+                    </Badge>
+                  </button>
+                  <button
+                    onClick={() => setActiveTab("latest")}
+                    className={`px-5 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
+                      activeTab === "latest"
+                        ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg"
+                        : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-800"
+                    }`}
+                  >
+                    🆕 Latest
+                    <Badge className={`text-xs ${activeTab === "latest" ? "bg-emerald-200 text-emerald-800" : "bg-emerald-100 text-emerald-700"}`}>
+                      {posts.filter(p => !p.is_trending).length}
+                    </Badge>
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                {/* Search Bar */}
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
+                    <Search className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Search posts..."
+                    className="pl-10 pr-4 py-3 bg-white/80 border border-emerald-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-300 transition-all duration-200 w-80 text-sm"
                   />
-                </motion.div>
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </div>
+
+                {/* Create Post */}
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 group"
+                >
+                  <span className="flex items-center gap-2">
+                    <Plus className="w-5 h-5" />
+                    Create Post
+                  </span>
+                </button>
+              </div>
+            </div>
+
+            {/* Secondary Row - Stats & Quick Actions */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-6">
+                {/* Quick Stats */}
+                <div className="flex items-center gap-4">
+                  <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
+                    <span className="font-bold text-emerald-700">{posts.length}</span> posts shared
+                  </div>
+                  <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
+                    <span className="font-bold text-blue-600">{posts.filter(p => p.is_trending).length}</span> trending now
+                  </div>
+                  <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
+                    <span className="font-bold text-purple-600">{new Set(posts.flatMap(p => p.hashtags || [])).size}</span> topics discussed
+                  </div>
+                </div>
+
+                {/* Active Filter Indicator */}
+                <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                  Showing <span className="font-semibold text-emerald-700">{activeTab === "trending" ? "trending" : "latest"}</span> posts
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                {/* Sort Options */}
+                <select className="px-3 py-2 bg-white/80 border border-emerald-200/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                  <option>Most Recent</option>
+                  <option>Most Liked</option>
+                  <option>Most Commented</option>
+                  <option>My Network</option>
+                </select>
+
+                {/* View Options */}
+                <div className="flex items-center gap-2 bg-white/60 rounded-xl border border-emerald-200/50">
+                  <button className="px-3 py-2 rounded-lg bg-emerald-100 text-emerald-800 text-sm font-medium">
+                    📱 Feed
+                  </button>
+                  <button className="px-3 py-2 rounded-lg text-gray-600 hover:bg-emerald-50 text-sm transition-colors">
+                    📊 Cards
+                  </button>
+                  <button className="px-3 py-2 rounded-lg text-gray-600 hover:bg-emerald-50 text-sm transition-colors">
+                    📈 Analytics
+                  </button>
+                </div>
+
+                {/* Quick Actions */}
+                <div className="flex items-center gap-2">
+                  <button
+                    title="Bookmarks"
+                    className="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                  >
+                    📚
+                  </button>
+                  <button
+                    title="Notifications"
+                    className="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                  >
+                    🔔
+                  </button>
+                  <button
+                    title="Settings"
+                    className="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                  >
+                    ⚙️
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop Main Content */}
+        <div className="max-w-screen-xl mx-auto px-8 py-8">
+          <div className="grid gap-8" style={{ gridTemplateColumns: '1fr 320px' }}>
+            {/* Main Feed */}
+            <div>
+              <AnimatePresence mode="wait">
+                {posts.length === 0 ? (
+                  <CommunityEmptyState onCreatePost={() => setShowCreateModal(true)} />
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="space-y-8"
+                  >
+                    {posts.map((post, index) => (
+                      <motion.div
+                        key={post.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4, delay: index * 0.05 }}
+                        className="bg-white rounded-3xl shadow-xl border border-emerald-100/60 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group hover:border-emerald-200"
+                      >
+                        <PostCard
+                          post={post}
+                          currentUserId={user?.id}
+                          onLike={handleLike}
+                          onEdit={handleEditPost}
+                          onDelete={handleDeletePost}
+                          formatTimeAgo={formatTimeAgo}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Desktop Sidebar */}
+            <div className="space-y-6 sticky top-32">
+              {/* Quick Stats */}
+              <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6">
+                <h3 className="font-bold text-gray-900 mb-4">Community Stats</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Active Members</span>
+                    <span className="font-semibold text-emerald-600">1,247</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Posts This Week</span>
+                    <span className="font-semibold text-emerald-600">{posts.length}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Trending Topics</span>
+                    <span className="font-semibold text-emerald-600">8</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trending Hashtags */}
+              <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6">
+                <h3 className="font-bold text-gray-900 mb-4">Trending Hashtags</h3>
+                <div className="flex flex-wrap gap-2">
+                  {["FaithJourney", "IslamicLife", "HalalBeauty", "Community", "FaithFirst"].map(tag => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1 bg-emerald-50 text-emerald-700 text-sm rounded-full border border-emerald-200 hover:bg-emerald-100 cursor-pointer transition-colors"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Actions */}
+              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl shadow-lg border border-emerald-400/50 p-6 text-white">
+                <h3 className="font-bold mb-4 flex items-center gap-2">
+                  <span>🚀</span>
+                  Share Your Story
+                </h3>
+                <p className="text-emerald-100 mb-4 text-sm">
+                  Join the conversation and connect with fellow believers
+                </p>
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="w-full bg-white text-emerald-600 font-semibold py-3 px-4 rounded-xl hover:bg-gray-50 transition-colors"
+                >
+                  📝 Write Post
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Bottom padding for navigation */}
-      <div className="h-24"></div>
+      {/* Mobile Layout */}
+      <div className="md:hidden">
+        <CommunityHeader
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          onCreatePost={() => setShowCreateModal(true)}
+          postsCount={posts.length}
+        />
+
+        {/* Posts Feed */}
+        <div className="max-w-md mx-auto px-6 pb-6">
+          <AnimatePresence mode="wait">
+            {posts.length === 0 ? (
+              <CommunityEmptyState onCreatePost={() => setShowCreateModal(true)} />
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3 }}
+                className="space-y-6 pt-6"
+              >
+                {posts.map((post, index) => (
+                  <motion.div
+                    key={post.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                  >
+                    <PostCard
+                      post={post}
+                      currentUserId={user?.id}
+                      onLike={handleLike}
+                      onEdit={handleEditPost}
+                      onDelete={handleDeletePost}
+                      formatTimeAgo={formatTimeAgo}
+                    />
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Bottom padding for navigation */}
+        <div className="h-24"></div>
+      </div>
 
       {/* Create Post Modal */}
       <CreatePostModal

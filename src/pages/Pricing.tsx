@@ -11,12 +11,12 @@ const Pricing = () => {
     {
       id: "free",
       name: "Free",
-      monthlyPrice: "Free",
-      yearlyPrice: "Free",
+      monthlyPrice: "$0",
+      yearlyPrice: "$0",
       period: "forever",
       description: "Perfect for getting started",
       features: [
-        "5 likes per day",
+        "10 likes per day",
         "Basic matching",
         "View profiles",
         "Voice notes & emojis",
@@ -24,9 +24,9 @@ const Pricing = () => {
         "Basic filters"
       ],
       limitations: [
+        "Limited likes per day",
         "No video messaging",
         "No messaging without match",
-        "Limited daily likes",
         "No premium features",
         "No read receipts"
       ],
@@ -39,26 +39,57 @@ const Pricing = () => {
       savings: null
     },
     {
-      id: "premium",
-      name: "Premium",
-      monthlyPrice: "$19.99",
-      yearlyPrice: "$199.99",
+      id: "plus",
+      name: "Plus",
+      monthlyPrice: "$14.99",
+      yearlyPrice: "$119.99",
       period: billingCycle === 'monthly' ? "per month" : "per year",
-      description: "Most popular choice",
+      description: "Enhanced matching experience",
       features: [
         "Everything in Free",
         "Unlimited likes",
         "See who liked you",
         "Advanced filters",
-        "Video messaging",
+        "Priority matching",
         "Read receipts",
-        "Profile boost",
-        "Priority support",
-        "5 paid messages per month"
+        "Profile boost once per month",
+        "Premium support",
+        "3 paid messages per month"
       ],
       limitations: [
         "Limited paid messages",
-        "No video calls"
+        "No video calls",
+        "Limited boosts"
+      ],
+      color: "border-blue-300",
+      bgColor: "bg-blue-50",
+      textColor: "text-blue-700",
+      buttonClass: "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg hover:scale-105",
+      popular: false,
+      icon: Zap,
+      savings: billingCycle === 'yearly' ? "Save $90" : null
+    },
+    {
+      id: "premium",
+      name: "Premium",
+      monthlyPrice: "$24.99",
+      yearlyPrice: "$199.99",
+      period: billingCycle === 'monthly' ? "per month" : "per year",
+      description: "Most popular choice for serious daters",
+      features: [
+        "Everything in Plus",
+        "Video messaging",
+        "Unlimited paid messages",
+        "Profile boost twice per month",
+        "VIP customer support",
+        "Advanced matching algorithm",
+        "See who viewed your profile",
+        "Undo last action",
+        "10 Super Likes per month"
+      ],
+      limitations: [
+        "No video calls",
+        "Limited Super Likes"
       ],
       color: "border-emerald-300",
       bgColor: "bg-emerald-50",
@@ -66,26 +97,26 @@ const Pricing = () => {
       buttonClass: "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:shadow-lg hover:scale-105",
       popular: true,
       icon: Star,
-      savings: billingCycle === 'yearly' ? "Save $40" : null
+      savings: billingCycle === 'yearly' ? "Save $100" : null
     },
     {
       id: "elite",
       name: "Elite",
-      monthlyPrice: "$39.99",
+      monthlyPrice: "$49.99",
       yearlyPrice: "$399.99",
       period: billingCycle === 'monthly' ? "per month" : "per year",
-      description: "Ultimate marriage experience",
+      description: "Ultimate premium dating experience",
       features: [
         "Everything in Premium",
-        "Video messaging",
         "Video calls with matches",
-        "Unlimited paid messages",
-        "Profile verification priority",
-        "Advanced analytics",
-        "VIP support",
-        "Concierge matching",
-        "Priority in search results",
-        "Custom filters"
+        "Unlimited Super Likes",
+        "Priority profile placement",
+        "Advanced analytics & insights",
+        "Executive matchmaking concierge",
+        "Custom relationship coaching",
+        "VIP event invitations",
+        "Profile verification badge",
+        "Advanced relationship compatibility"
       ],
       limitations: [],
       color: "border-amber-300",
@@ -94,7 +125,7 @@ const Pricing = () => {
       buttonClass: "bg-gradient-to-r from-amber-500 to-amber-600 text-white hover:shadow-lg hover:scale-105",
       popular: false,
       icon: Crown,
-      savings: billingCycle === 'yearly' ? "Save $80" : null
+      savings: billingCycle === 'yearly' ? "Save $200" : null
     }
   ];
 
@@ -174,7 +205,7 @@ const Pricing = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {plans.map((plan) => {
               const Icon = plan.icon;
               return (
@@ -204,14 +235,16 @@ const Pricing = () => {
                   {/* Plan Header */}
                   <div className="text-center mb-6">
                     <div className={`w-20 h-20 mx-auto mb-4 rounded-3xl flex items-center justify-center relative overflow-hidden ${
-                      plan.id === 'free' ? 'bg-gray-100' : 
+                      plan.id === 'free' ? 'bg-gray-100' :
+                      plan.id === 'plus' ? 'bg-gradient-to-br from-blue-100 to-blue-200' :
                       plan.id === 'premium' ? 'bg-gradient-to-br from-emerald-100 to-emerald-200' : 'bg-gradient-to-br from-amber-100 to-amber-200'
                     }`}>
                       {plan.id !== 'free' && (
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent"></div>
                       )}
                       <Icon className={`w-10 h-10 relative z-10 ${
-                        plan.id === 'free' ? 'text-gray-600' : 
+                        plan.id === 'free' ? 'text-gray-600' :
+                        plan.id === 'plus' ? 'text-blue-600' :
                         plan.id === 'premium' ? 'text-emerald-600' : 'text-amber-600'
                       }`} />
                     </div>
@@ -225,7 +258,7 @@ const Pricing = () => {
                       <div className="text-sm text-gray-500">{plan.period}</div>
                       {billingCycle === 'yearly' && plan.id !== 'free' && (
                         <div className="text-xs text-emerald-600 font-medium mt-1">
-                          {plan.id === 'premium' ? '$1.67/month saved' : '$3.33/month saved'}
+                          {billingCycle === 'yearly' && plan.savings && plan.savings}
                         </div>
                       )}
                     </div>
@@ -345,4 +378,4 @@ const Pricing = () => {
   );
 };
 
-export default Pricing; 
+export default Pricing;
