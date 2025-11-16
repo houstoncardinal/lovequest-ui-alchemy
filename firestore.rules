@@ -1,0 +1,331 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return exists(/databases/$(database)/documents/adminUsers/$(request.auth.uid)) &&
+             get(/databases/$(database)/documents/adminUsers/$(request.auth.uid)).data.isActive == true;
+    }
+
+    function isVerified() {
+      return isSignedIn() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isVerified == true;
+    }
+
+    function canAccessApp() {
+      return isSignedIn() &&
+             get(/databases/$(database)/documents/users/$(request.auth.uid)).data.canAccessApp == true;
+    }
+
+    // ============================================
+    // USERS COLLECTION
+    // ============================================
+
+    match /users/{userId} {
+      // Read: Any authenticated user can view profiles
+      allow read: if isSignedIn();
+
+      // Create: Only when creating own profile, UID must match
+      allow create: if isSignedIn() &&
+                      isOwner(userId) &&
+                      request.resource.data.uid == request.auth.uid &&
+                      request.resource.data.email == request.auth.token.email;
+
+      // Update: Only owner can update their profile
+      allow update: if isSignedIn() && isOwner(userId);
+
+      // Delete: Owner or admin only
+      allow delete: if isOwner(userId) || isAdmin();
+
+      // Subcollection: Photos
+      match /photos/{photoId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && isOwner(userId);
+        allow update: if isOwner(userId) || isAdmin();
+        allow delete: if isOwner(userId) || isAdmin();
+      }
+
+      // Subcollection: Settings
+      match /settings/{settingType} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+
+      // Subcollection: Preferences
+      match /preferences/{preferenceType} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+
+      // Subcollection: Blocked Users
+      match /blockedUsers/{blockedUserId} {
+        allow read, write: if isSignedIn() && isOwner(userId);
+      }
+    }
+
+    // ============================================
+    // MATCHES COLLECTION
+    // ============================================
+
+    match /matches/{matchId} {
+      function isParticipant() {
+        return isSignedIn() &&
+               (resource.data.user1Id == request.auth.uid || resource.data.user2Id == request.auth.uid);
+      }
+
+      allow read: if isParticipant();
+
+      allow create: if isSignedIn() &&
+                      (request.resource.data.user1Id == request.auth.uid || request.resource.data.user2Id == request.auth.uid);
+
+      allow update: if isParticipant();
+
+      allow delete: if isParticipant() || isAdmin();
+
+      // Subcollection: Messages
+      match /messages/{messageId} {
+        function matchParticipant() {
+          let matchData = get(/databases/$(database)/documents/matches/$(matchId)).data;
+          return matchData.user1Id == request.auth.uid || matchData.user2Id == request.auth.uid;
+        }
+
+        allow read: if isSignedIn() && matchParticipant();
+
+        allow create: if isSignedIn() &&
+                        matchParticipant() &&
+                        request.resource.data.senderId == request.auth.uid;
+
+        allow update: if isSignedIn() && matchParticipant();
+
+        allow delete: if isSignedIn() &&
+                        (request.resource.data.senderId == request.auth.uid || isAdmin());
+      }
+
+      // Subcollection: Insights
+      match /insights/{insightId} {
+        allow read: if isParticipant();
+        allow write: if isAdmin();  // Only admins/cloud functions can write insights
+      }
+    }
+
+    // ============================================
+    // LIKES COLLECTION
+    // ============================================
+
+    match /likes/{likeId} {
+      // Read: User can see who they liked or who liked them
+      allow read: if isSignedIn() &&
+                    (resource.data.likerId == request.auth.uid || resource.data.likedId == request.auth.uid);
+
+      // Create: Can only create likes where you are the liker
+      allow create: if isSignedIn() &&
+                      request.resource.data.likerId == request.auth.uid &&
+                      canAccessApp();
+
+      // Update: Only cloud functions (for setting isMatched)
+      allow update: if false;
+
+      // Delete: Can delete your own likes
+      allow delete: if isSignedIn() && resource.data.likerId == request.auth.uid;
+    }
+
+    // ============================================
+    // MATCH INSIGHTS COLLECTION
+    // ============================================
+
+    match /matchInsights/{insightId} {
+      // Read: Only participants of the match can read
+      allow read: if isSignedIn() &&
+                    (resource.data.user1Id == request.auth.uid || resource.data.user2Id == request.auth.uid);
+
+      // Write: Only cloud functions
+      allow write: if false;
+    }
+
+    // ============================================
+    // POSTS COLLECTION (Community)
+    // ============================================
+
+    match /posts/{postId} {
+      // Read: Any authenticated user
+      allow read: if isSignedIn() && resource.data.isApproved == true;
+
+      // Create: Authenticated users
+      allow create: if isSignedIn() &&
+                      canAccessApp() &&
+                      request.resource.data.userId == request.auth.uid;
+
+      // Update: Owner only
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+      // Delete: Owner or admin
+      allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+
+      // Subcollection: Likes
+      match /likes/{userId} {
+        allow read: if isSignedIn();
+        allow create: if isSignedIn() && userId == request.auth.uid;
+        allow delete: if isSignedIn() && userId == request.auth.uid;
+      }
+
+      // Subcollection: Comments
+      match /comments/{commentId} {
+        allow read: if isSignedIn();
+
+        allow create: if isSignedIn() &&
+                        canAccessApp() &&
+                        request.resource.data.userId == request.auth.uid;
+
+        allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+        allow delete: if (isSignedIn() && resource.data.userId == request.auth.uid) || isAdmin();
+      }
+    }
+
+    // ============================================
+    // VERIFICATION REQUESTS
+    // ============================================
+
+    match /verificationRequests/{requestId} {
+      // Read: Owner or admin
+      allow read: if isSignedIn() &&
+                    (resource.data.userId == request.auth.uid || isAdmin());
+
+      // Create: Any authenticated user for themselves
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+
+      // Update: Admin only
+      allow update: if isAdmin();
+
+      // Delete: Admin only
+      allow delete: if isAdmin();
+    }
+
+    // ============================================
+    // PUSH TOKENS
+    // ============================================
+
+    match /pushTokens/{tokenId} {
+      // Read: Owner only
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+      // Create: Owner only
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+
+      // Update: Owner only
+      allow update: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+      // Delete: Owner only
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // ============================================
+    // PREMIUM SUBSCRIPTIONS
+    // ============================================
+
+    match /premiumSubscriptions/{subscriptionId} {
+      // Read: Owner or admin
+      allow read: if isSignedIn() &&
+                    (resource.data.userId == request.auth.uid || isAdmin());
+
+      // Write: Cloud functions only (payment processing)
+      allow write: if false;
+    }
+
+    // ============================================
+    // USER REPORTS
+    // ============================================
+
+    match /userReports/{reportId} {
+      // Read: Admin only
+      allow read: if isAdmin();
+
+      // Create: Any authenticated user
+      allow create: if isSignedIn() &&
+                      canAccessApp() &&
+                      request.resource.data.reporterId == request.auth.uid;
+
+      // Update: Admin only
+      allow update: if isAdmin();
+
+      // Delete: Admin only
+      allow delete: if isAdmin();
+    }
+
+    // ============================================
+    // VIDEO CALL SESSIONS
+    // ============================================
+
+    match /videoCallSessions/{sessionId} {
+      function isCallParticipant() {
+        return isSignedIn() &&
+               (resource.data.callerId == request.auth.uid || resource.data.receiverId == request.auth.uid);
+      }
+
+      allow read: if isCallParticipant();
+
+      allow create: if isSignedIn() &&
+                      request.resource.data.callerId == request.auth.uid;
+
+      allow update: if isCallParticipant();
+
+      allow delete: if isCallParticipant() || isAdmin();
+    }
+
+    // ============================================
+    // ADMIN USERS
+    // ============================================
+
+    match /adminUsers/{userId} {
+      // Read: Authenticated users can check if someone is admin
+      allow read: if isSignedIn();
+
+      // Write: Super admin only (or via Firebase Admin SDK)
+      allow write: if false;
+    }
+
+    // ============================================
+    // USER STATS (Pre-computed)
+    // ============================================
+
+    match /userStats/{userId} {
+      // Read: Owner or admin
+      allow read: if isSignedIn() &&
+                    (userId == request.auth.uid || isAdmin());
+
+      // Write: Cloud functions only
+      allow write: if false;
+    }
+
+    // ============================================
+    // MATCH RECOMMENDATIONS (Pre-computed)
+    // ============================================
+
+    match /matchRecommendations/{userId}/recommended/{recommendedUserId} {
+      // Read: Owner only
+      allow read: if isSignedIn() && userId == request.auth.uid;
+
+      // Write: Cloud functions only
+      allow write: if false;
+    }
+
+    // ============================================
+    // DEFAULT DENY ALL
+    // ============================================
+
+    // Catch-all: Deny everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

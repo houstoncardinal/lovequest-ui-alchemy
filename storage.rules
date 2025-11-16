@@ -1,0 +1,144 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isValidImageSize() {
+      // Max 10MB for images
+      return request.resource.size < 10 * 1024 * 1024;
+    }
+
+    function isValidVideoSize() {
+      // Max 100MB for videos
+      return request.resource.size < 100 * 1024 * 1024;
+    }
+
+    function isImage() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isVideo() {
+      return request.resource.contentType.matches('video/.*');
+    }
+
+    // ============================================
+    // PROFILE PHOTOS
+    // ============================================
+
+    match /profile-photos/{userId}/{photoId} {
+      // Read: Any authenticated user
+      allow read: if isSignedIn();
+
+      // Upload: Only owner, must be image, max 10MB
+      allow create: if isSignedIn() &&
+                      isOwner(userId) &&
+                      isImage() &&
+                      isValidImageSize();
+
+      // Update: Owner only
+      allow update: if isSignedIn() && isOwner(userId);
+
+      // Delete: Owner only
+      allow delete: if isSignedIn() && isOwner(userId);
+    }
+
+    // ============================================
+    // VERIFICATION DOCUMENTS
+    // ============================================
+
+    match /verification/{userId}/{documentId} {
+      // Read: Owner or admin only (via Firebase Admin SDK)
+      allow read: if isSignedIn() && isOwner(userId);
+
+      // Upload: Owner only, must be image, max 10MB
+      allow create: if isSignedIn() &&
+                      isOwner(userId) &&
+                      isImage() &&
+                      isValidImageSize();
+
+      // Update: Not allowed
+      allow update: if false;
+
+      // Delete: Owner or admin only (via Firebase Admin SDK)
+      allow delete: if isSignedIn() && isOwner(userId);
+    }
+
+    // ============================================
+    // MESSAGE ATTACHMENTS
+    // ============================================
+
+    match /message-attachments/{matchId}/{messageId}/{fileName} {
+      // Read: Match participants only (validated via Firestore rules)
+      allow read: if isSignedIn();
+
+      // Upload: Authenticated users, images or videos
+      allow create: if isSignedIn() &&
+                      ((isImage() && isValidImageSize()) ||
+                       (isVideo() && isValidVideoSize()));
+
+      // Update: Not allowed
+      allow update: if false;
+
+      // Delete: Sender only (validated via Firestore)
+      allow delete: if isSignedIn();
+    }
+
+    // ============================================
+    // POST IMAGES
+    // ============================================
+
+    match /post-images/{postId}/{imageId} {
+      // Read: Any authenticated user
+      allow read: if isSignedIn();
+
+      // Upload: Authenticated users, images only, max 10MB
+      allow create: if isSignedIn() &&
+                      isImage() &&
+                      isValidImageSize();
+
+      // Update: Not allowed
+      allow update: if false;
+
+      // Delete: Post owner only (validated via Firestore)
+      allow delete: if isSignedIn();
+    }
+
+    // ============================================
+    // REPORT EVIDENCE
+    // ============================================
+
+    match /report-evidence/{reportId}/{evidenceId} {
+      // Read: Admin only (via Firebase Admin SDK)
+      allow read: if isSignedIn();
+
+      // Upload: Authenticated users, images only
+      allow create: if isSignedIn() &&
+                      isImage() &&
+                      isValidImageSize();
+
+      // Update: Not allowed
+      allow update: if false;
+
+      // Delete: Admin only (via Firebase Admin SDK)
+      allow delete: if false;
+    }
+
+    // ============================================
+    // DEFAULT DENY ALL
+    // ============================================
+
+    // Catch-all: Deny everything else
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

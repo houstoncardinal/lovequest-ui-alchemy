@@ -1,0 +1,187 @@
+
+Use npm
+
+Use a <script> tag
+If you're already using npm and a module bundler such as webpack or Rollup, you can run the following command to install the latest SDK (Learn more):
+
+npm install firebase
+Then, initialize Firebase and begin using the SDKs for the products you'd like to use.
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyD07c9zgDWe5ma0sHUvbeXooyNB1hJ8Bo8",
+  authDomain: "lovequest-41a43.firebaseapp.com",
+  projectId: "lovequest-41a43",
+  storageBucket: "lovequest-41a43.firebasestorage.app",
+  messagingSenderId: "755087804820",
+  appId: "1:755087804820:web:85d7a19793f2bdef106781",
+  measurementId: "G-J1YW5VPSK2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+Note: This option uses the modular JavaScript SDK, which provides reduced SDK size.
+
+Learn more about Firebase for web: Get Started, Web SDK API Reference, Samples
+
+
+Set up default bucket
+1 
+Bucket options
+2 
+Security rules
+Bucket reference
+gs://
+lovequest-41a43.firebasestorage.app
+Storage class
+Regional
+
+No cost location
+Location
+
+US-CENTRAL1
+Access frequency
+
+Standard
+
+All locations
+Location
+
+Access frequency
+
+
+Set up default bucket
+Bucket options
+2 
+Security rules
+After you define your data structure, you will need to write rules to secure your data.
+Learn more
+
+Start in production mode
+Your data is private by default. Client read/write access will only be granted as specified by your security rules.
+
+Start in test mode
+Your data is open by default to enable quick setup. However, you must update your security rules within 30 days to enable long-term client read/write access.
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
+note:
+All third party reads and writes will be denied
+
+Editable
+Select edition
+
+Editable
+Database ID & location
+3
+Configure
+After you define your data structure, you will need to write rules to secure your data. Learn more
+
+Start in production mode
+Your data is private by default. Client read/write access will only be granted as specified by your security rules.
+
+Start in test mode
+Your data is open by default to enable quick setup. However, you must update your security rules within 30 days to enable long-term client read/write access.
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+note:
+All third party reads and writes will be denied
+
+
+
+Your project
+Project name
+lovequest
+Project ID 
+lovequest-41a43
+Project number 
+755087804820
+Environment
+This setting customizes your project for different stages of the app lifecycle
+Environment type
+Unspecified
+Your apps
+Web apps
+lovequest
+Web App
+App nickname
+lovequest
+App ID 
+1:755087804820:web:85d7a19793f2bdef106781
+SDK setup and configuration
+
+npm
+
+CDN
+
+Config
+If you're already using npm and a module bundler such as webpack or Rollup, you can run the following command to install the latest SDK (Learn more):
+
+npm install firebase
+Then, initialize Firebase and begin using the SDKs for the products you'd like to use.
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyD07c9zgDWe5ma0sHUvbeXooyNB1hJ8Bo8",
+  authDomain: "lovequest-41a43.firebaseapp.com",
+  projectId: "lovequest-41a43",
+  storageBucket: "lovequest-41a43.firebasestorage.app",
+  messagingSenderId: "755087804820",
+  appId: "1:755087804820:web:85d7a19793f2bdef106781",
+  measurementId: "G-J1YW5VPSK2"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+Note: This option uses the modular JavaScript SDK, which provides reduced SDK size.
+
+Learn more about Firebase for web: Get Started, Web SDK API Reference, Samples
+
+Firebase Cloud Messaging API (V1)Enabled
+Recommended for most use cases. Learn more
+
+Check the real time performance of the V1 API on the Status Dashboard
+
+Sender ID
+Service Account
+755087804820	Manage Service Accounts
+Cloud Messaging API (Legacy)Disabled
+If you are an existing user of the legacy HTTP or XMPP APIs (deprecated on 6/20/2023), you must migrate to the latest Firebase Cloud Messaging API (HTTP v1) by 6/20/2024. Learn more
+
+Web configuration
+Web Push certificates
+Web Push certificates
+Firebase Cloud Messaging can use Application Identity key pairs to connect with external push services. Learn more
+Key pair	Date added	Status	Actions
+You can also import an existing key pair
+
+firease service key is located at root as @firebaseservicekey.json
