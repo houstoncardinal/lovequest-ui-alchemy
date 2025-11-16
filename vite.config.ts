@@ -7,6 +7,10 @@ export default defineConfig({
   server: {
     host: "::",
     port: 8080,
+    headers: {
+      // Allow OAuth popups for Firebase Auth
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+    },
   },
   plugins: [react()],
   resolve: {
