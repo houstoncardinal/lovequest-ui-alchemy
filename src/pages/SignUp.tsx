@@ -168,7 +168,7 @@ const SignUp = () => {
         });
         navigate("/");
       }
-    } catch (error) {
+    } catch (error: any) {
       let errorMessage = "Failed to sign up with Google.";
 
       if (error.code === 'auth/popup-closed-by-user') {
@@ -342,15 +342,45 @@ const SignUp = () => {
               {!isLoading && <ArrowRight className="w-5 h-5 ml-2" />}
             </Button>
 
-            {/* Google Sign Up Placeholder */}
+            {/* Divider */}
+            <div className="mt-6 mb-6">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-emerald-200"></div>
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-2 bg-white text-emerald-600">Or continue with</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Google Sign Up Button */}
             <Button
               type="button"
               variant="outline"
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-emerald-200 text-emerald-700 hover:bg-emerald-50 mt-2"
-              onClick={() => toast({ title: "Coming soon!", description: "Google sign up will be available soon." })}
+              disabled={isLoading}
+              onClick={handleGoogleSignIn}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl border-2 border-emerald-200 text-emerald-700 hover:bg-emerald-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <svg className="w-5 h-5" viewBox="0 0 48 48"><g><path fill="#4285F4" d="M44.5 20H24v8.5h11.7C34.9 33.1 30.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c2.6 0 5 .8 7 2.2l6.4-6.4C33.5 5.5 28.1 3.5 22 3.5 11.6 3.5 3 12.1 3 22.5S11.6 41.5 22 41.5c9.5 0 17.5-7.7 17.5-17.5 0-1.2-.1-2.1-.3-3z"/><path fill="#34A853" d="M6.3 14.7l7 5.1C15.1 17.1 18.3 15 22 15c2.6 0 5 .8 7 2.2l6.4-6.4C33.5 5.5 28.1 3.5 22 3.5c-6.6 0-12 5.4-12 12 0 2.1.5 4.1 1.3 5.7z"/><path fill="#FBBC05" d="M22 41.5c6.2 0 11.4-2.1 15.2-5.7l-7-5.7C28.7 32.9 26.5 34 24 34c-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19z"/><path fill="#EA4335" d="M44.5 20H24v8.5h11.7c-1.2 3.2-4.2 5.5-7.7 5.5-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19 6.1 0 11.5-2.1 15.2-5.7l-7-5.7C28.7 32.9 26.5 34 24 34c-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19 6.1 0 11.5-2.1 15.2-5.7l-7-5.7C28.7 32.9 26.5 34 24 34c-6.6 0-12-5.4-12-12 0-1.3.2-2.5.5-3.7l-7-5.1C3.5 17.1 3 19.1 3 22.5c0 10.4 8.6 19 19 19z"/></g></svg>
-              Sign up with Google
+              <svg className="w-5 h-5" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              {isLoading ? "Signing Up..." : "Sign up with Google"}
             </Button>
           </form>
 
