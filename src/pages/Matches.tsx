@@ -66,7 +66,7 @@ const Chat = () => {
     },
     {
       id: "like-2",
-      name: "Amira Hassan",
+      name: "Rachel Green",
       age: 26,
       location: "Seattle, WA",
       image: profile3,
@@ -80,21 +80,21 @@ const Chat = () => {
     },
     {
       id: "like-4",
-      name: "Fatima Al-Zahra",
+      name: "Sophia Adams",
       age: 25,
       location: "Phoenix, AZ",
       image: profile1,
     },
     {
       id: "like-5",
-      name: "Layla Amiri",
+      name: "Lauren Miller",
       age: 27,
       location: "Dallas, TX",
       image: profile2,
     },
     {
       id: "like-6",
-      name: "Marya Khan",
+      name: "Hannah Brooks",
       age: 24,
       location: "Nashville, TN",
       image: profile3,
