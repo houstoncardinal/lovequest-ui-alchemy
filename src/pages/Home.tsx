@@ -325,7 +325,7 @@ const Home = () => {
         <div className="flex items-center justify-between px-4 py-3 max-w-lg mx-auto md:max-w-2xl">
           <Logo size="sm" />
           <div className="flex items-center gap-2">
-            <LikesCounter likesUsage={likesUsage} />
+            <LikesCounter />
             <button onClick={() => navigate("/preferences")} className="p-2 rounded-xl hover:bg-muted transition-colors">
               <SlidersHorizontal className="w-5 h-5 text-muted-foreground" />
             </button>
