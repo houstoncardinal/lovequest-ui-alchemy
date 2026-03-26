@@ -53,12 +53,12 @@ const DEMO_MESSAGES: Message[] = [
     id: 'demo-1',
     sender_id: 'demo-user-1',
     receiver_id: 'current-user',
-    content: "Hello! I noticed we both love reading personal development books. What's your favorite book?",
+    content: "Hey! I noticed we both love hiking and coffee. What's your favorite trail?",
     message_type: 'text',
     is_read: true,
     created_at: new Date(Date.now() - 3600000).toISOString(),
     sender_profile: {
-      display_name: 'Aisha',
+      display_name: 'Sarah',
       avatar_url: '/lovable-uploads/a89fa103-cf18-412f-82e7-7e83b5aa0a85.png'
     }
   },
@@ -66,7 +66,7 @@ const DEMO_MESSAGES: Message[] = [
     id: 'demo-2',
     sender_id: 'current-user',
     receiver_id: 'demo-user-1',
-    content: "Wa alaikum assalam! I really enjoyed 'The Road to Mecca' by Muhammad Asad. How about you?",
+    content: "I love the trails up in the Catskills! Have you been to Kaaterskill Falls?",
     message_type: 'text',
     is_read: true,
     created_at: new Date(Date.now() - 3000000).toISOString(),
@@ -75,12 +75,12 @@ const DEMO_MESSAGES: Message[] = [
     id: 'demo-3',
     sender_id: 'demo-user-1',
     receiver_id: 'current-user',
-    content: "That's a wonderful choice! I'm currently reading 'No god but God' by Reza Aslan. The historical perspective is fascinating.",
+    content: "Not yet but it's been on my list forever! We should totally go together sometime 😊",
     message_type: 'text',
     is_read: false,
     created_at: new Date(Date.now() - 1800000).toISOString(),
     sender_profile: {
-      display_name: 'Aisha',
+      display_name: 'Sarah',
       avatar_url: '/lovable-uploads/a89fa103-cf18-412f-82e7-7e83b5aa0a85.png'
     }
   }
@@ -94,9 +94,9 @@ const DEMO_MATCHES: Match[] = [
     created_at: new Date(Date.now() - 86400000).toISOString(),
     matched_user: {
       user_id: 'demo-user-1',
-      display_name: 'Aisha Rahman',
-      first_name: 'Aisha',
-      last_name: 'Rahman',
+      display_name: 'Sarah Johnson',
+      first_name: 'Sarah',
+      last_name: 'Johnson',
       avatar_url: '/lovable-uploads/a89fa103-cf18-412f-82e7-7e83b5aa0a85.png'
     }
   },
@@ -107,9 +107,9 @@ const DEMO_MATCHES: Match[] = [
     created_at: new Date(Date.now() - 172800000).toISOString(),
     matched_user: {
       user_id: 'demo-user-2',
-      display_name: 'Fatima Ali',
-      first_name: 'Fatima',
-      last_name: 'Ali',
+      display_name: 'Emily Chen',
+      first_name: 'Emily',
+      last_name: 'Chen',
       avatar_url: '/assets/profile-2.jpg'
     }
   }

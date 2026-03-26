@@ -2,48 +2,52 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240 10% 6%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 240 10% 6%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 240 10% 6%;
 
-    /* Premium Emerald Green Theme */
-    --primary: 158 64% 52%; /* Emerald */
+    /* Warm Rose / Coral Luxury Dating Theme */
+    --primary: 346 77% 55%;
     --primary-foreground: 0 0% 100%;
-    --accent: 158 64% 52%;
+    --accent: 24 95% 60%;
     --accent-foreground: 0 0% 100%;
-    --secondary: 220 26% 96%;
-    --secondary-foreground: 220 26% 14%;
-    --muted: 220 26% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 220 26% 91%;
-    --input: 220 26% 91%;
-    --ring: 158 64% 52%;
+    --secondary: 240 5% 96%;
+    --secondary-foreground: 240 6% 10%;
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 4% 46%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 6% 90%;
+    --input: 240 6% 90%;
+    --ring: 346 77% 55%;
     --radius: 1rem;
+
+    /* Extended palette tokens */
+    --rose: 346 77% 55%;
+    --coral: 24 95% 60%;
+    --gold: 45 93% 58%;
+    --violet: 270 60% 58%;
+
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(158, 64%, 40%));
+    --gradient-primary: linear-gradient(135deg, hsl(346, 77%, 55%), hsl(24, 95%, 60%));
     --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)/0.3));
-    --gradient-glow: linear-gradient(135deg, hsl(var(--primary)/0.1), hsl(var(--primary)/0.05));
-    
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted) / 0.3));
+    --gradient-glow: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--accent) / 0.08));
+    --gradient-hero: linear-gradient(135deg, hsl(346, 77%, 55%), hsl(340, 65%, 48%), hsl(24, 95%, 60%));
+
     /* Shadows */
-    --shadow-elegant: 0 4px 20px -4px hsl(var(--primary)/0.1);
-    --shadow-glow: 0 0 40px hsl(var(--primary)/0.15);
-    --shadow-card: 0 1px 3px 0 hsl(var(--foreground)/0.1), 0 1px 2px 0 hsl(var(--foreground)/0.06);
-    --shadow-card-hover: 0 4px 6px -1px hsl(var(--foreground)/0.1), 0 2px 4px -1px hsl(var(--foreground)/0.06);
-    
+    --shadow-elegant: 0 4px 24px -4px hsl(346 77% 55% / 0.18);
+    --shadow-glow: 0 0 40px hsl(346 77% 55% / 0.15);
+    --shadow-card: 0 1px 3px 0 hsl(240 10% 6% / 0.08), 0 1px 2px 0 hsl(240 10% 6% / 0.04);
+    --shadow-card-hover: 0 8px 24px -4px hsl(240 10% 6% / 0.12), 0 4px 8px -2px hsl(240 10% 6% / 0.06);
+
     --component-inactive-color: var(--muted-foreground);
     --component-bg: var(--card);
     --component-shadow: var(--border);
@@ -51,26 +55,27 @@ All colors MUST be HSL.
     --component-line-inactive-color: var(--border);
     --component-active-color-default: var(--accent-foreground);
   }
+
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 158 64% 52%;
+    --background: 240 10% 4%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 6%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 6%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 346 77% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 158 64% 52%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 158 64% 52%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 65%;
+    --accent: 24 95% 60%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 4% 16%;
+    --input: 240 4% 16%;
+    --ring: 346 77% 55%;
     --component-inactive-color: var(--muted-foreground);
     --component-bg: var(--card);
     --component-shadow: var(--border);
@@ -78,6 +83,7 @@ All colors MUST be HSL.
     --component-line-inactive-color: var(--muted-foreground);
     --component-active-color-default: var(--accent-foreground);
   }
+
   .theme {
     --color-chart-2: var(--color-chart-2);
     --color-chart-3: var(--color-chart-3);
@@ -92,6 +98,9 @@ All colors MUST be HSL.
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -102,45 +111,75 @@ All colors MUST be HSL.
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
   .line-clamp-3 {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  
   .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
   }
-  
   .text-gradient {
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
   .shadow-elegant {
     box-shadow: var(--shadow-elegant);
   }
-  
   .shadow-glow {
     box-shadow: var(--shadow-glow);
   }
-  
   .bg-gradient-subtle {
     background: var(--gradient-subtle);
   }
-  
   .bg-gradient-glow {
     background: var(--gradient-glow);
   }
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  /* Safe area bottom for mobile */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  /* Hide scrollbar but keep scrollable */
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 @layer components {
+  /* Swipe card animations */
+  @keyframes swipeRight {
+    0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(120%) rotate(20deg); opacity: 0; }
+  }
+  @keyframes swipeLeft {
+    0% { transform: translateX(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateX(-120%) rotate(-20deg); opacity: 0; }
+  }
+  .animate-swipe-right { animation: swipeRight 0.4s ease-out forwards; }
+  .animate-swipe-left { animation: swipeLeft 0.4s ease-out forwards; }
+
+  /* Heart burst */
+  @keyframes heartBurst {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  .animate-heart-burst { animation: heartBurst 0.4s ease-out; }
+
+  /* Float up for like indicator */
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-80px) scale(0.5); opacity: 0; }
+  }
+  .animate-float-up { animation: floatUp 0.8s ease-out forwards; }
+
   /* Enhanced Heart Flutter Animations */
   @keyframes heartFlutter0 {
     0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
@@ -149,7 +188,6 @@ All colors MUST be HSL.
     75% { transform: translate(-30px, -55px) scale(0.6) rotate(-30deg); opacity: 0.3; }
     100% { transform: translate(-35px, -70px) scale(0.2) rotate(-45deg); opacity: 0; }
   }
-
   @keyframes heartFlutter1 {
     0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
     25% { transform: translate(20px, -20px) scale(1.2) rotate(15deg); opacity: 0.9; }
@@ -157,93 +195,39 @@ All colors MUST be HSL.
     75% { transform: translate(45px, -50px) scale(0.5) rotate(40deg); opacity: 0.3; }
     100% { transform: translate(55px, -65px) scale(0.1) rotate(60deg); opacity: 0; }
   }
-
   @keyframes heartFlutter2 {
-    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
-    25% { transform: translate(-25px, -15px) scale(1.0) rotate(-25deg); opacity: 0.9; }
-    50% { transform: translate(-40px, -25px) scale(0.7) rotate(-35deg); opacity: 0.6; }
-    75% { transform: translate(-50px, -35px) scale(0.4) rotate(-50deg); opacity: 0.3; }
-    100% { transform: translate(-60px, -45px) scale(0.1) rotate(-70deg); opacity: 0; }
+    0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(-60px, -45px) scale(0.1); opacity: 0; }
   }
-
   @keyframes heartFlutter3 {
-    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
-    25% { transform: translate(30px, -10px) scale(1.3) rotate(20deg); opacity: 0.9; }
-    50% { transform: translate(50px, -20px) scale(1.0) rotate(35deg); opacity: 0.6; }
-    75% { transform: translate(65px, -30px) scale(0.6) rotate(50deg); opacity: 0.3; }
-    100% { transform: translate(80px, -40px) scale(0.2) rotate(70deg); opacity: 0; }
+    0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(80px, -40px) scale(0.2); opacity: 0; }
   }
-
   @keyframes heartFlutter4 {
-    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
-    25% { transform: translate(-10px, -30px) scale(0.9) rotate(-15deg); opacity: 0.9; }
-    50% { transform: translate(-15px, -50px) scale(1.1) rotate(-25deg); opacity: 0.6; }
-    75% { transform: translate(-20px, -70px) scale(0.7) rotate(-40deg); opacity: 0.3; }
-    100% { transform: translate(-25px, -90px) scale(0.3) rotate(-60deg); opacity: 0; }
+    0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(-25px, -90px) scale(0.3); opacity: 0; }
   }
-
   @keyframes heartFlutter5 {
-    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
-    25% { transform: translate(15px, -35px) scale(1.1) rotate(25deg); opacity: 0.9; }
-    50% { transform: translate(25px, -55px) scale(0.8) rotate(40deg); opacity: 0.6; }
-    75% { transform: translate(35px, -75px) scale(0.5) rotate(60deg); opacity: 0.3; }
-    100% { transform: translate(45px, -95px) scale(0.2) rotate(80deg); opacity: 0; }
+    0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(45px, -95px) scale(0.2); opacity: 0; }
   }
-
   @keyframes heartFlutter6 {
-    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
-    25% { transform: translate(-35px, -5px) scale(1.2) rotate(-30deg); opacity: 0.9; }
-    50% { transform: translate(-55px, -10px) scale(0.9) rotate(-45deg); opacity: 0.6; }
-    75% { transform: translate(-70px, -15px) scale(0.6) rotate(-65deg); opacity: 0.3; }
-    100% { transform: translate(-85px, -20px) scale(0.2) rotate(-90deg); opacity: 0; }
+    0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(-85px, -20px) scale(0.2); opacity: 0; }
   }
-
   @keyframes heartFlutter7 {
-    0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 1; }
-    25% { transform: translate(40px, -5px) scale(1.4) rotate(30deg); opacity: 0.9; }
-    50% { transform: translate(65px, -10px) scale(1.1) rotate(50deg); opacity: 0.6; }
-    75% { transform: translate(85px, -15px) scale(0.7) rotate(75deg); opacity: 0.3; }
-    100% { transform: translate(105px, -20px) scale(0.3) rotate(100deg); opacity: 0; }
+    0% { transform: translate(0, 0) scale(0.8); opacity: 1; }
+    100% { transform: translate(105px, -20px) scale(0.3); opacity: 0; }
   }
 }
 
-/* ---break---
-*/
-
 @theme inline {
   @keyframes iconBounce {
-  0%, 100% {
-    transform: translateY(0);
-    }
-  20% {
-    transform: translateY(-0.3em);
-    }
-  40% {
-    transform: translateY(0);
-    }
-  60% {
-    transform: translateY(-0.1em);
-    }
-  80% {
-    transform: translateY(0);
-    }
-  }
-  @keyframes iconBounce {
-  0%, 100% {
-    transform: translateY(0);
-    }
-  20% {
-    transform: translateY(-0.3em);
-    }
-  40% {
-    transform: translateY(0);
-    }
-  60% {
-    transform: translateY(-0.1em);
-    }
-  80% {
-    transform: translateY(0);
-    }
+    0%, 100% { transform: translateY(0); }
+    20% { transform: translateY(-0.3em); }
+    40% { transform: translateY(0); }
+    60% { transform: translateY(-0.1em); }
+    80% { transform: translateY(0); }
   }
 }
 
@@ -280,7 +264,7 @@ All colors MUST be HSL.
   min-height: 56px;
 }
 .menu__item.active {
-  color: var(--component-active-color, hsl(158, 64%, 52%));
+  color: hsl(var(--primary));
 }
 .menu__icon {
   display: flex;
@@ -291,24 +275,24 @@ All colors MUST be HSL.
 .menu__item .icon {
   width: 1.5rem;
   height: 1.5rem;
-  color: var(--component-inactive-color, hsl(var(--muted-foreground)));
+  color: hsl(var(--muted-foreground));
   transition: color 0.2s;
 }
 .menu__item.active .icon {
-  color: var(--component-active-color, hsl(158, 64%, 52%));
+  color: hsl(var(--primary));
   animation: iconBounce 0.5s;
 }
 .menu__text {
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--component-inactive-color, hsl(var(--muted-foreground)));
+  color: hsl(var(--muted-foreground));
   transition: color 0.2s;
   position: relative;
   display: block;
   line-height: 1.1;
 }
 .menu__text.active {
-  color: var(--component-active-color, hsl(158, 64%, 52%));
+  color: hsl(var(--primary));
 }
 .menu__item.active::after {
   content: '';
@@ -319,7 +303,7 @@ All colors MUST be HSL.
   transform: translateX(-50%);
   width: var(--lineWidth, 24px);
   height: 2px;
-  background: var(--component-active-color, hsl(158, 64%, 52%));
+  background: hsl(var(--primary));
   border-radius: 1px;
   transition: width 0.2s;
 }

@@ -17,7 +17,7 @@ const LikesCounter: React.FC = () => {
         px-3 py-1 text-xs font-medium shadow-sm
         ${isLow 
           ? 'bg-gradient-to-r from-amber-400 to-amber-500 text-white animate-pulse' 
-          : 'bg-gradient-to-r from-emerald-100 to-emerald-200 text-emerald-700'
+          : 'bg-primary/10 text-primary'
         }
       `}
     >

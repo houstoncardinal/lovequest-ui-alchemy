@@ -38,9 +38,6 @@ interface MatchData {
   location: string;
   bio: string;
   avatar_url: string;
-  religion_level: string;
-  prayer_frequency: string;
-  hijab_status: string;
   match_score: number;
   matched_at: string;
 }
@@ -69,7 +66,7 @@ const Chat = () => {
     },
     {
       id: "like-2",
-      name: "Amira Hassan",
+      name: "Rachel Green",
       age: 26,
       location: "Seattle, WA",
       image: profile3,
@@ -83,21 +80,21 @@ const Chat = () => {
     },
     {
       id: "like-4",
-      name: "Fatima Al-Zahra",
+      name: "Sophia Adams",
       age: 25,
       location: "Phoenix, AZ",
       image: profile1,
     },
     {
       id: "like-5",
-      name: "Layla Amiri",
+      name: "Lauren Miller",
       age: 27,
       location: "Dallas, TX",
       image: profile2,
     },
     {
       id: "like-6",
-      name: "Marya Khan",
+      name: "Hannah Brooks",
       age: 24,
       location: "Nashville, TN",
       image: profile3,
@@ -109,50 +106,41 @@ const Chat = () => {
     {
       match_id: "demo-1",
       matched_user_id: "demo-user-1",
-      first_name: "Shafa",
-      last_name: "Asadel",
-      display_name: "Shafa Asadel",
+      first_name: "Sarah",
+      last_name: "Johnson",
+      display_name: "Sarah Johnson",
       age: 25,
       location: "New York, NY",
       bio: "Love music, art, and meaningful conversations 🎵",
       avatar_url: profile1,
-      religion_level: "Religious",
-      prayer_frequency: "5 times daily",
-      hijab_status: "Yes",
       match_score: 95,
-      matched_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(), // 2 minutes ago
+      matched_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
     },
     {
       match_id: "demo-2",
       matched_user_id: "demo-user-2",
-      first_name: "Roseane",
-      last_name: "Rose",
-      display_name: "Roseane Rose",
+      first_name: "Emily",
+      last_name: "Chen",
+      display_name: "Emily Chen",
       age: 23,
       location: "Los Angeles, CA",
       bio: "Passionate about photography and travel ✈️",
       avatar_url: profile2,
-      religion_level: "Very Religious",
-      prayer_frequency: "Daily",
-      hijab_status: "Yes",
       match_score: 88,
-      matched_at: new Date(Date.now() - 60 * 60 * 1000).toISOString(), // 1 hour ago
+      matched_at: new Date(Date.now() - 60 * 60 * 1000).toISOString(),
     },
     {
       match_id: "demo-3",
       matched_user_id: "demo-user-3",
-      first_name: "Aura",
-      last_name: "Alexandra",
-      display_name: "Aura Alexandra",
+      first_name: "Jessica",
+      last_name: "Martinez",
+      display_name: "Jessica Martinez",
       age: 27,
       location: "Chicago, IL",
       bio: "Book lover, coffee enthusiast, and nature explorer 📚",
       avatar_url: profile3,
-      religion_level: "Religious",
-      prayer_frequency: "5 times daily",
-      hijab_status: "Sometimes",
       match_score: 92,
-      matched_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), // 3 hours ago
+      matched_at: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(),
     }
   ];
 

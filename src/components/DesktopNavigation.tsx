@@ -76,74 +76,48 @@ const DesktopNavigation = () => {
   ];
 
   return (
-    <div className="hidden md:flex fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-emerald-100/60 shadow-lg z-50">
-      <div className="flex items-center justify-between w-full max-w-screen-2xl mx-auto px-6 py-4">
+    <div className="hidden md:flex fixed top-0 left-0 right-0 bg-card/95 backdrop-blur-xl border-b border-border/50 shadow-sm z-50">
+      <div className="flex items-center justify-between w-full max-w-screen-2xl mx-auto px-6 py-3">
 
-        {/* Left Section - Logo & Status */}
-        <div className="flex items-center gap-10">
-          {/* Premium Logo */}
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="relative">
-              <Heart className="w-12 h-12 text-emerald-500 stroke-2 stroke-emerald-500 fill-transparent transition-all duration-500 group-hover:stroke-emerald-600 group-hover:scale-110 drop-shadow-lg" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        {/* Left Section - Logo */}
+        <div className="flex items-center gap-8">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-elegant" style={{ background: 'var(--gradient-hero)' }}>
+              <Heart className="w-5 h-5 text-white fill-current" />
             </div>
-            <div className="text-center">
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-gray-800 to-emerald-800 bg-clip-text text-transparent tracking-tight">
-                  LoveQuest
-                </h1>
-                <Crown className="w-5 h-5 text-amber-500 mt-0.5" />
-              </div>
-              <p className="text-sm text-emerald-600 font-medium mt-0.5">Premium Dating Experience</p>
+            <div>
+              <h1 className="text-xl font-bold text-foreground tracking-tight flex items-center gap-1.5">
+                LoveQuest
+                <Heart className="w-4 h-4 text-primary fill-current" />
+              </h1>
+              <p className="text-xs text-primary font-semibold tracking-wider uppercase">Premium Dating</p>
             </div>
-          </div>
-
-          {/* Enhanced Status Indicators */}
-          <div className="flex items-center gap-6">
-            {/* Real-time Activity */}
-            <div className="hidden lg:flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <Activity className="w-5 h-5 text-emerald-600 animate-pulse" />
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-emerald-800">Active Now</span>
-                <span className="text-xs text-emerald-600 font-medium">
-                  {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-            </div>
-
-
           </div>
         </div>
 
-        {/* Center Section - Premium Navigation */}
-        <nav className="flex items-center gap-3">
+        <nav className="flex items-center gap-2">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `relative flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-500 group overflow-hidden ${
+                `relative flex items-center gap-2.5 px-5 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 text-white shadow-2xl transform scale-105"
-                    : "text-gray-700 hover:text-gray-900 hover:bg-white/80 hover:shadow-xl border border-transparent hover:border-emerald-100"
+                    ? "bg-primary text-primary-foreground shadow-elegant"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`
               }
             >
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-
-              <div className="relative z-10 flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <item.icon className="w-5 h-5 transition-all duration-500 group-hover:scale-110 group-hover:text-emerald-600" />
-                  {item.count > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-bounce shadow-lg border-2 border-white">
-                      {item.count > 99 ? "99+" : item.count > 9 ? "9+" : item.count}
+                  <item.icon className="w-5 h-5" />
+                  {item.count && item.count > 0 ? (
+                    <span className="absolute -top-1.5 -right-1.5 bg-destructive text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                      {item.count > 9 ? "9+" : item.count}
                     </span>
-                  )}
+                  ) : null}
                 </div>
-                <span className="text-sm font-semibold transition-all duration-500 group-hover:scale-105">
-                  {item.label}
-                </span>
+                <span className="text-sm font-semibold">{item.label}</span>
               </div>
             </NavLink>
           ))}
