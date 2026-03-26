@@ -108,21 +108,16 @@ const DesktopNavigation = () => {
                 }`
               }
             >
-              {/* Background gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-emerald-50/50 to-teal-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></div>
-
-              <div className="relative z-10 flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <item.icon className="w-5 h-5 transition-all duration-500 group-hover:scale-110 group-hover:text-emerald-600" />
-                  {item.count > 0 && (
-                    <span className="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-bounce shadow-lg border-2 border-white">
-                      {item.count > 99 ? "99+" : item.count > 9 ? "9+" : item.count}
+                  <item.icon className="w-5 h-5" />
+                  {item.count && item.count > 0 ? (
+                    <span className="absolute -top-1.5 -right-1.5 bg-destructive text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
+                      {item.count > 9 ? "9+" : item.count}
                     </span>
-                  )}
+                  ) : null}
                 </div>
-                <span className="text-sm font-semibold transition-all duration-500 group-hover:scale-105">
-                  {item.label}
-                </span>
+                <span className="text-sm font-semibold">{item.label}</span>
               </div>
             </NavLink>
           ))}
