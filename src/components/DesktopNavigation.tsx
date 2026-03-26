@@ -95,23 +95,6 @@ const DesktopNavigation = () => {
           </div>
         </div>
 
-          {/* Enhanced Status Indicators */}
-          <div className="flex items-center gap-6">
-            {/* Real-time Activity */}
-            <div className="hidden lg:flex items-center gap-3 px-5 py-3 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-2xl border border-emerald-100 shadow-sm hover:shadow-md transition-shadow duration-300">
-              <Activity className="w-5 h-5 text-emerald-600 animate-pulse" />
-              <div className="flex flex-col">
-                <span className="text-sm font-bold text-emerald-800">Active Now</span>
-                <span className="text-xs text-emerald-600 font-medium">
-                  {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </span>
-              </div>
-            </div>
-
-
-          </div>
-        </div>
-
         {/* Center Section - Premium Navigation */}
         <nav className="flex items-center gap-3">
           {navItems.map((item) => (
