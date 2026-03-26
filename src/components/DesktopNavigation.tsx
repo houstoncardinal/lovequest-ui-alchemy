@@ -76,27 +76,24 @@ const DesktopNavigation = () => {
   ];
 
   return (
-    <div className="hidden md:flex fixed top-0 left-0 right-0 bg-white/95 backdrop-blur-xl border-b border-emerald-100/60 shadow-lg z-50">
-      <div className="flex items-center justify-between w-full max-w-screen-2xl mx-auto px-6 py-4">
+    <div className="hidden md:flex fixed top-0 left-0 right-0 bg-card/95 backdrop-blur-xl border-b border-border/50 shadow-sm z-50">
+      <div className="flex items-center justify-between w-full max-w-screen-2xl mx-auto px-6 py-3">
 
-        {/* Left Section - Logo & Status */}
-        <div className="flex items-center gap-10">
-          {/* Premium Logo */}
-          <div className="flex items-center gap-4 group cursor-pointer">
-            <div className="relative">
-              <Heart className="w-12 h-12 text-emerald-500 stroke-2 stroke-emerald-500 fill-transparent transition-all duration-500 group-hover:stroke-emerald-600 group-hover:scale-110 drop-shadow-lg" />
-              <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        {/* Left Section - Logo */}
+        <div className="flex items-center gap-8">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-elegant" style={{ background: 'var(--gradient-hero)' }}>
+              <Heart className="w-5 h-5 text-white fill-current" />
             </div>
-            <div className="text-center">
-              <div className="flex items-center gap-3">
-                <h1 className="text-2xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 via-gray-800 to-emerald-800 bg-clip-text text-transparent tracking-tight">
-                  LoveQuest
-                </h1>
-                <Crown className="w-5 h-5 text-amber-500 mt-0.5" />
-              </div>
-              <p className="text-sm text-emerald-600 font-medium mt-0.5">Premium Dating Experience</p>
+            <div>
+              <h1 className="text-xl font-bold text-foreground tracking-tight flex items-center gap-1.5">
+                LoveQuest
+                <Heart className="w-4 h-4 text-primary fill-current" />
+              </h1>
+              <p className="text-xs text-primary font-semibold tracking-wider uppercase">Premium Dating</p>
             </div>
           </div>
+        </div>
 
           {/* Enhanced Status Indicators */}
           <div className="flex items-center gap-6">
