@@ -95,17 +95,16 @@ const DesktopNavigation = () => {
           </div>
         </div>
 
-        {/* Center Section - Premium Navigation */}
-        <nav className="flex items-center gap-3">
+        <nav className="flex items-center gap-2">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `relative flex items-center gap-3 px-6 py-4 rounded-2xl transition-all duration-500 group overflow-hidden ${
+                `relative flex items-center gap-2.5 px-5 py-3 rounded-xl transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700 text-white shadow-2xl transform scale-105"
-                    : "text-gray-700 hover:text-gray-900 hover:bg-white/80 hover:shadow-xl border border-transparent hover:border-emerald-100"
+                    ? "bg-primary text-primary-foreground shadow-elegant"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`
               }
             >
