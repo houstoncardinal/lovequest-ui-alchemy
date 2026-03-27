@@ -271,7 +271,7 @@ const Onboarding = () => {
       content: () => (
         <div className="text-center space-y-6">
           <div className="relative">
-            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-3xl flex items-center justify-center shadow-2xl">
+            <div className="w-32 h-32 mx-auto bg-gradient-to-br from-primary to-primary rounded-3xl flex items-center justify-center shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent rounded-3xl"></div>
               <Heart className="w-16 h-16 text-white relative z-10" />
             </div>
@@ -280,29 +280,29 @@ const Onboarding = () => {
               Premium
             </Badge>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900">Start Your Journey</h2>
-          <p className="text-gray-600 max-w-md mx-auto leading-relaxed">
+          <h2 className="text-3xl font-bold text-foreground">Start Your Journey</h2>
+          <p className="text-muted-foreground max-w-md mx-auto leading-relaxed">
             Join thousands of singles finding meaningful relationships. 
             Our platform prioritizes respect, privacy, and authentic connections.
           </p>
           <div className="grid grid-cols-3 gap-4 mt-8">
             <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                <Shield className="w-6 h-6 text-emerald-600" />
+              <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                <Shield className="w-6 h-6 text-primary" />
               </div>
-              <p className="text-xs text-gray-600 font-medium">Verified Profiles</p>
+              <p className="text-xs text-muted-foreground font-medium">Verified Profiles</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                <Users className="w-6 h-6 text-emerald-600" />
+              <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                <Users className="w-6 h-6 text-primary" />
               </div>
-              <p className="text-xs text-gray-600 font-medium">50k+ Members</p>
+              <p className="text-xs text-muted-foreground font-medium">50k+ Members</p>
             </div>
             <div className="text-center">
-              <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                <Heart className="w-6 h-6 text-emerald-600" />
+              <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                <Heart className="w-6 h-6 text-primary" />
               </div>
-              <p className="text-xs text-gray-600 font-medium">Premium Dating</p>
+              <p className="text-xs text-muted-foreground font-medium">Premium Dating</p>
             </div>
           </div>
         </div>
@@ -321,32 +321,32 @@ const Onboarding = () => {
                   key={plan.id}
                   onClick={() => setSelectedPlan(plan.id)}
                   className={`relative cursor-pointer rounded-3xl border-2 p-6 shadow-xl transition-all duration-300 flex flex-col text-center select-none
-                    ${isSelected ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-emerald-100 scale-105 ring-2 ring-emerald-200' : 'border-gray-200 bg-gradient-to-br from-white to-emerald-50 hover:border-emerald-200 hover:shadow-2xl'}
+                    ${isSelected ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-emerald-100 scale-105 ring-2 ring-primary/20' : 'border-border bg-gradient-to-br from-white to-emerald-50 hover:border-border hover:shadow-2xl'}
                   `}
                 >
                   {plan.popular && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-1 text-xs font-bold shadow-lg">
+                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-primary text-white px-4 py-1 text-xs font-bold shadow-lg">
                       Most Popular
                     </Badge>
                   )}
                   <div className="flex flex-col items-center mb-4">
                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-lg
-                      ${plan.id === 'free' ? 'bg-gray-100' : plan.id === 'premium' ? 'bg-emerald-100' : 'bg-amber-100'}`}
+                      ${plan.id === 'free' ? 'bg-muted' : plan.id === 'premium' ? 'bg-primary/15' : 'bg-amber-100'}`}
                     >
-                      {plan.id === 'free' && <Users className="w-8 h-8 text-emerald-600" />}
+                      {plan.id === 'free' && <Users className="w-8 h-8 text-primary" />}
                       {plan.id === 'premium' && <Star className="w-8 h-8 text-amber-500" />}
                       {plan.id === 'elite' && <Crown className="w-8 h-8 text-amber-500" />}
                     </div>
-                    <h4 className="text-xl font-bold text-gray-900 mb-2">{plan.name}</h4>
-                    <div className="text-3xl font-extrabold text-emerald-700 mb-2">
+                    <h4 className="text-xl font-bold text-foreground mb-2">{plan.name}</h4>
+                    <div className="text-3xl font-extrabold text-primary mb-2">
                       {plan.price}
-                      <span className="text-sm text-gray-500 font-normal ml-1">{plan.period}</span>
+                      <span className="text-sm text-muted-foreground font-normal ml-1">{plan.period}</span>
                     </div>
-                    <p className="text-sm text-gray-600 mb-4">{plan.description}</p>
+                    <p className="text-sm text-muted-foreground mb-4">{plan.description}</p>
                   </div>
                   <div className="space-y-2 mb-4">
                     {plan.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-emerald-700 text-sm">
+                      <div key={idx} className="flex items-center gap-2 text-primary text-sm">
                         <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
                         <span>{feature}</span>
                       </div>
@@ -356,7 +356,7 @@ const Onboarding = () => {
                     type="button"
                     variant={isSelected ? "default" : "outline"}
                     className={`w-full rounded-xl py-2 px-4 text-sm font-semibold transition-all duration-200
-                      ${isSelected ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg' : 'border-emerald-200 text-emerald-700 hover:bg-emerald-50'}`}
+                      ${isSelected ? 'bg-gradient-to-r from-primary to-primary text-white shadow-lg' : 'border-border text-primary hover:bg-primary/10'}`}
                     onClick={(e) => { e.stopPropagation(); setSelectedPlan(plan.id); }}
                   >
                     {isSelected ? 'Selected' : 'Select'}
@@ -469,67 +469,66 @@ const Onboarding = () => {
       )
     },
     {
-      title: "Personal Preferences",
-      subtitle: "Help us understand your religious practice",
+      title: "Lifestyle & Values",
+      subtitle: "Help us understand what matters to you",
       content: () => (
         <div className="space-y-6 max-w-md mx-auto">
           <div>
-            <Label htmlFor="religionLevel">Religious Level</Label>
+            <Label htmlFor="relationshipGoal">Relationship Goal</Label>
             <Select value={profileData.religionLevel} onValueChange={(value) => setProfileData({...profileData, religionLevel: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="How would you describe your religious practice?" />
+                <SelectValue placeholder="What are you looking for?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="very_religious">Very Religious</SelectItem>
-                <SelectItem value="religious">Religious</SelectItem>
-                <SelectItem value="somewhat_religious">Somewhat Religious</SelectItem>
-                <SelectItem value="not_very_religious">Not Very Religious</SelectItem>
+                <SelectItem value="serious_relationship">Serious Relationship</SelectItem>
+                <SelectItem value="marriage">Marriage</SelectItem>
+                <SelectItem value="casual_dating">Casual Dating</SelectItem>
+                <SelectItem value="friendship_first">Friendship First</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="prayerFrequency">Prayer Frequency</Label>
+            <Label htmlFor="lifestyle">Lifestyle</Label>
             <Select value={profileData.prayerFrequency} onValueChange={(value) => setProfileData({...profileData, prayerFrequency: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="How often do you pray?" />
+                <SelectValue placeholder="How would you describe your lifestyle?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="5_times_daily">5 times daily</SelectItem>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="occasionally">Occasionally</SelectItem>
-                <SelectItem value="rarely">Rarely</SelectItem>
+                <SelectItem value="active_adventurous">Active & Adventurous</SelectItem>
+                <SelectItem value="laid_back">Laid Back & Relaxed</SelectItem>
+                <SelectItem value="career_focused">Career Focused</SelectItem>
+                <SelectItem value="homebody">Homebody</SelectItem>
+                <SelectItem value="social_butterfly">Social Butterfly</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="madhab">Madhab (School of Thought)</Label>
+            <Label htmlFor="values">Core Values</Label>
             <Select value={profileData.madhab} onValueChange={(value) => setProfileData({...profileData, madhab: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="Select your madhab" />
+                <SelectValue placeholder="What matters most to you?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="hanafi">Hanafi</SelectItem>
-                <SelectItem value="maliki">Maliki</SelectItem>
-                <SelectItem value="shafi">Shafi'i</SelectItem>
-                <SelectItem value="hanbali">Hanbali</SelectItem>
-                <SelectItem value="jafari">Ja'fari</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-                <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+                <SelectItem value="family">Family & Relationships</SelectItem>
+                <SelectItem value="career">Career & Ambition</SelectItem>
+                <SelectItem value="spirituality">Spirituality & Growth</SelectItem>
+                <SelectItem value="adventure">Adventure & Experiences</SelectItem>
+                <SelectItem value="community">Community & Giving Back</SelectItem>
+                <SelectItem value="creativity">Creativity & Expression</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="hijabStatus">Hijab Status (if applicable)</Label>
+            <Label htmlFor="drinkingStatus">Drinking</Label>
             <Select value={profileData.hijabStatus} onValueChange={(value) => setProfileData({...profileData, hijabStatus: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="Select hijab status" />
+                <SelectValue placeholder="Do you drink?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="always">Always wear hijab</SelectItem>
-                <SelectItem value="sometimes">Sometimes wear hijab</SelectItem>
-                <SelectItem value="planning_to">Planning to wear hijab</SelectItem>
-                <SelectItem value="not_applicable">Not applicable</SelectItem>
+                <SelectItem value="never">Never</SelectItem>
+                <SelectItem value="socially">Socially</SelectItem>
+                <SelectItem value="occasionally">Occasionally</SelectItem>
+                <SelectItem value="regularly">Regularly</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -551,7 +550,7 @@ const Onboarding = () => {
               className="min-h-[120px]"
               maxLength={500}
             />
-            <div className="text-right text-xs text-gray-500 mt-1">
+            <div className="text-right text-xs text-muted-foreground mt-1">
               {profileData.bio.length}/500 characters
             </div>
           </div>
@@ -611,15 +610,15 @@ const Onboarding = () => {
                 onClick={() => toggleInterest(interest)}
                 className={`p-3 rounded-xl border-2 transition-all duration-200 text-sm font-medium ${
                   profileData.interests.includes(interest)
-                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                    : 'border-gray-200 bg-white text-gray-700 hover:border-emerald-200'
+                    ? 'border-emerald-500 bg-primary/10 text-primary'
+                    : 'border-border bg-white text-gray-700 hover:border-border'
                 }`}
               >
                 {interest}
               </button>
             ))}
           </div>
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-muted-foreground">
             Selected: {profileData.interests.length} interests
           </p>
         </div>
@@ -638,7 +637,7 @@ const Onboarding = () => {
                     <img 
                       src={photo} 
                       alt={`Upload ${index + 1}`} 
-                      className="w-full h-full object-cover rounded-2xl border-2 border-emerald-200"
+                      className="w-full h-full object-cover rounded-2xl border-2 border-border"
                     />
                     <button
                       onClick={() => removePhoto(index)}
@@ -653,7 +652,7 @@ const Onboarding = () => {
                     )}
                   </div>
                 ) : (
-                  <label className="w-full h-full border-2 border-dashed border-gray-300 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-emerald-400 transition-colors bg-gray-50 hover:bg-emerald-50">
+                  <label className="w-full h-full border-2 border-dashed border-border rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-primary transition-colors bg-muted hover:bg-primary/10">
                     <input
                       type="file"
                       accept="image/*"
@@ -668,10 +667,10 @@ const Onboarding = () => {
                       <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
                     ) : (
                       <>
-                        <div className="w-12 h-12 bg-emerald-100 rounded-2xl flex items-center justify-center mb-2">
-                          <Plus className="w-6 h-6 text-emerald-600" />
+                        <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mb-2">
+                          <Plus className="w-6 h-6 text-primary" />
                         </div>
-                        <span className="text-sm text-gray-500 font-medium text-center">Upload Photo</span>
+                        <span className="text-sm text-muted-foreground font-medium text-center">Upload Photo</span>
                       </>
                     )}
                   </label>
@@ -679,7 +678,7 @@ const Onboarding = () => {
               </div>
             ))}
           </div>
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-muted-foreground">
             {photoUploads.filter(Boolean).length} of 6 photos uploaded
           </p>
         </div>
@@ -690,16 +689,16 @@ const Onboarding = () => {
       subtitle: "Let your personality shine through your voice",
       content: () => (
         <div className="max-w-md mx-auto text-center">
-          <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border border-emerald-200 rounded-3xl p-6 mb-6">
-            <Camera className="w-12 h-12 text-emerald-600 mx-auto mb-4" />
-            <h3 className="font-semibold text-emerald-900 mb-2">Voice Introduction</h3>
-            <p className="text-sm text-emerald-700 mb-4">
+          <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border border-border rounded-3xl p-6 mb-6">
+            <Camera className="w-12 h-12 text-primary mx-auto mb-4" />
+            <h3 className="font-semibold text-foreground mb-2">Voice Introduction</h3>
+            <p className="text-sm text-primary mb-4">
               Record a short voice message to introduce yourself (up to 60 seconds)
             </p>
             
             <div className="space-y-4">
               {!recording && !audioUrl && (
-                <Button onClick={startRecording} className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white">
+                <Button onClick={startRecording} className="w-full bg-gradient-to-r from-primary to-primary text-white">
                   Start Recording
                 </Button>
               )}
@@ -725,7 +724,7 @@ const Onboarding = () => {
                     <Button 
                       onClick={uploadVoiceNote} 
                       disabled={uploadingVoice} 
-                      className="flex-1 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white"
+                      className="flex-1 bg-gradient-to-r from-primary to-primary text-white"
                     >
                       {uploadingVoice ? 'Saving...' : 'Save Voice Note'}
                     </Button>
@@ -749,22 +748,22 @@ const Onboarding = () => {
       subtitle: "Your profile is ready! Start exploring and making connections.",
       content: () => (
         <div className="text-center space-y-6 max-w-md mx-auto">
-          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center mb-4">
+          <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-primary rounded-full flex items-center justify-center mb-4">
             <Check className="w-10 h-10 text-white" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to LoveQuest!</h2>
-          <p className="text-gray-600">
+          <h2 className="text-2xl font-bold text-foreground mb-2">Welcome to LoveQuest!</h2>
+          <p className="text-muted-foreground">
             Your profile has been created successfully. You can start browsing profiles while we review your verification documents.
           </p>
           
-          <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+          <div className="bg-primary/10 border border-border rounded-lg p-4">
             <div className="flex items-start gap-2">
-              <Shield className="w-4 h-4 text-emerald-600 mt-0.5" />
+              <Shield className="w-4 h-4 text-primary mt-0.5" />
               <div className="text-left">
-                <p className="text-xs font-medium text-emerald-800">
+                <p className="text-xs font-medium text-primary">
                   Verification Pending
                 </p>
-                <p className="text-xs text-emerald-700">
+                <p className="text-xs text-primary">
                   Full access will be granted once your identity is verified (typically 24-48 hours).
                 </p>
               </div>
@@ -772,13 +771,13 @@ const Onboarding = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-6">
-            <div className="text-center p-4 bg-emerald-50 rounded-lg">
-              <Users className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-              <p className="text-xs font-medium text-emerald-800">Browse Profiles</p>
+            <div className="text-center p-4 bg-primary/10 rounded-lg">
+              <Users className="w-8 h-8 text-primary mx-auto mb-2" />
+              <p className="text-xs font-medium text-primary">Browse Profiles</p>
             </div>
-            <div className="text-center p-4 bg-emerald-50 rounded-lg">
-              <Heart className="w-8 h-8 text-emerald-600 mx-auto mb-2" />
-              <p className="text-xs font-medium text-emerald-800">Start Matching</p>
+            <div className="text-center p-4 bg-primary/10 rounded-lg">
+              <Heart className="w-8 h-8 text-primary mx-auto mb-2" />
+              <p className="text-xs font-medium text-primary">Start Matching</p>
             </div>
           </div>
         </div>
@@ -822,7 +821,7 @@ const Onboarding = () => {
       if (!profileData.religionLevel || !profileData.prayerFrequency) {
         toast({
           title: "Required Fields",
-          description: "Please complete your personal preferences.",
+          description: "Please complete your lifestyle preferences.",
           variant: "destructive",
         });
         return;
@@ -999,7 +998,7 @@ const Onboarding = () => {
   const currentStepData = onboardingSteps[currentStep];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-amber-50">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
       <div className="container mx-auto px-4 py-8">
         {/* Header with progress */}
         <div className="mb-8">
@@ -1010,7 +1009,7 @@ const Onboarding = () => {
               className={`p-2 rounded-full transition-colors ${
                 currentStep === 0 || (currentStep === 2 && location.state?.selectedPlan)
                   ? 'text-gray-300' 
-                  : 'text-gray-600 hover:bg-gray-100'
+                  : 'text-muted-foreground hover:bg-muted'
               }`}
             >
               <ArrowLeft className="w-5 h-5" />
@@ -1021,22 +1020,22 @@ const Onboarding = () => {
                 <div
                   key={index}
                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index <= getAdjustedStepIndex() ? 'bg-emerald-500' : 'bg-gray-300'
+                    index <= getAdjustedStepIndex() ? 'bg-primary' : 'bg-border'
                   }`}
                 />
               ))}
             </div>
             
             <div className="text-right">
-              <span className="text-sm font-medium text-gray-500">
+              <span className="text-sm font-medium text-muted-foreground">
                 {getAdjustedStepIndex() + 1}/{visibleSteps.length}
               </span>
             </div>
           </div>
           
-          <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+          <div className="w-full bg-muted rounded-full h-2 mb-6">
             <div
-              className="bg-gradient-to-r from-emerald-500 to-emerald-600 h-2 rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-primary to-primary h-2 rounded-full transition-all duration-500"
               style={{ width: `${((getAdjustedStepIndex() + 1) / visibleSteps.length) * 100}%` }}
             />
           </div>
@@ -1045,10 +1044,10 @@ const Onboarding = () => {
         {/* Step content */}
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            <h1 className="text-2xl font-bold text-foreground mb-2">
               {currentStepData.title}
             </h1>
-            <p className="text-gray-600">{currentStepData.subtitle}</p>
+            <p className="text-muted-foreground">{currentStepData.subtitle}</p>
           </div>
 
           <div className="mb-8">
@@ -1061,7 +1060,7 @@ const Onboarding = () => {
               <button
                 onClick={handleNext}
                 disabled={!canProceed()}
-                className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-semibold py-3 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
+                className="bg-gradient-to-r from-primary to-primary text-white font-semibold py-3 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 hover:opacity-100 transition-opacity duration-200" />
                 <span className="relative z-10">
@@ -1075,7 +1074,7 @@ const Onboarding = () => {
           {/* Selected plan indicator */}
           {selectedPlan && (
             <div className="text-center mt-4">
-              <Badge className="bg-emerald-100 text-emerald-700 px-3 py-1 text-xs font-medium">
+              <Badge className="bg-primary/15 text-primary px-3 py-1 text-xs font-medium">
                 <Crown className="w-3 h-3 mr-1" />
                 {selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1)} Plan Selected
               </Badge>
