@@ -39,14 +39,14 @@ interface Post {
 const DEMO_POSTS: Post[] = [
   {
     id: "demo-post-1",
-    content: "Alhamdulillah for another beautiful day! 🌅 Finding so much peace in the morning prayers and starting the day with Quran reflection. What's your favorite ayah right now? 🤲✨ #FaithJourney #IslamicLife",
+    content: "Grateful for another beautiful day! 🌅 Starting mornings with journaling and a great workout has been a game-changer. What's your morning routine? ☀️✨ #SelfGrowth #MorningVibes",
     location: "New York, NY",
-    hashtags: ["FaithJourney", "IslamicLife"],
+    hashtags: ["SelfGrowth", "MorningVibes"],
     mood: "Grateful",
     is_trending: true,
     likes_count: 24,
     comments_count: 7,
-    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), // 2 hours ago
+    created_at: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
     user_id: "demo-user-1",
     profiles: {
       display_name: "Sarah Johnson",
@@ -58,95 +58,95 @@ const DEMO_POSTS: Post[] = [
   },
   {
     id: "demo-post-2",
-    content: "Trying out this incredible halal beauty brand! Their products are amazing and so gentle on the skin. Supporting Muslim entrepreneurs is so important 💄🕌 Loving the clean ingredient approach! #HalalBeauty #MuslimEntrepreneur",
+    content: "Trying out this incredible clean beauty brand! Their products are amazing and so gentle on the skin. Supporting small businesses is everything 💄✨ Loving the clean ingredient approach! #CleanBeauty #SmallBusiness",
     location: "Los Angeles, CA",
-    hashtags: ["HalalBeauty", "MuslimEntrepreneur"],
+    hashtags: ["CleanBeauty", "SmallBusiness"],
     mood: "Excited",
     is_trending: false,
     likes_count: 18,
     comments_count: 5,
-    created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(), // 4 hours ago
+    created_at: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString(),
     user_id: "demo-user-3",
     profiles: {
-      display_name: "Fatima Al-Sayed",
-      first_name: "Fatima",
-      last_name: "Al-Sayed",
+      display_name: "Taylor Brooks",
+      first_name: "Taylor",
+      last_name: "Brooks",
       avatar_url: "/assets/profile-3.jpg"
     },
     user_liked: false
   },
   {
     id: "demo-post-3",
-    content: "Weekend thoughts: What's better than sitting with good company, discussing big ideas, and dreaming about making a positive impact? 🤝 Coffee not included, but highly recommended ☕️ This faith-first community is everything I've been searching for! #FaithFirst #Community",
+    content: "Weekend thoughts: What's better than sitting with good company, discussing big ideas, and dreaming about making a positive impact? 🤝 Coffee not included, but highly recommended ☕️ This community is everything! #GoodVibes #Community",
     location: "Chicago, IL",
-    hashtags: ["FaithFirst", "Community"],
+    hashtags: ["GoodVibes", "Community"],
     mood: "Inspired",
     is_trending: true,
     likes_count: 31,
     comments_count: 12,
-    created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+    created_at: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(),
     user_id: "demo-user-2",
     profiles: {
-      display_name: "Aisha Rahman",
+      display_name: "Aisha Williams",
       first_name: "Aisha",
-      last_name: "Rahman",
+      last_name: "Williams",
       avatar_url: "/assets/profile-2.jpg"
     },
     user_liked: false
   },
   {
     id: "demo-post-4",
-    content: "Nature walks and dua time = perfect Sunday afternoon 🏞️ The outdoors always brings me closer to my Creator. Grateful for simple pleasures that remind us of His greatness. What's your favorite place to connect with Allah through His creation? 🌿🤲",
+    content: "Nature walks and meditation time = perfect Sunday afternoon 🏞️ The outdoors always recharges my soul. Grateful for simple pleasures. What's your favorite way to unwind? 🌿🧘‍♀️",
     location: "Seattle, WA",
     hashtags: [],
     mood: "Peaceful",
     is_trending: false,
     likes_count: 16,
     comments_count: 4,
-    created_at: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(), // 8 hours ago
+    created_at: new Date(Date.now() - 8 * 60 * 60 * 1000).toISOString(),
     user_id: "demo-user-5",
     profiles: {
-      display_name: "Zahra Ahmed",
-      first_name: "Zahra",
-      last_name: "Ahmed",
+      display_name: "Zoe Martinez",
+      first_name: "Zoe",
+      last_name: "Martinez",
       avatar_url: "/assets/profile-1.jpg"
     },
     user_liked: false
   },
   {
     id: "demo-post-5",
-    content: "Proud to be part of this incredible tech community! Just pushed a major update to our app using clean code principles. When you build with intention and Islamic values, everything becomes a form of worship 💻🤲 #TechLife #IslamicValues",
+    content: "Proud to be part of this incredible tech community! Just shipped a major update to our app. When you build with passion and purpose, everything falls into place 💻🚀 #TechLife #BuildInPublic",
     location: "Houston, TX",
-    hashtags: ["TechLife", "IslamicValues"],
+    hashtags: ["TechLife", "BuildInPublic"],
     mood: "Accomplished",
     is_trending: false,
     likes_count: 13,
     comments_count: 3,
-    created_at: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
+    created_at: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
     user_id: "demo-user-4",
     profiles: {
-      display_name: "Maryam Khan",
-      first_name: "Maryam",
-      last_name: "Khan",
+      display_name: "Maya Chen",
+      first_name: "Maya",
+      last_name: "Chen",
       avatar_url: "/assets/profile-2.jpg"
     },
     user_liked: false
   },
   {
     id: "demo-post-6",
-    content: "Teaching moment: Always stay curious and never stop learning! Watching my students discover new concepts and ask amazing questions fills me with so much hope for the future 📚👩‍🏫 Education as ibadah, one lesson at a time. #Teaching #Education #IslamicEducation",
+    content: "Teaching moment: Always stay curious and never stop learning! Watching my students discover new concepts fills me with so much hope for the future 📚👩‍🏫 Education changes lives, one lesson at a time. #Teaching #Education #Inspiration",
     location: "Atlanta, GA",
-    hashtags: ["Teaching", "Education", "IslamicEducation"],
+    hashtags: ["Teaching", "Education", "Inspiration"],
     mood: "Hopeful",
     is_trending: true,
     likes_count: 28,
     comments_count: 9,
-    created_at: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), // 18 hours ago
+    created_at: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(),
     user_id: "demo-user-6",
     profiles: {
-      display_name: "Layla Mohammed",
+      display_name: "Layla Robinson",
       first_name: "Layla",
-      last_name: "Mohammed",
+      last_name: "Robinson",
       avatar_url: "/assets/profile-3.jpg"
     },
     user_liked: false
@@ -315,7 +315,7 @@ const Community = () => {
                     <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-emerald-800 bg-clip-text text-transparent">
                       Community Feed
                     </h1>
-                    <p className="text-sm text-emerald-600 font-medium">Connect & share with fellow believers</p>
+                    <p className="text-sm text-primary font-medium">Connect & share with the community</p>
                   </div>
                 </div>
 

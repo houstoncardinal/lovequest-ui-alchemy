@@ -469,67 +469,66 @@ const Onboarding = () => {
       )
     },
     {
-      title: "Personal Preferences",
-      subtitle: "Help us understand your religious practice",
+      title: "Lifestyle & Values",
+      subtitle: "Help us understand what matters to you",
       content: () => (
         <div className="space-y-6 max-w-md mx-auto">
           <div>
-            <Label htmlFor="religionLevel">Religious Level</Label>
+            <Label htmlFor="relationshipGoal">Relationship Goal</Label>
             <Select value={profileData.religionLevel} onValueChange={(value) => setProfileData({...profileData, religionLevel: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="How would you describe your religious practice?" />
+                <SelectValue placeholder="What are you looking for?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="very_religious">Very Religious</SelectItem>
-                <SelectItem value="religious">Religious</SelectItem>
-                <SelectItem value="somewhat_religious">Somewhat Religious</SelectItem>
-                <SelectItem value="not_very_religious">Not Very Religious</SelectItem>
+                <SelectItem value="serious_relationship">Serious Relationship</SelectItem>
+                <SelectItem value="marriage">Marriage</SelectItem>
+                <SelectItem value="casual_dating">Casual Dating</SelectItem>
+                <SelectItem value="friendship_first">Friendship First</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="prayerFrequency">Prayer Frequency</Label>
+            <Label htmlFor="lifestyle">Lifestyle</Label>
             <Select value={profileData.prayerFrequency} onValueChange={(value) => setProfileData({...profileData, prayerFrequency: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="How often do you pray?" />
+                <SelectValue placeholder="How would you describe your lifestyle?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="5_times_daily">5 times daily</SelectItem>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="occasionally">Occasionally</SelectItem>
-                <SelectItem value="rarely">Rarely</SelectItem>
+                <SelectItem value="active_adventurous">Active & Adventurous</SelectItem>
+                <SelectItem value="laid_back">Laid Back & Relaxed</SelectItem>
+                <SelectItem value="career_focused">Career Focused</SelectItem>
+                <SelectItem value="homebody">Homebody</SelectItem>
+                <SelectItem value="social_butterfly">Social Butterfly</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="madhab">Madhab (School of Thought)</Label>
+            <Label htmlFor="values">Core Values</Label>
             <Select value={profileData.madhab} onValueChange={(value) => setProfileData({...profileData, madhab: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="Select your madhab" />
+                <SelectValue placeholder="What matters most to you?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="hanafi">Hanafi</SelectItem>
-                <SelectItem value="maliki">Maliki</SelectItem>
-                <SelectItem value="shafi">Shafi'i</SelectItem>
-                <SelectItem value="hanbali">Hanbali</SelectItem>
-                <SelectItem value="jafari">Ja'fari</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-                <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+                <SelectItem value="family">Family & Relationships</SelectItem>
+                <SelectItem value="career">Career & Ambition</SelectItem>
+                <SelectItem value="spirituality">Spirituality & Growth</SelectItem>
+                <SelectItem value="adventure">Adventure & Experiences</SelectItem>
+                <SelectItem value="community">Community & Giving Back</SelectItem>
+                <SelectItem value="creativity">Creativity & Expression</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
-            <Label htmlFor="hijabStatus">Hijab Status (if applicable)</Label>
+            <Label htmlFor="drinkingStatus">Drinking</Label>
             <Select value={profileData.hijabStatus} onValueChange={(value) => setProfileData({...profileData, hijabStatus: value})}>
               <SelectTrigger>
-                <SelectValue placeholder="Select hijab status" />
+                <SelectValue placeholder="Do you drink?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="always">Always wear hijab</SelectItem>
-                <SelectItem value="sometimes">Sometimes wear hijab</SelectItem>
-                <SelectItem value="planning_to">Planning to wear hijab</SelectItem>
-                <SelectItem value="not_applicable">Not applicable</SelectItem>
+                <SelectItem value="never">Never</SelectItem>
+                <SelectItem value="socially">Socially</SelectItem>
+                <SelectItem value="occasionally">Occasionally</SelectItem>
+                <SelectItem value="regularly">Regularly</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -822,7 +821,7 @@ const Onboarding = () => {
       if (!profileData.religionLevel || !profileData.prayerFrequency) {
         toast({
           title: "Required Fields",
-          description: "Please complete your personal preferences.",
+          description: "Please complete your lifestyle preferences.",
           variant: "destructive",
         });
         return;
