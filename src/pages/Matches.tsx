@@ -453,7 +453,7 @@ const Chat = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col h-screen max-h-screen relative">
         {/* Chat Header */}
-        <div className="bg-white/80 backdrop-blur-sm border-b border-border px-4 py-4 shadow-sm flex-shrink-0">
+        <div className="bg-card/80 backdrop-blur-sm border-b border-border px-4 py-4 shadow-sm flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button 
@@ -509,7 +509,7 @@ const Chat = () => {
                 <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
                   message.sender_id === user?.id
                     ? 'bg-gradient-to-br from-primary to-primary text-white rounded-br-md'
-                    : 'bg-white border border-border text-foreground rounded-bl-md'
+                    : 'bg-card border border-border text-foreground rounded-bl-md'
                 }`}>
                   <p className="text-sm">Voice message</p>
                   <audio controls className="mt-2 w-full">
@@ -526,7 +526,7 @@ const Chat = () => {
                   className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
                     message.sender_id === user?.id
                       ? 'bg-gradient-to-br from-primary to-primary text-white rounded-br-md'
-                      : 'bg-white border border-border text-foreground rounded-bl-md'
+                      : 'bg-card border border-border text-foreground rounded-bl-md'
                   }`}
                 >
                   <p className="text-sm leading-relaxed">{message.content}</p>
@@ -543,7 +543,7 @@ const Chat = () => {
 
         {/* Message Input */}
         <div
-          className="bg-white/90 backdrop-blur-sm border-t-2 border-border px-4 py-4 fixed bottom-0 left-0 w-full z-50 shadow-lg"
+          className="bg-card/90 backdrop-blur-sm border-t-2 border-border px-4 py-4 fixed bottom-0 left-0 w-full z-50 shadow-lg"
           style={{
             // Increase this value if the input is still hidden on your device
             paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6rem)'
@@ -633,7 +633,7 @@ const Chat = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 pb-20">
       {/* Desktop Header */}
-      <div className="hidden md:flex bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
+      <div className="hidden md:flex bg-card/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="flex items-center justify-between p-6 w-full max-w-screen-2xl mx-auto">
           <div className="flex items-center gap-4">
             <h1 className="text-2xl font-bold text-foreground">My Matches</h1>
@@ -685,7 +685,7 @@ const Chat = () => {
       </div>
 
       {/* Mobile Header */}
-      <div className="md:hidden bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
+      <div className="md:hidden bg-card/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="flex items-center justify-between p-4">
           <h1 className="text-xl font-bold text-foreground">Matches</h1>
           <DropdownMenu>
@@ -739,7 +739,7 @@ const Chat = () => {
             <div
               key={match.match_id}
               onClick={() => setSelectedChat(match.matched_user_id)}
-              className="flex items-center w-full max-w-md mx-auto py-4 px-3 sm:px-6 cursor-pointer bg-white rounded-2xl shadow-md border border-border mb-4 group animate-fade-in transition-all duration-300 hover:shadow-lg hover:border-border"
+              className="flex items-center w-full max-w-md mx-auto py-4 px-3 sm:px-6 cursor-pointer bg-card rounded-2xl shadow-md border border-border mb-4 group animate-fade-in transition-all duration-300 hover:shadow-lg hover:border-border"
               style={{ boxSizing: 'border-box' }}
             >
               <div className="relative mr-4">
@@ -832,7 +832,7 @@ const Chat = () => {
               {peopleWhoLikeYou.map((person) => (
                 <div
                   key={person.id}
-                  className={`relative bg-white rounded-2xl shadow-md overflow-hidden border border-border transition-all duration-300 ${
+                  className={`relative bg-card rounded-2xl shadow-md overflow-hidden border border-border transition-all duration-300 ${
                     isPremiumUser
                       ? 'cursor-pointer hover:shadow-lg'
                       : 'cursor-default opacity-75'

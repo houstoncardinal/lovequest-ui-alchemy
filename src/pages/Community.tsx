@@ -304,7 +304,7 @@ const Community = () => {
       {/* Desktop Layout */}
       <div className="hidden md:block">
         {/* Enhanced Desktop Header */}
-        <div className="bg-white/98 backdrop-blur-xl border-b border-border/60 shadow-lg sticky top-0 z-30">
+        <div className="bg-card/98 backdrop-blur-xl border-b border-border/60 shadow-lg sticky top-0 z-30">
           <div className="max-w-screen-2xl mx-auto px-8 py-6">
             {/* Primary Row - Main Controls */}
             <div className="flex items-center justify-between mb-4">
@@ -320,7 +320,7 @@ const Community = () => {
                 </div>
 
                 {/* Filter Tabs */}
-                <div className="flex items-center gap-3 px-6 py-3 bg-white/60 rounded-2xl border border-border/50">
+                <div className="flex items-center gap-3 px-6 py-3 bg-card/60 rounded-2xl border border-border/50">
                   <button
                     onClick={() => setActiveTab("trending")}
                     className={`px-5 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
@@ -359,7 +359,7 @@ const Community = () => {
                   <input
                     type="text"
                     placeholder="Search posts..."
-                    className="pl-10 pr-4 py-3 bg-white/80 border border-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-border transition-all duration-200 w-80 text-sm"
+                    className="pl-10 pr-4 py-3 bg-card/80 border border-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-border transition-all duration-200 w-80 text-sm"
                   />
                 </div>
 
@@ -381,13 +381,13 @@ const Community = () => {
               <div className="flex items-center gap-6">
                 {/* Quick Stats */}
                 <div className="flex items-center gap-4">
-                  <div className="text-sm text-muted-foreground bg-white/60 px-4 py-2 rounded-xl border border-border">
+                  <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-primary">{posts.length}</span> posts shared
                   </div>
-                  <div className="text-sm text-muted-foreground bg-white/60 px-4 py-2 rounded-xl border border-border">
+                  <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-blue-600">{posts.filter(p => p.is_trending).length}</span> trending now
                   </div>
-                  <div className="text-sm text-muted-foreground bg-white/60 px-4 py-2 rounded-xl border border-border">
+                  <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-purple-600">{new Set(posts.flatMap(p => p.hashtags || [])).size}</span> topics discussed
                   </div>
                 </div>
@@ -401,7 +401,7 @@ const Community = () => {
 
               <div className="flex items-center gap-3">
                 {/* Sort Options */}
-                <select className="px-3 py-2 bg-white/80 border border-border/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ring/30">
+                <select className="px-3 py-2 bg-card/80 border border-border/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ring/30">
                   <option>Most Recent</option>
                   <option>Most Liked</option>
                   <option>Most Commented</option>
@@ -409,7 +409,7 @@ const Community = () => {
                 </select>
 
                 {/* View Options */}
-                <div className="flex items-center gap-2 bg-white/60 rounded-xl border border-border/50">
+                <div className="flex items-center gap-2 bg-card/60 rounded-xl border border-border/50">
                   <button className="px-3 py-2 rounded-lg bg-primary/15 text-primary text-sm font-medium">
                     📱 Feed
                   </button>
@@ -468,7 +468,7 @@ const Community = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: index * 0.05 }}
-                        className="bg-white rounded-3xl shadow-xl border border-border/60 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group hover:border-border"
+                        className="bg-card rounded-3xl shadow-xl border border-border/60 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group hover:border-border"
                       >
                         <PostCard
                           post={post}
@@ -488,7 +488,7 @@ const Community = () => {
             {/* Desktop Sidebar */}
             <div className="space-y-6 sticky top-32">
               {/* Quick Stats */}
-              <div className="bg-white rounded-2xl shadow-lg border border-border p-6">
+              <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
                 <h3 className="font-bold text-foreground mb-4">Community Stats</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -507,7 +507,7 @@ const Community = () => {
               </div>
 
               {/* Trending Hashtags */}
-              <div className="bg-white rounded-2xl shadow-lg border border-border p-6">
+              <div className="bg-card rounded-2xl shadow-lg border border-border p-6">
                 <h3 className="font-bold text-foreground mb-4">Trending Hashtags</h3>
                 <div className="flex flex-wrap gap-2">
                   {["FaithJourney", "IslamicLife", "HalalBeauty", "Community", "FaithFirst"].map(tag => (

@@ -143,7 +143,7 @@ const Account = () => {
       {/* Desktop Layout */}
       <div className="hidden md:block min-h-screen bg-gradient-to-br from-background via-background to-muted/30">
         {/* Desktop Header */}
-        <div className="bg-white/95 backdrop-blur-xl border-b border-border/60 shadow-lg">
+        <div className="bg-card/95 backdrop-blur-xl border-b border-border/60 shadow-lg">
           <div className="max-w-screen-2xl mx-auto px-8 py-6">
             <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
@@ -168,7 +168,7 @@ const Account = () => {
             {/* Left Sidebar - Profile & Plan */}
             <div className="space-y-6">
               {/* Profile Card */}
-              <div className="bg-white rounded-3xl shadow-xl border border-border p-8 relative overflow-hidden">
+              <div className="bg-card rounded-3xl shadow-xl border border-border p-8 relative overflow-hidden">
                 {/* Premium gradient overlay */}
                 <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-primary/15 to-primary/25 rounded-full -translate-y-20 translate-x-20"></div>
 
@@ -205,7 +205,7 @@ const Account = () => {
               </div>
 
               {/* Subscription Card */}
-              <div className="bg-white rounded-3xl shadow-xl border border-border p-6 relative overflow-hidden">
+              <div className="bg-card rounded-3xl shadow-xl border border-border p-6 relative overflow-hidden">
                 {/* Decorative element */}
                 <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400/10 to-amber-600/10 rounded-full -translate-y-16 translate-x-16"></div>
 
@@ -267,7 +267,7 @@ const Account = () => {
                       <button
                         key={item.title}
                         onClick={() => handleMenuClick(item.title)}
-                        className="bg-white rounded-2xl shadow-lg border border-border p-6 text-left hover:shadow-xl hover:border-border transition-all duration-300 group"
+                        className="bg-card rounded-2xl shadow-lg border border-border p-6 text-left hover:shadow-xl hover:border-border transition-all duration-300 group"
                       >
                         <div className="flex items-start gap-4">
                           <div className={`w-12 h-12 rounded-xl ${item.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
@@ -295,7 +295,7 @@ const Account = () => {
                       <button
                         key={item.title}
                         onClick={() => handleMenuClick(item.title)}
-                        className="bg-white rounded-2xl shadow-lg border border-border p-6 text-left hover:shadow-xl hover:border-border transition-all duration-300 group"
+                        className="bg-card rounded-2xl shadow-lg border border-border p-6 text-left hover:shadow-xl hover:border-border transition-all duration-300 group"
                       >
                         <div className="flex items-start gap-4">
                           <div className={`w-12 h-12 rounded-xl ${item.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
@@ -397,7 +397,7 @@ const Account = () => {
               <div className="flex justify-start">
                 <button
                   onClick={handleSignOut}
-                  className="bg-white rounded-xl shadow-sm border border-red-100 px-8 py-4 text-left hover:shadow-lg hover:border-red-200 transition-all duration-300 group flex items-center gap-4"
+                  className="bg-card rounded-xl shadow-sm border border-red-100 px-8 py-4 text-left hover:shadow-lg hover:border-red-200 transition-all duration-300 group flex items-center gap-4"
                 >
                   <div className="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                     <LogOut className="w-5 h-5 text-red-500" />
@@ -416,7 +416,7 @@ const Account = () => {
       {/* Mobile Layout */}
       <div className="md:hidden min-h-screen bg-gradient-to-br from-background via-background to-muted/30 pb-20">
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur-sm shadow-sm border-b border-border">
+        <div className="bg-card/80 backdrop-blur-sm shadow-sm border-b border-border">
           <div className="flex items-center justify-between p-4">
             <h1 className="text-xl font-bold text-foreground">Account</h1>
             <DropdownMenu>
@@ -449,7 +449,7 @@ const Account = () => {
 
         {/* Profile Section */}
         <div className="p-4">
-          <div className="bg-white rounded-3xl shadow-lg border border-border p-6 mb-6 relative overflow-hidden">
+          <div className="bg-card rounded-3xl shadow-lg border border-border p-6 mb-6 relative overflow-hidden">
             {/* Premium gradient overlay */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/15 to-primary/25 rounded-full -translate-y-16 translate-x-16"></div>
 
@@ -487,7 +487,7 @@ const Account = () => {
           </div>
 
           {/* Current Plan Section */}
-          <div className="bg-white rounded-3xl shadow-lg border border-border p-6 mb-6 relative overflow-hidden">
+          <div className="bg-card rounded-3xl shadow-lg border border-border p-6 mb-6 relative overflow-hidden">
             {/* Decorative element */}
             <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-amber-400/10 to-amber-600/10 rounded-full -translate-y-12 translate-x-12"></div>
 
@@ -543,7 +543,7 @@ const Account = () => {
                 <button
                   key={item.title}
                   onClick={() => handleMenuClick(item.title)}
-                  className="w-full bg-white rounded-2xl shadow-sm border border-border p-5 text-left hover:shadow-lg hover:border-border transition-all duration-300 active:scale-98 group"
+                  className="w-full bg-card rounded-2xl shadow-sm border border-border p-5 text-left hover:shadow-lg hover:border-border transition-all duration-300 active:scale-98 group"
                 >
                   <div className="flex items-center space-x-4">
                     <div className={`w-12 h-12 rounded-xl ${item.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
@@ -639,7 +639,7 @@ const Account = () => {
           {/* Logout */}
           <button
             onClick={handleSignOut}
-            className="w-full mt-6 bg-white rounded-2xl shadow-sm border border-red-100 p-5 text-left hover:shadow-lg hover:border-red-200 transition-all duration-300 active:scale-98 group"
+            className="w-full mt-6 bg-card rounded-2xl shadow-sm border border-red-100 p-5 text-left hover:shadow-lg hover:border-red-200 transition-all duration-300 active:scale-98 group"
           >
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 rounded-xl bg-red-50 flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
