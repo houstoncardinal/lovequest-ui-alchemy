@@ -451,33 +451,33 @@ const Chat = () => {
     const currentUser = currentMatch;
     
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 flex flex-col h-screen max-h-screen relative">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col h-screen max-h-screen relative">
         {/* Chat Header */}
-        <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 px-4 py-4 shadow-sm flex-shrink-0">
+        <div className="bg-white/80 backdrop-blur-sm border-b border-border px-4 py-4 shadow-sm flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button 
                 onClick={() => setSelectedChat(null)}
-                className="mr-4 p-2 rounded-full hover:bg-emerald-50 transition-colors"
+                className="mr-4 p-2 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <ArrowLeft className="w-6 h-6 text-emerald-600" />
+                <ArrowLeft className="w-6 h-6 text-primary" />
               </button>
               
                 <div className="relative mr-3 sm:mr-4">
                 <img 
                   src={currentUser?.avatar_url || profile1} 
                   alt={currentUser?.display_name}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl object-cover ring-2 ring-emerald-100"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl object-cover ring-2 ring-primary/15"
                 />
-                <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm"></div>
+                <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-primary border-2 border-white rounded-full shadow-sm"></div>
               </div>
               
               <div className="flex-1">
                 <div className="flex items-center space-x-2">
-                  <h3 className="font-bold text-gray-900 text-lg">{currentUser?.display_name}</h3>
+                  <h3 className="font-bold text-foreground text-lg">{currentUser?.display_name}</h3>
                   <Crown className="w-4 h-4 text-amber-500 fill-current" />
                 </div>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-muted-foreground">
                   {currentUser?.location}
                 </p>
               </div>
@@ -486,13 +486,13 @@ const Chat = () => {
             <div className="flex items-center space-x-3">
               <button 
                 onClick={handleVideoCall}
-                className="p-2 rounded-full hover:bg-emerald-50 transition-colors"
+                className="p-2 rounded-full hover:bg-primary/10 transition-colors"
                 title="Video Call"
               >
-                <Video className="w-6 h-6 text-emerald-600" />
+                <Video className="w-6 h-6 text-primary" />
               </button>
-              <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
-                <MoreHorizontal className="w-6 h-6 text-emerald-600" />
+              <button className="p-2 rounded-full hover:bg-primary/10 transition-colors">
+                <MoreHorizontal className="w-6 h-6 text-primary" />
               </button>
             </div>
           </div>
@@ -508,15 +508,15 @@ const Chat = () => {
               {message.message_type === 'voice' && message.attachment_url ? (
                 <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
                   message.sender_id === user?.id
-                    ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-br-md'
-                    : 'bg-white border border-emerald-100 text-gray-900 rounded-bl-md'
+                    ? 'bg-gradient-to-br from-primary to-primary text-white rounded-br-md'
+                    : 'bg-white border border-border text-foreground rounded-bl-md'
                 }`}>
                   <p className="text-sm">Voice message</p>
                   <audio controls className="mt-2 w-full">
                     <source src={message.attachment_url} type="audio/webm" />
                   </audio>
                   <p className={`text-xs mt-2 ${
-                    message.sender_id === user?.id ? 'text-white/70' : 'text-gray-500'
+                    message.sender_id === user?.id ? 'text-white/70' : 'text-muted-foreground'
                   }`}>
                     {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -525,13 +525,13 @@ const Chat = () => {
                 <div
                   className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
                     message.sender_id === user?.id
-                      ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-br-md'
-                      : 'bg-white border border-emerald-100 text-gray-900 rounded-bl-md'
+                      ? 'bg-gradient-to-br from-primary to-primary text-white rounded-br-md'
+                      : 'bg-white border border-border text-foreground rounded-bl-md'
                   }`}
                 >
                   <p className="text-sm leading-relaxed">{message.content}</p>
                   <p className={`text-xs mt-2 ${
-                    message.sender_id === user?.id ? 'text-white/70' : 'text-gray-500'
+                    message.sender_id === user?.id ? 'text-white/70' : 'text-muted-foreground'
                   }`}>
                     {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
@@ -543,7 +543,7 @@ const Chat = () => {
 
         {/* Message Input */}
         <div
-          className="bg-white/90 backdrop-blur-sm border-t-2 border-emerald-200 px-4 py-4 fixed bottom-0 left-0 w-full z-50 shadow-lg"
+          className="bg-white/90 backdrop-blur-sm border-t-2 border-border px-4 py-4 fixed bottom-0 left-0 w-full z-50 shadow-lg"
           style={{
             // Increase this value if the input is still hidden on your device
             paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6rem)'
@@ -570,8 +570,8 @@ const Chat = () => {
               onClick={() => setShowVoiceRecorder(!showVoiceRecorder)}
               className={`p-3 rounded-full transition-colors ${
                 showVoiceRecorder 
-                  ? 'bg-emerald-500 text-white' 
-                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-600'
+                  ? 'bg-primary text-white' 
+                  : 'bg-primary/10 hover:bg-primary/15 text-primary'
               }`}
               title="Voice Message"
             >
@@ -579,10 +579,10 @@ const Chat = () => {
             </button>
             
             <button 
-              className="p-3 rounded-full bg-emerald-50 hover:bg-emerald-100 transition-colors"
+              className="p-3 rounded-full bg-primary/10 hover:bg-primary/15 transition-colors"
               title="Camera"
             >
-              <Camera className="w-5 h-5 text-emerald-600" />
+              <Camera className="w-5 h-5 text-primary" />
             </button>
             
             <div className="flex-1 relative">
@@ -592,14 +592,14 @@ const Chat = () => {
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Type a message..."
-                className="w-full px-4 py-3 pr-12 bg-emerald-50 rounded-2xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 transition-colors"
+                className="w-full px-4 py-3 pr-12 bg-primary/10 rounded-2xl border border-border focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-border transition-colors"
               />
               <button
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-emerald-100 rounded-full transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-primary/15 rounded-full transition-colors"
                 title="Emojis"
               >
-                <Smile className="w-5 h-5 text-emerald-600" />
+                <Smile className="w-5 h-5 text-primary" />
               </button>
             </div>
             
@@ -607,8 +607,8 @@ const Chat = () => {
               onClick={handleSendMessage}
               className={`p-3 rounded-full transition-all duration-200 ${
                 newMessage.trim() 
-                  ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 shadow-lg hover:shadow-xl' 
-                  : 'bg-gray-200'
+                  ? 'bg-gradient-to-br from-primary to-primary shadow-lg hover:shadow-xl' 
+                  : 'bg-muted'
               }`}
               disabled={!newMessage.trim()}
             >
@@ -631,13 +631,13 @@ const Chat = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 pb-20">
       {/* Desktop Header */}
-      <div className="hidden md:flex bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
+      <div className="hidden md:flex bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="flex items-center justify-between p-6 w-full max-w-screen-2xl mx-auto">
           <div className="flex items-center gap-4">
-            <h1 className="text-2xl font-bold text-gray-900">My Matches</h1>
-            <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-3 py-1 text-sm font-medium">
+            <h1 className="text-2xl font-bold text-foreground">My Matches</h1>
+            <Badge className="bg-gradient-to-r from-primary to-primary text-white px-3 py-1 text-sm font-medium">
               {matches.length} conversations
             </Badge>
           </div>
@@ -645,24 +645,24 @@ const Chat = () => {
           <div className="flex items-center gap-4">
             {/* Search */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-emerald-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary/60" />
               <input
                 type="text"
                 placeholder="Search conversations..."
-                className="pl-10 pr-4 py-2.5 bg-emerald-50 rounded-xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 transition-all duration-200 w-80 text-sm"
+                className="pl-10 pr-4 py-2.5 bg-primary/10 rounded-xl border border-border focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-border transition-all duration-200 w-80 text-sm"
               />
             </div>
 
             {/* Filter Button */}
-            <button className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition-colors duration-200" title="Filter conversations">
-              <SlidersHorizontal className="w-5 h-5 text-emerald-600" />
+            <button className="p-3 rounded-xl bg-primary/10 hover:bg-primary/15 border border-border transition-colors duration-200" title="Filter conversations">
+              <SlidersHorizontal className="w-5 h-5 text-primary" />
             </button>
 
             {/* More Options */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <button className="p-3 rounded-xl hover:bg-emerald-50 transition-colors" title="More options">
-                  <MoreHorizontal className="w-5 h-5 text-emerald-600" />
+                <button className="p-3 rounded-xl hover:bg-primary/10 transition-colors" title="More options">
+                  <MoreHorizontal className="w-5 h-5 text-primary" />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
@@ -685,13 +685,13 @@ const Chat = () => {
       </div>
 
       {/* Mobile Header */}
-      <div className="md:hidden bg-white/80 backdrop-blur-sm border-b border-emerald-100 shadow-sm">
+      <div className="md:hidden bg-white/80 backdrop-blur-sm border-b border-border shadow-sm">
         <div className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-bold text-gray-900">Matches</h1>
+          <h1 className="text-xl font-bold text-foreground">Matches</h1>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2 rounded-full hover:bg-emerald-50 transition-colors">
-                <MoreHorizontal className="w-6 h-6 text-emerald-600" />
+              <button className="p-2 rounded-full hover:bg-primary/10 transition-colors">
+                <MoreHorizontal className="w-6 h-6 text-primary" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
@@ -714,11 +714,11 @@ const Chat = () => {
         {/* Mobile Search */}
         <div className="px-4 pb-4">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-emerald-400" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-primary/60" />
             <input
               type="text"
               placeholder="Search conversations..."
-              className="w-full pl-12 pr-4 py-3 bg-emerald-50 rounded-2xl border border-emerald-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-300 transition-colors"
+              className="w-full pl-12 pr-4 py-3 bg-primary/10 rounded-2xl border border-border focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-border transition-colors"
             />
           </div>
         </div>
@@ -728,18 +728,18 @@ const Chat = () => {
       <div className="py-2 max-h-[80vh] overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
         {loading ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">Loading matches...</p>
+            <p className="text-muted-foreground">Loading matches...</p>
           </div>
         ) : matches.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-gray-500">Loading your matches...</p>
+            <p className="text-muted-foreground">Loading your matches...</p>
           </div>
         ) : (
           matches.map((match) => (
             <div
               key={match.match_id}
               onClick={() => setSelectedChat(match.matched_user_id)}
-              className="flex items-center w-full max-w-md mx-auto py-4 px-3 sm:px-6 cursor-pointer bg-white rounded-2xl shadow-md border border-emerald-100 mb-4 group animate-fade-in transition-all duration-300 hover:shadow-lg hover:border-emerald-200"
+              className="flex items-center w-full max-w-md mx-auto py-4 px-3 sm:px-6 cursor-pointer bg-white rounded-2xl shadow-md border border-border mb-4 group animate-fade-in transition-all duration-300 hover:shadow-lg hover:border-border"
               style={{ boxSizing: 'border-box' }}
             >
               <div className="relative mr-4">
@@ -747,10 +747,10 @@ const Chat = () => {
                   <img 
                     src={match.avatar_url || profile1} 
                     alt={match.display_name}
-                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-2 ring-emerald-100 shadow-md group-hover:ring-emerald-200 transition-all duration-300"
+                    className="w-14 h-14 sm:w-16 sm:h-16 rounded-full object-cover ring-2 ring-primary/15 shadow-md group-hover:ring-primary/20 transition-all duration-300"
                   />
                   {/* Online indicator */}
-                  <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-emerald-500 border-2 border-white rounded-full shadow-sm animate-pulse"></div>
+                  <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-primary border-2 border-white rounded-full shadow-sm animate-pulse"></div>
                   {/* Premium crown overlay */}
                   <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-gradient-to-r from-amber-400 to-amber-500 rounded-full flex items-center justify-center shadow-md">
                     <Crown className="w-2 h-2 sm:w-3 sm:h-3 text-white" />
@@ -761,22 +761,22 @@ const Chat = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center space-x-1 sm:space-x-2">
-                    <h3 className="font-semibold text-gray-900 text-base sm:text-lg group-hover:text-emerald-600 transition-colors truncate">
+                    <h3 className="font-semibold text-foreground text-base sm:text-lg group-hover:text-primary transition-colors truncate">
                       {match.display_name}
                     </h3>
-                    <Badge className="bg-gradient-to-r from-emerald-400 to-emerald-500 text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full">
+                    <Badge className="bg-gradient-to-r from-primary/80 to-primary text-white text-[10px] sm:text-xs px-1.5 sm:px-2 py-0.5 rounded-full">
                       {match.match_score}% match
                     </Badge>
                   </div>
-                  <span className="text-[10px] sm:text-xs text-gray-400 flex-shrink-0">
+                  <span className="text-[10px] sm:text-xs text-muted-foreground/60 flex-shrink-0">
                     {new Date(match.matched_at).toLocaleDateString()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <p className="text-xs sm:text-sm text-gray-600 truncate flex-1 mr-2 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate flex-1 mr-2 leading-relaxed">
                     {match.bio || "Start a conversation..."}
                   </p>
-                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white text-[10px] sm:text-xs rounded-full w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center font-medium shadow-sm flex-shrink-0">
+                  <Badge className="bg-gradient-to-r from-primary to-primary text-white text-[10px] sm:text-xs rounded-full w-5 h-5 sm:w-7 sm:h-7 flex items-center justify-center font-medium shadow-sm flex-shrink-0">
                     ✓
                   </Badge>
                 </div>
@@ -790,13 +790,13 @@ const Chat = () => {
           <div className="px-4 mb-4">
             <div className="flex items-center space-x-2">
               <Heart className="w-5 h-5 text-emerald-500" />
-              <h2 className="text-lg font-semibold text-gray-900">People who liked you</h2>
+              <h2 className="text-lg font-semibold text-foreground">People who liked you</h2>
               <Badge className="bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-medium">
                 <Sparkles className="w-3 h-3 mr-1" />
                 Premium
               </Badge>
             </div>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               {isPremiumUser
                 ? "See who liked you and start connecting!"
                 : "Upgrade to see who liked you and unlock special matches!"
@@ -810,10 +810,10 @@ const Chat = () => {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full mb-4">
                 <Lock className="w-6 h-6 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              <h3 className="text-lg font-semibold text-foreground mb-2">
                 Unlock Secret Admirers
               </h3>
-              <p className="text-gray-600 mb-4 text-sm">
+              <p className="text-muted-foreground mb-4 text-sm">
                 Discover who liked your profile and get access to premium matches with better compatibility scores.
               </p>
               <button
@@ -832,7 +832,7 @@ const Chat = () => {
               {peopleWhoLikeYou.map((person) => (
                 <div
                   key={person.id}
-                  className={`relative bg-white rounded-2xl shadow-md overflow-hidden border border-emerald-100 transition-all duration-300 ${
+                  className={`relative bg-white rounded-2xl shadow-md overflow-hidden border border-border transition-all duration-300 ${
                     isPremiumUser
                       ? 'cursor-pointer hover:shadow-lg'
                       : 'cursor-default opacity-75'
@@ -843,8 +843,8 @@ const Chat = () => {
                   {!isPremiumUser && (
                     <div className="absolute inset-0 bg-gradient-to-br from-gray-100/80 to-gray-200/80 backdrop-blur-sm flex items-center justify-center">
                       <div className="text-center">
-                        <Lock className="w-8 h-8 mx-auto mb-2 text-gray-400" />
-                        <p className="text-xs font-medium text-gray-600">Premium Only</p>
+                        <Lock className="w-8 h-8 mx-auto mb-2 text-muted-foreground/60" />
+                        <p className="text-xs font-medium text-muted-foreground">Premium Only</p>
                       </div>
                     </div>
                   )}
@@ -864,11 +864,11 @@ const Chat = () => {
 
                   {/* Profile Info */}
                   <div className={`p-3 ${isPremiumUser ? '' : 'filter blur-sm'}`}>
-                    <h4 className="font-semibold text-gray-900 text-sm truncate">{person.name}</h4>
-                    <p className="text-xs text-gray-600 mt-1">{person.age} • {person.location}</p>
+                    <h4 className="font-semibold text-foreground text-sm truncate">{person.name}</h4>
+                    <p className="text-xs text-muted-foreground mt-1">{person.age} • {person.location}</p>
                     {isPremiumUser && (
                       <button
-                        className="w-full mt-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white py-2 rounded-lg text-xs font-medium hover:shadow-md transition-all duration-300"
+                        className="w-full mt-3 bg-gradient-to-r from-primary to-primary text-white py-2 rounded-lg text-xs font-medium hover:shadow-md transition-all duration-300"
                       >
                         Say Hi! 👋
                       </button>

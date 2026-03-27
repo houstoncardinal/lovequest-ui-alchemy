@@ -304,7 +304,7 @@ const Community = () => {
       {/* Desktop Layout */}
       <div className="hidden md:block">
         {/* Enhanced Desktop Header */}
-        <div className="bg-white/98 backdrop-blur-xl border-b border-emerald-100/60 shadow-lg sticky top-0 z-30">
+        <div className="bg-white/98 backdrop-blur-xl border-b border-border/60 shadow-lg sticky top-0 z-30">
           <div className="max-w-screen-2xl mx-auto px-8 py-6">
             {/* Primary Row - Main Controls */}
             <div className="flex items-center justify-between mb-4">
@@ -312,7 +312,7 @@ const Community = () => {
                 <div className="flex items-center gap-4">
                   <Heart className="w-10 h-10 text-emerald-500" />
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-emerald-800 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
                       Community Feed
                     </h1>
                     <p className="text-sm text-primary font-medium">Connect & share with the community</p>
@@ -320,17 +320,17 @@ const Community = () => {
                 </div>
 
                 {/* Filter Tabs */}
-                <div className="flex items-center gap-3 px-6 py-3 bg-white/60 rounded-2xl border border-emerald-200/50">
+                <div className="flex items-center gap-3 px-6 py-3 bg-white/60 rounded-2xl border border-border/50">
                   <button
                     onClick={() => setActiveTab("trending")}
                     className={`px-5 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
                       activeTab === "trending"
-                        ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg"
-                        : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-800"
+                        ? "bg-gradient-to-r from-primary to-primary text-white shadow-lg"
+                        : "text-gray-700 hover:bg-primary/10 hover:text-primary"
                     }`}
                   >
                     🔥 Trending
-                    <Badge className={`text-xs ${activeTab === "trending" ? "bg-emerald-200 text-emerald-800" : "bg-emerald-100 text-emerald-700"}`}>
+                    <Badge className={`text-xs ${activeTab === "trending" ? "bg-emerald-200 text-primary" : "bg-primary/15 text-primary"}`}>
                       {posts.filter(p => p.is_trending).length}
                     </Badge>
                   </button>
@@ -338,12 +338,12 @@ const Community = () => {
                     onClick={() => setActiveTab("latest")}
                     className={`px-5 py-2 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 ${
                       activeTab === "latest"
-                        ? "bg-gradient-to-r from-emerald-500 to-emerald-600 text-white shadow-lg"
-                        : "text-gray-700 hover:bg-emerald-50 hover:text-emerald-800"
+                        ? "bg-gradient-to-r from-primary to-primary text-white shadow-lg"
+                        : "text-gray-700 hover:bg-primary/10 hover:text-primary"
                     }`}
                   >
                     🆕 Latest
-                    <Badge className={`text-xs ${activeTab === "latest" ? "bg-emerald-200 text-emerald-800" : "bg-emerald-100 text-emerald-700"}`}>
+                    <Badge className={`text-xs ${activeTab === "latest" ? "bg-emerald-200 text-primary" : "bg-primary/15 text-primary"}`}>
                       {posts.filter(p => !p.is_trending).length}
                     </Badge>
                   </button>
@@ -354,19 +354,19 @@ const Community = () => {
                 {/* Search Bar */}
                 <div className="relative">
                   <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
-                    <Search className="w-5 h-5 text-emerald-400" />
+                    <Search className="w-5 h-5 text-primary/60" />
                   </div>
                   <input
                     type="text"
                     placeholder="Search posts..."
-                    className="pl-10 pr-4 py-3 bg-white/80 border border-emerald-200/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-300 transition-all duration-200 w-80 text-sm"
+                    className="pl-10 pr-4 py-3 bg-white/80 border border-border/60 rounded-xl focus:outline-none focus:ring-2 focus:ring-ring/30 focus:border-border transition-all duration-200 w-80 text-sm"
                   />
                 </div>
 
                 {/* Create Post */}
                 <button
                   onClick={() => setShowCreateModal(true)}
-                  className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 group"
+                  className="bg-gradient-to-r from-primary to-primary text-white px-6 py-3 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 group"
                 >
                   <span className="flex items-center gap-2">
                     <Plus className="w-5 h-5" />
@@ -381,27 +381,27 @@ const Community = () => {
               <div className="flex items-center gap-6">
                 {/* Quick Stats */}
                 <div className="flex items-center gap-4">
-                  <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
-                    <span className="font-bold text-emerald-700">{posts.length}</span> posts shared
+                  <div className="text-sm text-muted-foreground bg-white/60 px-4 py-2 rounded-xl border border-border">
+                    <span className="font-bold text-primary">{posts.length}</span> posts shared
                   </div>
-                  <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
+                  <div className="text-sm text-muted-foreground bg-white/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-blue-600">{posts.filter(p => p.is_trending).length}</span> trending now
                   </div>
-                  <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
+                  <div className="text-sm text-muted-foreground bg-white/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-purple-600">{new Set(posts.flatMap(p => p.hashtags || [])).size}</span> topics discussed
                   </div>
                 </div>
 
                 {/* Active Filter Indicator */}
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
-                  Showing <span className="font-semibold text-emerald-700">{activeTab === "trending" ? "trending" : "latest"}</span> posts
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  Showing <span className="font-semibold text-primary">{activeTab === "trending" ? "trending" : "latest"}</span> posts
                 </div>
               </div>
 
               <div className="flex items-center gap-3">
                 {/* Sort Options */}
-                <select className="px-3 py-2 bg-white/80 border border-emerald-200/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/30">
+                <select className="px-3 py-2 bg-white/80 border border-border/60 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-ring/30">
                   <option>Most Recent</option>
                   <option>Most Liked</option>
                   <option>Most Commented</option>
@@ -409,14 +409,14 @@ const Community = () => {
                 </select>
 
                 {/* View Options */}
-                <div className="flex items-center gap-2 bg-white/60 rounded-xl border border-emerald-200/50">
-                  <button className="px-3 py-2 rounded-lg bg-emerald-100 text-emerald-800 text-sm font-medium">
+                <div className="flex items-center gap-2 bg-white/60 rounded-xl border border-border/50">
+                  <button className="px-3 py-2 rounded-lg bg-primary/15 text-primary text-sm font-medium">
                     📱 Feed
                   </button>
-                  <button className="px-3 py-2 rounded-lg text-gray-600 hover:bg-emerald-50 text-sm transition-colors">
+                  <button className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-primary/10 text-sm transition-colors">
                     📊 Cards
                   </button>
-                  <button className="px-3 py-2 rounded-lg text-gray-600 hover:bg-emerald-50 text-sm transition-colors">
+                  <button className="px-3 py-2 rounded-lg text-muted-foreground hover:bg-primary/10 text-sm transition-colors">
                     📈 Analytics
                   </button>
                 </div>
@@ -425,19 +425,19 @@ const Community = () => {
                 <div className="flex items-center gap-2">
                   <button
                     title="Bookmarks"
-                    className="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                    className="p-2 rounded-lg bg-primary/10 hover:bg-primary/15 transition-colors"
                   >
                     📚
                   </button>
                   <button
                     title="Notifications"
-                    className="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                    className="p-2 rounded-lg bg-primary/10 hover:bg-primary/15 transition-colors"
                   >
                     🔔
                   </button>
                   <button
                     title="Settings"
-                    className="p-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 transition-colors"
+                    className="p-2 rounded-lg bg-primary/10 hover:bg-primary/15 transition-colors"
                   >
                     ⚙️
                   </button>
@@ -468,7 +468,7 @@ const Community = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.4, delay: index * 0.05 }}
-                        className="bg-white rounded-3xl shadow-xl border border-emerald-100/60 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group hover:border-emerald-200"
+                        className="bg-white rounded-3xl shadow-xl border border-border/60 hover:shadow-2xl transition-all duration-500 relative overflow-hidden group hover:border-border"
                       >
                         <PostCard
                           post={post}
@@ -488,32 +488,32 @@ const Community = () => {
             {/* Desktop Sidebar */}
             <div className="space-y-6 sticky top-32">
               {/* Quick Stats */}
-              <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6">
-                <h3 className="font-bold text-gray-900 mb-4">Community Stats</h3>
+              <div className="bg-white rounded-2xl shadow-lg border border-border p-6">
+                <h3 className="font-bold text-foreground mb-4">Community Stats</h3>
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Active Members</span>
-                    <span className="font-semibold text-emerald-600">1,247</span>
+                    <span className="text-muted-foreground">Active Members</span>
+                    <span className="font-semibold text-primary">1,247</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Posts This Week</span>
-                    <span className="font-semibold text-emerald-600">{posts.length}</span>
+                    <span className="text-muted-foreground">Posts This Week</span>
+                    <span className="font-semibold text-primary">{posts.length}</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">Trending Topics</span>
-                    <span className="font-semibold text-emerald-600">8</span>
+                    <span className="text-muted-foreground">Trending Topics</span>
+                    <span className="font-semibold text-primary">8</span>
                   </div>
                 </div>
               </div>
 
               {/* Trending Hashtags */}
-              <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 p-6">
-                <h3 className="font-bold text-gray-900 mb-4">Trending Hashtags</h3>
+              <div className="bg-white rounded-2xl shadow-lg border border-border p-6">
+                <h3 className="font-bold text-foreground mb-4">Trending Hashtags</h3>
                 <div className="flex flex-wrap gap-2">
                   {["FaithJourney", "IslamicLife", "HalalBeauty", "Community", "FaithFirst"].map(tag => (
                     <span
                       key={tag}
-                      className="px-3 py-1 bg-emerald-50 text-emerald-700 text-sm rounded-full border border-emerald-200 hover:bg-emerald-100 cursor-pointer transition-colors"
+                      className="px-3 py-1 bg-primary/10 text-primary text-sm rounded-full border border-border hover:bg-primary/15 cursor-pointer transition-colors"
                     >
                       #{tag}
                     </span>
@@ -522,7 +522,7 @@ const Community = () => {
               </div>
 
               {/* Quick Actions */}
-              <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-2xl shadow-lg border border-emerald-400/50 p-6 text-white">
+              <div className="bg-gradient-to-r from-primary to-primary rounded-2xl shadow-lg border border-primary/50 p-6 text-white">
                 <h3 className="font-bold mb-4 flex items-center gap-2">
                   <span>🚀</span>
                   Share Your Story
@@ -532,7 +532,7 @@ const Community = () => {
                 </p>
                 <button
                   onClick={() => setShowCreateModal(true)}
-                  className="w-full bg-white text-emerald-600 font-semibold py-3 px-4 rounded-xl hover:bg-gray-50 transition-colors"
+                  className="w-full bg-white text-primary font-semibold py-3 px-4 rounded-xl hover:bg-muted transition-colors"
                 >
                   📝 Write Post
                 </button>
