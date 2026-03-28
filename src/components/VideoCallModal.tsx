@@ -272,7 +272,7 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-emerald-600 to-emerald-800">
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-primary to-primary/80">
               <div className="relative mb-8">
                 <img
                   src={userImage}
@@ -327,13 +327,13 @@ const VideoCallModal: React.FC<VideoCallModalProps> = ({
             {/* Audio indicator */}
             {isAudioEnabled && callStatus === 'connected' && (
               <div className="flex justify-center mb-4">
-                <div className="flex items-center space-x-2 bg-emerald-500/20 px-4 py-2 rounded-full backdrop-blur-sm">
-                  <Volume2 className="w-4 h-4 text-emerald-400" />
+                <div className="flex items-center space-x-2 bg-primary/50/20 px-4 py-2 rounded-full backdrop-blur-sm">
+                  <Volume2 className="w-4 h-4 text-primary" />
                   <div className="flex space-x-1">
                     {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
-                        className="w-1 h-4 bg-emerald-400 rounded-full animate-pulse"
+                        className="w-1 h-4 bg-primary/80 rounded-full animate-pulse"
                         style={{ animationDelay: `${i * 0.1}s` }}
                       />
                     ))}

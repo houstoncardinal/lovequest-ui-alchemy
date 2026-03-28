@@ -310,7 +310,7 @@ const Community = () => {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-4">
-                  <Heart className="w-10 h-10 text-emerald-500" />
+                  <Heart className="w-10 h-10 text-primary" />
                   <div>
                     <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
                       Community Feed
@@ -330,7 +330,7 @@ const Community = () => {
                     }`}
                   >
                     🔥 Trending
-                    <Badge className={`text-xs ${activeTab === "trending" ? "bg-emerald-200 text-primary" : "bg-primary/15 text-primary"}`}>
+                    <Badge className={`text-xs ${activeTab === "trending" ? "bg-primary/15 text-primary" : "bg-primary/15 text-primary"}`}>
                       {posts.filter(p => p.is_trending).length}
                     </Badge>
                   </button>
@@ -343,7 +343,7 @@ const Community = () => {
                     }`}
                   >
                     🆕 Latest
-                    <Badge className={`text-xs ${activeTab === "latest" ? "bg-emerald-200 text-primary" : "bg-primary/15 text-primary"}`}>
+                    <Badge className={`text-xs ${activeTab === "latest" ? "bg-primary/15 text-primary" : "bg-primary/15 text-primary"}`}>
                       {posts.filter(p => !p.is_trending).length}
                     </Badge>
                   </button>

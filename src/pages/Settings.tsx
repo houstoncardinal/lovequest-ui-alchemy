@@ -217,7 +217,7 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-md mx-auto px-4 py-4">
@@ -241,8 +241,8 @@ const Settings = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <User className="h-5 w-5 text-emerald-600" />
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <User className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <CardTitle className="text-lg">Account</CardTitle>
@@ -293,8 +293,8 @@ const Settings = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Bell className="h-5 w-5 text-emerald-600" />
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Bell className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <CardTitle className="text-lg">Notifications</CardTitle>
@@ -335,8 +335,8 @@ const Settings = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Shield className="h-5 w-5 text-emerald-600" />
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Shield className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <CardTitle className="text-lg">Privacy & Safety</CardTitle>
@@ -411,8 +411,8 @@ const Settings = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <Globe className="h-5 w-5 text-emerald-600" />
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <Globe className="h-5 w-5 text-primary" />
               </div>
               <div>
                 <CardTitle className="text-lg">App Preferences</CardTitle>
@@ -560,7 +560,7 @@ const Settings = () => {
             <Button 
               onClick={saveSettings}
               disabled={loading}
-              className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white"
+              className="w-full bg-gradient-to-r from-primary/50 to-primary text-white"
             >
               {loading ? "Saving..." : "Save All Settings"}
             </Button>

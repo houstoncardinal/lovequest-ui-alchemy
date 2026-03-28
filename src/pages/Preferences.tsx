@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Loader2, Heart, Users, MapPin, Shield, Star, Church, Baby, GraduationCap, Briefcase, Home, Calendar, Clock, User } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Heart, Users, MapPin, Shield, Star, Sparkles, Baby, GraduationCap, Briefcase, Home, Calendar, Clock, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,18 +25,12 @@ interface UserPreferences {
     drinking: boolean;
     has_children: boolean;
     previous_marriage: boolean;
-    different_religion_level: boolean;
-    different_madhab: boolean;
-    no_hijab: boolean; // For men looking for women
-    non_practicing: boolean;
-    different_prayer_frequency: boolean;
+    different_values: boolean;
+    non_active: boolean;
   };
-  religion_preferences: {
-    min_religion_level: string;
-    preferred_madhab: string[];
-    prayer_frequency_preference: string;
-    hijab_preference: string; // For men
-    islamic_knowledge_preference: string;
+  values_preferences: {
+    importance_level: string;
+    core_values: string[];
   };
   lifestyle_preferences: {
     education_level_preference: string[];
@@ -63,25 +57,19 @@ const Preferences = () => {
     age_range_min: 22,
     age_range_max: 35,
     max_distance_km: 50,
-    looking_for: "marriage",
-    show_me: "opposite", // Will be determined by user's gender
+    looking_for: "serious_relationship",
+    show_me: "opposite",
     deal_breakers: {
       smoking: false,
       drinking: false,
       has_children: false,
       previous_marriage: false,
-      different_religion_level: false,
-      different_madhab: false,
-      no_hijab: false,
-      non_practicing: false,
-      different_prayer_frequency: false,
+      different_values: false,
+      non_active: false,
     },
-    religion_preferences: {
-      min_religion_level: "somewhat_religious",
-      preferred_madhab: [],
-      prayer_frequency_preference: "any",
-      hijab_preference: "any",
-      islamic_knowledge_preference: "any",
+    values_preferences: {
+      importance_level: "moderate",
+      core_values: [],
     },
     lifestyle_preferences: {
       education_level_preference: [],
@@ -140,20 +128,17 @@ const Preferences = () => {
           age_range_min: data.age_range_min || 22,
           age_range_max: data.age_range_max || 35,
           max_distance_km: data.max_distance_km || 50,
-          looking_for: data.looking_for || "marriage",
+          looking_for: data.looking_for || "serious_relationship",
           show_me: data.show_me || "opposite",
           deal_breakers: {
             smoking: dealBreakers.smoking || false,
             drinking: dealBreakers.drinking || false,
             has_children: dealBreakers.has_children || false,
             previous_marriage: dealBreakers.previous_marriage || false,
-            different_religion_level: dealBreakers.different_religion_level || false,
-            different_madhab: dealBreakers.different_madhab || false,
-            no_hijab: dealBreakers.no_hijab || false,
-            non_practicing: dealBreakers.non_practicing || false,
-            different_prayer_frequency: dealBreakers.different_prayer_frequency || false,
+            different_values: dealBreakers.different_values || false,
+            non_active: dealBreakers.non_active || false,
           },
-          religion_preferences: dealBreakers.religion_preferences || preferences.religion_preferences,
+          values_preferences: dealBreakers.values_preferences || preferences.values_preferences,
           lifestyle_preferences: dealBreakers.lifestyle_preferences || preferences.lifestyle_preferences,
           family_preferences: dealBreakers.family_preferences || preferences.family_preferences,
         });
@@ -187,14 +172,10 @@ const Preferences = () => {
           drinking: preferences.deal_breakers.drinking,
           has_children: preferences.deal_breakers.has_children,
           previous_marriage: preferences.deal_breakers.previous_marriage,
-          different_religion_level: preferences.deal_breakers.different_religion_level,
-          different_madhab: preferences.deal_breakers.different_madhab,
-          no_hijab: preferences.deal_breakers.no_hijab,
-          non_practicing: preferences.deal_breakers.non_practicing,
-          different_prayer_frequency: preferences.deal_breakers.different_prayer_frequency,
+          different_values: preferences.deal_breakers.different_values,
+          non_active: preferences.deal_breakers.non_active,
           
-          // Extended preferences stored within deal_breakers JSON
-          religion_preferences: preferences.religion_preferences,
+          values_preferences: preferences.values_preferences,
           lifestyle_preferences: preferences.lifestyle_preferences,
           family_preferences: preferences.family_preferences,
         },
@@ -225,39 +206,31 @@ const Preferences = () => {
     }
   };
 
-  // Helper function to get opposite gender options
   const getGenderOptions = () => {
     if (!userProfile) return [];
-    
-    // In Islam, only opposite gender matching is allowed
-    if (userProfile.gender === 'male') {
-      return [{ value: 'female', label: 'Women', icon: '👩' }];
-    } else if (userProfile.gender === 'female') {
-      return [{ value: 'male', label: 'Men', icon: '👨' }];
-    }
-    return [];
+    return [
+      { value: 'male', label: 'Men', icon: '👨' },
+      { value: 'female', label: 'Women', icon: '👩' },
+      { value: 'everyone', label: 'Everyone', icon: '👥' },
+    ];
   };
 
-  const religionLevels = [
-    { value: 'very_religious', label: 'Very Religious' },
-    { value: 'religious', label: 'Religious' },
-    { value: 'somewhat_religious', label: 'Somewhat Religious' },
-    { value: 'not_very_religious', label: 'Not Very Religious' },
+  const valuesImportance = [
+    { value: 'very_important', label: 'Very Important' },
+    { value: 'important', label: 'Important' },
+    { value: 'moderate', label: 'Moderate' },
+    { value: 'not_important', label: 'Not Important' },
   ];
 
-  const madhabs = [
-    { value: 'hanafi', label: 'Hanafi' },
-    { value: 'maliki', label: 'Maliki' },
-    { value: 'shafii', label: 'Shafi\'i' },
-    { value: 'hanbali', label: 'Hanbali' },
-  ];
-
-  const prayerFrequencies = [
-    { value: '5_times_daily', label: '5 times daily' },
-    { value: 'daily', label: 'Daily' },
-    { value: 'weekly', label: 'Weekly' },
-    { value: 'occasionally', label: 'Occasionally' },
-    { value: 'rarely', label: 'Rarely' },
+  const coreValueOptions = [
+    { value: 'family', label: 'Family-Oriented' },
+    { value: 'ambition', label: 'Ambition & Career' },
+    { value: 'adventure', label: 'Adventure & Travel' },
+    { value: 'kindness', label: 'Kindness & Empathy' },
+    { value: 'humor', label: 'Humor & Fun' },
+    { value: 'honesty', label: 'Honesty & Loyalty' },
+    { value: 'health', label: 'Health & Fitness' },
+    { value: 'creativity', label: 'Creativity & Art' },
   ];
 
   const educationLevels = [
@@ -421,7 +394,7 @@ const Preferences = () => {
           </Card>
         </motion.div>
 
-        {/* Religious Preferences */}
+        {/* Values & Lifestyle Preferences */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -430,26 +403,26 @@ const Preferences = () => {
           <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 rounded-xl bg-gradient-primary">
-                <Church className="w-5 h-5 text-primary-foreground" />
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
               </div>
-              <h3 className="font-bold text-foreground text-lg">Religious Preferences</h3>
+              <h3 className="font-bold text-foreground text-lg">Values & Lifestyle</h3>
             </div>
             
             <div className="space-y-6">
               <div>
-                <Label className="text-sm font-medium mb-3 block">Minimum Religion Level</Label>
+                <Label className="text-sm font-medium mb-3 block">How important are shared values?</Label>
                 <Select 
-                  value={preferences.religion_preferences.min_religion_level}
+                  value={preferences.values_preferences.importance_level}
                   onValueChange={(value) => setPreferences(prev => ({
                     ...prev,
-                    religion_preferences: { ...prev.religion_preferences, min_religion_level: value }
+                    values_preferences: { ...prev.values_preferences, importance_level: value }
                   }))}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
-                    {religionLevels.map(level => (
+                    {valuesImportance.map(level => (
                       <SelectItem key={level.value} value={level.value}>
                         {level.label}
                       </SelectItem>
@@ -459,49 +432,33 @@ const Preferences = () => {
               </div>
 
               <div>
-                <Label className="text-sm font-medium mb-3 block">Prayer Frequency Preference</Label>
-                <Select 
-                  value={preferences.religion_preferences.prayer_frequency_preference}
-                  onValueChange={(value) => setPreferences(prev => ({
-                    ...prev,
-                    religion_preferences: { ...prev.religion_preferences, prayer_frequency_preference: value }
-                  }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
-                    <SelectItem value="any">Any</SelectItem>
-                    {prayerFrequencies.map(freq => (
-                      <SelectItem key={freq.value} value={freq.value}>
-                        {freq.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {userProfile?.gender === 'male' && (
-                <div>
-                  <Label className="text-sm font-medium mb-3 block">Hijab Preference</Label>
-                  <Select 
-                    value={preferences.religion_preferences.hijab_preference}
-                    onValueChange={(value) => setPreferences(prev => ({
-                      ...prev,
-                      religion_preferences: { ...prev.religion_preferences, hijab_preference: value }
-                    }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
-                      <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="wears_hijab">Wears Hijab</SelectItem>
-                      <SelectItem value="prefers_hijab">Prefers Hijab</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <Label className="text-sm font-medium mb-3 block">Core Values (select all that matter)</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {coreValueOptions.map(value => (
+                    <button
+                      key={value.value}
+                      type="button"
+                      onClick={() => {
+                        const current = preferences.values_preferences.core_values;
+                        const updated = current.includes(value.value)
+                          ? current.filter(v => v !== value.value)
+                          : [...current, value.value];
+                        setPreferences(prev => ({
+                          ...prev,
+                          values_preferences: { ...prev.values_preferences, core_values: updated }
+                        }));
+                      }}
+                      className={`p-3 rounded-xl border text-sm font-medium transition-all ${
+                        preferences.values_preferences.core_values.includes(value.value)
+                          ? 'border-primary bg-primary/10 text-primary'
+                          : 'border-border/30 text-muted-foreground hover:border-primary/30'
+                      }`}
+                    >
+                      {value.label}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           </Card>
         </motion.div>
@@ -514,8 +471,8 @@ const Preferences = () => {
         >
           <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-xl bg-red-500/20">
-                <Shield className="w-5 h-5 text-red-500" />
+              <div className="p-2 rounded-xl bg-destructive/20">
+                <Shield className="w-5 h-5 text-destructive" />
               </div>
               <h3 className="font-bold text-foreground text-lg">Deal Breakers</h3>
             </div>
@@ -526,11 +483,11 @@ const Preferences = () => {
             <div className="space-y-4">
               {[
                 { key: 'smoking', label: 'Smoking', icon: '🚬' },
+                { key: 'drinking', label: 'Heavy drinking', icon: '🍷' },
                 { key: 'has_children', label: 'Has children', icon: '👶' },
                 { key: 'previous_marriage', label: 'Previously married', icon: '💍' },
-                { key: 'different_religion_level', label: 'Very different religion level', icon: '📿' },
-                { key: 'spiritual', label: 'Spiritual/Religious', icon: '🙏' },
-                ...(userProfile?.gender === 'male' ? [{ key: 'no_hijab', label: 'Does not wear hijab', icon: '🧕' }] : []),
+                { key: 'different_values', label: 'Very different values', icon: '⚖️' },
+                { key: 'non_active', label: 'Inactive on app', icon: '📵' },
               ].map((item) => (
                 <div key={item.key} className="flex items-center justify-between p-4 rounded-xl border border-border/30 hover:border-primary/30 transition-colors">
                   <div className="flex items-center gap-3">

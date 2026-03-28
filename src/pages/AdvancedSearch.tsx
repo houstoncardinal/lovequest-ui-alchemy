@@ -34,10 +34,6 @@ interface SearchFilters {
   educationLevel: string[];
   careerField: string[];
   incomeRange: string;
-  religionLevel: string[];
-  prayerFrequency: string[];
-  madhab: string[];
-  hijabStatus: string[];
   marriageTimeline: string[];
   previousMarriage: boolean | null;
   wantsChildren: boolean | null;
@@ -75,10 +71,6 @@ const AdvancedSearch = () => {
     educationLevel: [],
     careerField: [],
     incomeRange: '',
-    religionLevel: [],
-    prayerFrequency: [],
-    madhab: [],
-    hijabStatus: [],
     marriageTimeline: [],
     previousMarriage: null,
     wantsChildren: null,
@@ -105,24 +97,9 @@ const AdvancedSearch = () => {
     'Government', 'Self-Employed', 'Student', 'Other'
   ];
 
-  const religionLevels = [
-    'Very Religious', 'Religious', 'Somewhat Religious', 
-    'Not Very Religious', 'Prefer not to say'
-  ];
-
-  const prayerFrequencies = [
-    '5 times daily', 'Daily', 'Weekly', 'Occasionally', 
-    'Rarely', 'Prefer not to say'
-  ];
-
-  const madhabOptions = [
-    'Hanafi', 'Maliki', 'Shafi\'i', 'Hanbali', 
-    'Jafari', 'Other', 'Prefer not to say'
-  ];
-
-  const hijabStatuses = [
-    'Wears Hijab', 'Sometimes Wears Hijab', 'Doesn\'t Wear Hijab', 
-    'Plans to Wear', 'Prefer not to say'
+  const lifestyleOptions = [
+    'Active & Fit', 'Homebody', 'Social Butterfly', 'Adventurous',
+    'Career-Focused', 'Family-Oriented', 'Prefer not to say'
   ];
 
   const smokingStatuses = [
@@ -173,22 +150,6 @@ const AdvancedSearch = () => {
 
       if (filters.careerField.length > 0) {
         query = query.in('career_field', filters.careerField);
-      }
-
-      if (filters.religionLevel.length > 0) {
-        query = query.in('religion_level', filters.religionLevel);
-      }
-
-      if (filters.prayerFrequency.length > 0) {
-        query = query.in('prayer_frequency', filters.prayerFrequency);
-      }
-
-      if (filters.madhab.length > 0) {
-        query = query.in('madhab', filters.madhab);
-      }
-
-      if (filters.hijabStatus.length > 0) {
-        query = query.in('hijab_status', filters.hijabStatus);
       }
 
       if (filters.marriageTimeline.length > 0) {
@@ -418,74 +379,25 @@ const AdvancedSearch = () => {
               </CardContent>
             </Card>
 
-            {/* Religious Preferences */}
+            {/* Lifestyle */}
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="h-5 w-5" />
-                  Religious Preferences
+                  <Heart className="h-5 w-5" />
+                  Lifestyle & Values
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* Religion Level */}
                 <div className="space-y-3">
-                  <Label>Religion Level</Label>
+                  <Label>Lifestyle</Label>
                   <div className="grid grid-cols-1 gap-2">
-                    {religionLevels.map((level) => (
-                      <div key={level} className="flex items-center space-x-2">
+                    {lifestyleOptions.map((option) => (
+                      <div key={option} className="flex items-center space-x-2">
                         <Switch
-                          checked={filters.religionLevel.includes(level)}
-                          onCheckedChange={(checked) => updateMultiSelect('religionLevel', level, checked)}
+                          checked={false}
+                          onCheckedChange={() => {}}
                         />
-                        <Label className="text-sm">{level}</Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Prayer Frequency */}
-                <div className="space-y-3">
-                  <Label>Prayer Frequency</Label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {prayerFrequencies.map((frequency) => (
-                      <div key={frequency} className="flex items-center space-x-2">
-                        <Switch
-                          checked={filters.prayerFrequency.includes(frequency)}
-                          onCheckedChange={(checked) => updateMultiSelect('prayerFrequency', frequency, checked)}
-                        />
-                        <Label className="text-sm">{frequency}</Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Madhab */}
-                <div className="space-y-3">
-                  <Label>Madhab (School of Thought)</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {madhabOptions.map((madhab) => (
-                      <div key={madhab} className="flex items-center space-x-2">
-                        <Switch
-                          checked={filters.madhab.includes(madhab)}
-                          onCheckedChange={(checked) => updateMultiSelect('madhab', madhab, checked)}
-                        />
-                        <Label className="text-sm">{madhab}</Label>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Hijab Status */}
-                <div className="space-y-3">
-                  <Label>Hijab Status</Label>
-                  <div className="grid grid-cols-1 gap-2">
-                    {hijabStatuses.map((status) => (
-                      <div key={status} className="flex items-center space-x-2">
-                        <Switch
-                          checked={filters.hijabStatus.includes(status)}
-                          onCheckedChange={(checked) => updateMultiSelect('hijabStatus', status, checked)}
-                        />
-                        <Label className="text-sm">{status}</Label>
+                        <Label className="text-sm">{option}</Label>
                       </div>
                     ))}
                   </div>

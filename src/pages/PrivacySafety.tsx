@@ -59,18 +59,18 @@ const PrivacySafety = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-muted pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-card border-b border-border">
         <div className="flex items-center justify-between p-4">
           <button onClick={() => navigate("/account")}>
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
+            <ArrowLeft className="w-6 h-6 text-muted-foreground" />
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Privacy & Safety</h1>
+          <h1 className="text-xl font-bold text-foreground">Privacy & Safety</h1>
           <button 
             onClick={saveSettings}
             disabled={loading}
-            className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+            className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-xl font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
           >
             {loading ? (
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -84,15 +84,15 @@ const PrivacySafety = () => {
 
       <div className="p-4 space-y-6">
         {/* Profile Visibility */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4 flex items-center">
             <Eye className="w-5 h-5 mr-2 text-blue-500" />
             Profile Visibility
           </h3>
           
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">Who can see your profile</label>
+              <label className="block text-sm font-medium text-foreground/80 mb-3">Who can see your profile</label>
               <div className="space-y-2">
                 {[
                   { value: "everyone", label: "Everyone" },
@@ -123,7 +123,7 @@ const PrivacySafety = () => {
                   onChange={() => handleToggle("showAge")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
 
@@ -136,15 +136,15 @@ const PrivacySafety = () => {
                   onChange={() => handleToggle("showDistance")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </div>
         </div>
 
         {/* Activity Status */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4 flex items-center">
             <Bell className="w-5 h-5 mr-2 text-green-500" />
             Activity Status
           </h3>
@@ -152,8 +152,8 @@ const PrivacySafety = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Show active status</p>
-                <p className="text-sm text-gray-500">Let others see when you're online</p>
+                <p className="font-medium text-foreground">Show active status</p>
+                <p className="text-sm text-muted-foreground">Let others see when you're online</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -162,14 +162,14 @@ const PrivacySafety = () => {
                   onChange={() => handleToggle("showActiveStatus")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Read receipts</p>
-                <p className="text-sm text-gray-500">Show when you've read messages</p>
+                <p className="font-medium text-foreground">Read receipts</p>
+                <p className="text-sm text-muted-foreground">Show when you've read messages</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -178,15 +178,15 @@ const PrivacySafety = () => {
                   onChange={() => handleToggle("allowReadReceipts")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </div>
         </div>
 
         {/* Advanced Privacy */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4 flex items-center">
             <Shield className="w-5 h-5 mr-2 text-red-500" />
             Advanced Privacy
           </h3>
@@ -194,8 +194,8 @@ const PrivacySafety = () => {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Incognito Mode</p>
-                <p className="text-sm text-gray-500">Browse profiles without being seen</p>
+                <p className="font-medium text-foreground">Incognito Mode</p>
+                <p className="text-sm text-muted-foreground">Browse profiles without being seen</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -204,14 +204,14 @@ const PrivacySafety = () => {
                   onChange={() => handleToggle("incognitoMode")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Block phone contacts</p>
-                <p className="text-sm text-gray-500">Don't show me people from my contacts</p>
+                <p className="font-medium text-foreground">Block phone contacts</p>
+                <p className="text-sm text-muted-foreground">Don't show me people from my contacts</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -220,7 +220,7 @@ const PrivacySafety = () => {
                   onChange={() => handleToggle("blockContacts")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </div>
@@ -230,17 +230,17 @@ const PrivacySafety = () => {
         <div className="bg-red-50 rounded-2xl p-6">
           <h3 className="font-semibold text-red-900 mb-4">Safety Resources</h3>
           <div className="space-y-3">
-            <button className="w-full text-left p-3 bg-white rounded-xl hover:bg-gray-50 transition-colors">
-              <p className="font-medium text-gray-900">Report a User</p>
-              <p className="text-sm text-gray-500">Report inappropriate behavior</p>
+            <button className="w-full text-left p-3 bg-card rounded-xl hover:bg-muted transition-colors">
+              <p className="font-medium text-foreground">Report a User</p>
+              <p className="text-sm text-muted-foreground">Report inappropriate behavior</p>
             </button>
-            <button className="w-full text-left p-3 bg-white rounded-xl hover:bg-gray-50 transition-colors">
-              <p className="font-medium text-gray-900">Safety Tips</p>
-              <p className="text-sm text-gray-500">Learn how to stay safe while dating</p>
+            <button className="w-full text-left p-3 bg-card rounded-xl hover:bg-muted transition-colors">
+              <p className="font-medium text-foreground">Safety Tips</p>
+              <p className="text-sm text-muted-foreground">Learn how to stay safe while dating</p>
             </button>
-            <button className="w-full text-left p-3 bg-white rounded-xl hover:bg-gray-50 transition-colors">
-              <p className="font-medium text-gray-900">Blocked Users</p>
-              <p className="text-sm text-gray-500">Manage your blocked list</p>
+            <button className="w-full text-left p-3 bg-card rounded-xl hover:bg-muted transition-colors">
+              <p className="font-medium text-foreground">Blocked Users</p>
+              <p className="text-sm text-muted-foreground">Manage your blocked list</p>
             </button>
           </div>
         </div>

@@ -321,7 +321,7 @@ const Onboarding = () => {
                   key={plan.id}
                   onClick={() => setSelectedPlan(plan.id)}
                   className={`relative cursor-pointer rounded-3xl border-2 p-6 shadow-xl transition-all duration-300 flex flex-col text-center select-none
-                    ${isSelected ? 'border-emerald-500 bg-gradient-to-br from-emerald-50 to-emerald-100 scale-105 ring-2 ring-primary/20' : 'border-border bg-gradient-to-br from-white to-emerald-50 hover:border-border hover:shadow-2xl'}
+                    ${isSelected ? 'border-primary bg-gradient-to-br from-primary/5 to-primary/10 scale-105 ring-2 ring-primary/20' : 'border-border bg-gradient-to-br from-white to-primary/5 hover:border-border hover:shadow-2xl'}
                   `}
                 >
                   {plan.popular && (
@@ -347,7 +347,7 @@ const Onboarding = () => {
                   <div className="space-y-2 mb-4">
                     {plan.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2 text-primary text-sm">
-                        <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                        <Check className="w-4 h-4 text-primary flex-shrink-0" />
                         <span>{feature}</span>
                       </div>
                     ))}
@@ -610,7 +610,7 @@ const Onboarding = () => {
                 onClick={() => toggleInterest(interest)}
                 className={`p-3 rounded-xl border-2 transition-all duration-200 text-sm font-medium ${
                   profileData.interests.includes(interest)
-                    ? 'border-emerald-500 bg-primary/10 text-primary'
+                    ? 'border-primary bg-primary/10 text-primary'
                     : 'border-border bg-white text-gray-700 hover:border-border'
                 }`}
               >
@@ -664,7 +664,7 @@ const Onboarding = () => {
                       disabled={uploadingPhotoIndex === index}
                     />
                     {uploadingPhotoIndex === index ? (
-                      <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
                     ) : (
                       <>
                         <div className="w-12 h-12 bg-primary/15 rounded-2xl flex items-center justify-center mb-2">
@@ -689,7 +689,7 @@ const Onboarding = () => {
       subtitle: "Let your personality shine through your voice",
       content: () => (
         <div className="max-w-md mx-auto text-center">
-          <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 border border-border rounded-3xl p-6 mb-6">
+          <div className="bg-gradient-to-r from-primary/5 to-primary/10 border border-border rounded-3xl p-6 mb-6">
             <Camera className="w-12 h-12 text-primary mx-auto mb-4" />
             <h3 className="font-semibold text-foreground mb-2">Voice Introduction</h3>
             <p className="text-sm text-primary mb-4">
@@ -1062,7 +1062,7 @@ const Onboarding = () => {
                 disabled={!canProceed()}
                 className="bg-gradient-to-r from-primary to-primary text-white font-semibold py-3 px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-emerald-700 opacity-0 hover:opacity-100 transition-opacity duration-200" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-primary/90 opacity-0 hover:opacity-100 transition-opacity duration-200" />
                 <span className="relative z-10">
                   {currentStep === onboardingSteps.length - 1 ? 'Start Exploring' : 'Continue'}
                 </span>

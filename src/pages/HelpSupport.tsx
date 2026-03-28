@@ -89,22 +89,22 @@ const HelpSupport = () => {
   })).filter(section => section.items.length > 0);
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-muted pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-card border-b border-border">
         <div className="flex items-center justify-between p-4">
           <button onClick={() => navigate("/account")}>
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
+            <ArrowLeft className="w-6 h-6 text-muted-foreground" />
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Help & Support</h1>
+          <h1 className="text-xl font-bold text-foreground">Help & Support</h1>
           <div></div>
         </div>
       </div>
 
       <div className="p-4 space-y-6">
         {/* Contact Options */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Contact Us</h3>
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4">Contact Us</h3>
           
           <div className="space-y-3">
             <button className="w-full flex items-center p-4 bg-blue-50 rounded-xl hover:bg-blue-100 transition-colors">
@@ -134,16 +134,16 @@ const HelpSupport = () => {
         </div>
 
         {/* Search FAQ */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Search FAQ</h3>
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4">Search FAQ</h3>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
             <input
               type="text"
               placeholder="Search for answers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
+              className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
@@ -151,14 +151,14 @@ const HelpSupport = () => {
         {/* FAQ Sections */}
         <div className="space-y-4">
           {filteredSections.map((section) => (
-            <div key={section.id} className="bg-white rounded-2xl overflow-hidden">
+            <div key={section.id} className="bg-card rounded-2xl overflow-hidden">
               <button
                 onClick={() => toggleSection(section.id)}
-                className="w-full flex items-center justify-between p-6 text-left hover:bg-gray-50 transition-colors"
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-muted transition-colors"
               >
-                <h3 className="font-semibold text-gray-900">{section.title}</h3>
+                <h3 className="font-semibold text-foreground">{section.title}</h3>
                 <ChevronDown 
-                  className={`w-5 h-5 text-gray-400 transition-transform ${
+                  className={`w-5 h-5 text-muted-foreground transition-transform ${
                     activeSection === section.id ? "rotate-180" : ""
                   }`} 
                 />
@@ -168,8 +168,8 @@ const HelpSupport = () => {
                 <div className="px-6 pb-6 space-y-4">
                   {section.items.map((item, index) => (
                     <div key={index} className="border-l-4 border-primary/20 pl-4">
-                      <h4 className="font-medium text-gray-900 mb-2">{item.question}</h4>
-                      <p className="text-gray-600 text-sm leading-relaxed">{item.answer}</p>
+                      <h4 className="font-medium text-foreground mb-2">{item.question}</h4>
+                      <p className="text-muted-foreground text-sm leading-relaxed">{item.answer}</p>
                     </div>
                   ))}
                 </div>

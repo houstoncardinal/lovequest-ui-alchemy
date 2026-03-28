@@ -127,7 +127,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSend, onClose }) => {
             className={`w-12 h-12 rounded-full flex items-center justify-center transition-all ${
               isRecording
                 ? 'bg-red-500 hover:bg-red-600 text-white'
-                : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                : 'bg-primary/50 hover:bg-primary text-white'
             }`}
           >
             {isRecording ? <Square className="w-6 h-6" /> : <Mic className="w-6 h-6" />}
@@ -152,7 +152,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSend, onClose }) => {
           <div className="flex items-center space-x-4">
             <button
               onClick={playRecording}
-              className="w-10 h-10 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white flex items-center justify-center transition-colors"
+              className="w-10 h-10 rounded-full bg-primary/50 hover:bg-primary text-white flex items-center justify-center transition-colors"
             >
               {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
             </button>
@@ -162,7 +162,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSend, onClose }) => {
                 Voice message • {formatTime(duration)}
               </div>
               <div className="w-full bg-gray-200 rounded-full h-1 mt-1">
-                <div className="bg-emerald-500 h-1 rounded-full w-full" />
+                <div className="bg-primary/50 h-1 rounded-full w-full" />
               </div>
             </div>
           </div>
@@ -179,7 +179,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSend, onClose }) => {
             </button>
             <button
               onClick={handleSend}
-              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-xl hover:bg-emerald-600 transition-colors flex items-center justify-center space-x-2"
+              className="flex-1 px-4 py-2 text-sm font-medium text-white bg-primary/50 rounded-xl hover:bg-primary transition-colors flex items-center justify-center space-x-2"
             >
               <Send className="w-4 h-4" />
               <span>Send</span>
