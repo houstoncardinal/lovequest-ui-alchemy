@@ -9,7 +9,7 @@ const TermsOfService = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-md mx-auto px-4 py-4">
@@ -32,8 +32,8 @@ const TermsOfService = () => {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <div className="p-3 bg-emerald-100 rounded-full">
-              <FileText className="h-8 w-8 text-emerald-600" />
+            <div className="p-3 bg-primary/10 rounded-full">
+              <FileText className="h-8 w-8 text-primary" />
             </div>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Terms of Service</h1>
@@ -61,26 +61,26 @@ const TermsOfService = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Users className="h-5 w-5 text-emerald-600" />
+              <Users className="h-5 w-5 text-primary" />
               Eligibility Requirements
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">You must be at least 18 years old to use LoveQuest</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">You must be single, divorced, or widowed</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">You must provide accurate and truthful information</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">You must respect community guidelines and treat others with respect</p>
               </div>
             </div>
@@ -91,7 +91,7 @@ const TermsOfService = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Shield className="h-5 w-5 text-emerald-600" />
+              <Shield className="h-5 w-5 text-primary" />
               User Conduct & Behavior
             </CardTitle>
           </CardHeader>
@@ -100,23 +100,23 @@ const TermsOfService = () => {
               <h4 className="font-semibold text-gray-900">You agree to:</h4>
               <div className="space-y-2">
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                   <p className="text-gray-700">Be respectful and courteous to all users</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                   <p className="text-gray-700">Maintain appropriate behavior and respectful interactions</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                   <p className="text-gray-700">Not engage in harassment, bullying, or inappropriate behavior</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                   <p className="text-gray-700">Not share inappropriate or explicit content</p>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                   <p className="text-gray-700">Not use the platform for commercial purposes</p>
                 </div>
               </div>
@@ -136,15 +136,15 @@ const TermsOfService = () => {
             </p>
             <div className="space-y-2">
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">We collect only necessary information for service provision</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Your data is encrypted and stored securely</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">We do not sell your personal information to third parties</p>
               </div>
             </div>
@@ -155,7 +155,7 @@ const TermsOfService = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Heart className="h-5 w-5 text-emerald-600" />
+              <Heart className="h-5 w-5 text-primary" />
               Premium Services
             </CardTitle>
           </CardHeader>
@@ -166,15 +166,15 @@ const TermsOfService = () => {
             </p>
             <div className="space-y-2">
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Subscriptions auto-renew unless cancelled</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Refunds are provided according to our refund policy</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Premium features are subject to availability</p>
               </div>
             </div>
@@ -224,15 +224,15 @@ const TermsOfService = () => {
             </p>
             <div className="space-y-2">
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Violations may result in immediate account suspension</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Appeals can be submitted through our support system</p>
               </div>
               <div className="flex items-start gap-3">
-                <div className="w-2 h-2 bg-emerald-500 rounded-full mt-2" />
+                <div className="w-2 h-2 bg-primary/50 rounded-full mt-2" />
                 <p className="text-gray-700">Account deletion is permanent and irreversible</p>
               </div>
             </div>
@@ -291,7 +291,7 @@ const TermsOfService = () => {
             By using LoveQuest, you acknowledge that you have read, understood, and agree to these Terms of Service.
           </p>
           <Button
-            className="bg-emerald-600 hover:bg-emerald-700"
+            className="bg-primary hover:bg-primary/90"
             onClick={() => navigate(-1)}
           >
             I Understand

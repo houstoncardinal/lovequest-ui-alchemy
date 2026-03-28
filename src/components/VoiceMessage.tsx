@@ -60,8 +60,8 @@ const VoiceMessage: React.FC<VoiceMessageProps> = ({
     <div
       className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
         isOwnMessage
-          ? 'bg-gradient-to-br from-emerald-500 to-emerald-600 text-white rounded-br-md'
-          : 'bg-white border border-emerald-100 text-gray-900 rounded-bl-md'
+          ? 'bg-gradient-to-br from-primary/50 to-primary text-white rounded-br-md'
+          : 'bg-white border border-primary/10 text-gray-900 rounded-bl-md'
       }`}
     >
       <div className="flex items-center space-x-3">
@@ -70,7 +70,7 @@ const VoiceMessage: React.FC<VoiceMessageProps> = ({
           className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors ${
             isOwnMessage
               ? 'bg-white bg-opacity-20 hover:bg-opacity-30 text-white'
-              : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-600'
+              : 'bg-primary/10 hover:bg-primary/15 text-primary'
           }`}
         >
           {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
@@ -83,7 +83,7 @@ const VoiceMessage: React.FC<VoiceMessageProps> = ({
             }`}>
               <div
                 className={`h-full transition-all duration-100 ${
-                  isOwnMessage ? 'bg-white' : 'bg-emerald-500'
+                  isOwnMessage ? 'bg-white' : 'bg-primary/50'
                 }`}
                 style={{ width: `${progress}%` }}
               />

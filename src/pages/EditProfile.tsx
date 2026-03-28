@@ -423,41 +423,41 @@ const EditProfile = () => {
       {/* Desktop Layout */}
       <div className="hidden md:block min-h-screen bg-gray-50">
         {/* Enhanced Desktop Header */}
-        <div className="bg-white/98 backdrop-blur-xl border-b border-emerald-100/60 shadow-lg">
+        <div className="bg-white/98 backdrop-blur-xl border-b border-primary/10/60 shadow-lg">
           <div className="max-w-screen-2xl mx-auto px-8 py-6">
             {/* Primary Row - Title and Main Actions */}
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-6">
                 <button
                   onClick={() => navigate("/account")}
-                  className="p-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 transition-colors group"
+                  className="p-3 rounded-xl bg-primary/5 hover:bg-primary/10 transition-colors group"
                   title="Back to Account"
                 >
-                  <ArrowLeft className="w-5 h-5 text-emerald-600 group-hover:-translate-x-1 transition-transform" />
+                  <ArrowLeft className="w-5 h-5 text-primary group-hover:-translate-x-1 transition-transform" />
                 </button>
 
                 <div className="flex items-center gap-4">
-                  <User className="w-10 h-10 text-emerald-500" />
+                  <User className="w-10 h-10 text-primary" />
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-emerald-800 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-primary/80 bg-clip-text text-transparent">
                       Edit Profile
                     </h1>
-                    <p className="text-sm text-emerald-600 font-medium">Complete your profile for better matches</p>
+                    <p className="text-sm text-primary font-medium">Complete your profile for better matches</p>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-4">
                 {/* Progress Indicator */}
-                <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-emerald-100">
-                  <span className="font-semibold text-emerald-700">85%</span> complete
+                <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-primary/10">
+                  <span className="font-semibold text-primary">85%</span> complete
                 </div>
 
                 {/* Quick Actions */}
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => navigate("/edit-profile")}
-                    className="px-4 py-2 bg-emerald-50 text-emerald-700 rounded-lg hover:bg-emerald-100 transition-colors text-sm font-medium"
+                    className="px-4 py-2 bg-primary/5 text-primary rounded-lg hover:bg-primary/10 transition-colors text-sm font-medium"
                   >
                     Cancel
                   </button>
@@ -465,7 +465,7 @@ const EditProfile = () => {
                   <button
                     onClick={handleSave}
                     disabled={loading}
-                    className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 disabled:opacity-50"
+                    className="flex items-center gap-2 bg-gradient-to-r from-primary/50 to-primary text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 active:scale-95 disabled:opacity-50"
                   >
                     {loading ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -479,15 +479,15 @@ const EditProfile = () => {
             </div>
 
             {/* Secondary Row - Section Navigation */}
-            <div className="bg-white/80 rounded-2xl border border-emerald-200/50 p-4">
+            <div className="bg-white/80 rounded-2xl border border-primary/20/50 p-4">
               <div className="flex items-center gap-8">
                 <h2 className="text-lg font-semibold text-gray-900">Profile Sections</h2>
                 <div className="flex items-center gap-4 text-sm">
-                  <button className="px-3 py-2 bg-emerald-100 text-emerald-800 rounded-lg font-medium">Basic Info</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Professional</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Personal Values</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Interests</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-emerald-50 rounded-lg transition-colors">Lifestyle</button>
+                  <button className="px-3 py-2 bg-primary/10 text-primary rounded-lg font-medium">Basic Info</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Professional</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Personal Values</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Interests</button>
+                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Lifestyle</button>
                 </div>
 
                 <div className="ml-auto flex items-center gap-4">
@@ -510,58 +510,58 @@ const EditProfile = () => {
         {/* Desktop Main Content */}
         <div className="max-w-screen-xl mx-auto px-8 py-8">
           {/* Progress Overview */}
-          <div className="bg-gradient-to-r from-emerald-50 via-white to-teal-50 rounded-3xl p-8 mb-8 border border-emerald-100/60">
+          <div className="bg-gradient-to-r from-primary/5 via-white to-teal-50 rounded-3xl p-8 mb-8 border border-primary/10/60">
             <div className="flex items-center justify-between mb-6">
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">Complete Your Profile</h2>
-                <p className="text-emerald-600">Fill out more sections to improve your match recommendations</p>
+                <p className="text-primary">Fill out more sections to improve your match recommendations</p>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-emerald-600 mb-1">85%</div>
+                <div className="text-3xl font-bold text-primary mb-1">85%</div>
                 <div className="text-sm text-gray-600">Profile Complete</div>
               </div>
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Camera className="w-6 h-6 text-emerald-600" />
+              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Camera className="w-6 h-6 text-primary" />
                 </div>
                 <div className="text-sm font-semibold text-gray-900 mb-1">Photos</div>
-                <div className="text-xs text-emerald-600">+15% matches</div>
+                <div className="text-xs text-primary">+15% matches</div>
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '75%' }}></div>
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '75%' }}></div>
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Church className="w-6 h-6 text-emerald-600" />
+              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Church className="w-6 h-6 text-primary" />
                 </div>
                 <div className="text-sm font-semibold text-gray-900 mb-1">Values</div>
-                <div className="text-xs text-emerald-600">+10% matches</div>
+                <div className="text-xs text-primary">+10% matches</div>
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '100%' }}></div>
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '100%' }}></div>
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Heart className="w-6 h-6 text-emerald-600" />
+              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Heart className="w-6 h-6 text-primary" />
                 </div>
                 <div className="text-sm font-semibold text-gray-900 mb-1">Interests</div>
-                <div className="text-xs text-emerald-600">+20% matches</div>
+                <div className="text-xs text-primary">+20% matches</div>
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-emerald-600 h-2 rounded-full" style={{ width: '60%' }}></div>
+                  <div className="bg-primary h-2 rounded-full" style={{ width: '60%' }}></div>
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-white rounded-2xl border border-emerald-200 shadow-sm">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Mic className="w-6 h-6 text-emerald-600" />
+              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+                  <Mic className="w-6 h-6 text-primary" />
                 </div>
                 <div className="text-sm font-semibold text-gray-900 mb-1">Voice</div>
-                <div className="text-xs text-emerald-600">+25% matches</div>
+                <div className="text-xs text-primary">+25% matches</div>
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-gray-200 h-2 rounded-full" style={{ width: '0%' }}></div>
                 </div>
@@ -586,7 +586,7 @@ const EditProfile = () => {
             <button
               onClick={handleSave}
               disabled={loading}
-              className="flex items-center space-x-2 bg-emerald-600 text-white px-4 py-2 rounded-xl font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-50"
+              className="flex items-center space-x-2 bg-primary text-white px-4 py-2 rounded-xl font-semibold hover:bg-primary/90 transition-colors disabled:opacity-50"
             >
               {loading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -1119,7 +1119,7 @@ const EditProfile = () => {
             {!recordingVoice && !audioUrl && (
               <Button
                 onClick={startVoiceRecording}
-                className="w-full bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:from-emerald-600 hover:to-emerald-700 shadow-lg"
+                className="w-full bg-gradient-to-r from-primary/50 to-primary text-white hover:from-primary hover:to-primary/90 shadow-lg"
               >
                 <Mic className="w-4 h-4 mr-2" />
                 Start Recording

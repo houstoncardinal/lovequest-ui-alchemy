@@ -77,7 +77,7 @@ const NewMatchCelebration: React.FC<NewMatchCelebrationProps> = ({ matchedProfil
 
       {/* Main Celebration Card */}
       <div
-        className={`relative bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-3xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-700 ${
+        className={`relative bg-gradient-to-br from-primary/50 via-emerald-600 to-primary/90 rounded-3xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-700 ${
           showCelebration
             ? 'scale-100 opacity-100 translate-y-0'
             : 'scale-90 opacity-0 translate-y-8'
@@ -85,7 +85,7 @@ const NewMatchCelebration: React.FC<NewMatchCelebrationProps> = ({ matchedProfil
       >
         {/* Animated Sparkle Border */}
         <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-amber-300 via-emerald-400 to-blue-400 p-[2px]">
-          <div className="absolute inset-[2px] bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-3xl"></div>
+          <div className="absolute inset-[2px] bg-gradient-to-br from-primary/50 via-emerald-600 to-primary/90 rounded-3xl"></div>
         </div>
 
         {/* Content */}
@@ -164,7 +164,7 @@ const NewMatchCelebration: React.FC<NewMatchCelebrationProps> = ({ matchedProfil
           {/* Action Button */}
           <button
             onClick={handleContinueToMessage}
-            className="w-full bg-white text-emerald-600 hover:bg-emerald-50 rounded-2xl py-4 px-6 font-bold text-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-2 group"
+            className="w-full bg-white text-primary hover:bg-primary/5 rounded-2xl py-4 px-6 font-bold text-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg flex items-center justify-center gap-2 group"
           >
             <MessageCircle className="w-6 h-6 transition-transform group-hover:scale-110" />
             Start Chatting Now ✨

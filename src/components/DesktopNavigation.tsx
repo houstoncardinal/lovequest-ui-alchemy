@@ -124,21 +124,21 @@ const DesktopNavigation = () => {
 
           {/* Enhanced Features Dropdown */}
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex items-center gap-3 px-6 py-4 rounded-2xl text-gray-700 hover:text-gray-900 hover:bg-white/80 transition-all duration-500 hover:shadow-xl group border border-transparent hover:border-emerald-100">
+            <DropdownMenuTrigger className="flex items-center gap-3 px-6 py-4 rounded-2xl text-gray-700 hover:text-gray-900 hover:bg-white/80 transition-all duration-500 hover:shadow-xl group border border-transparent hover:border-primary/10">
               <div className="relative">
-                <Zap className={`w-6 h-6 transition-all duration-500 group-hover:scale-110 group-hover:text-emerald-600`} />
-                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/20 to-emerald-600/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <Zap className={`w-6 h-6 transition-all duration-500 group-hover:scale-110 group-hover:text-primary`} />
+                <div className="absolute -inset-1 bg-gradient-to-r from-emerald-400/20 to-primary/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               </div>
               <div className="flex flex-col text-left">
                 <span className="text-sm font-bold group-hover:scale-105 transition-transform duration-500">Explore</span>
-                <span className="text-xs font-medium text-gray-500 group-hover:text-emerald-700">All Features</span>
+                <span className="text-xs font-medium text-gray-500 group-hover:text-primary">All Features</span>
               </div>
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent className="w-96 bg-white/98 backdrop-blur-2xl border-2 border-emerald-100/60 shadow-2xl rounded-3xl p-6 mt-2">
+            <DropdownMenuContent className="w-96 bg-white/98 backdrop-blur-2xl border-2 border-primary/10/60 shadow-2xl rounded-3xl p-6 mt-2">
               {featureSections.map((section, sectionIndex) => (
-                <div key={section.title} className={sectionIndex > 0 ? "mt-8 pt-6 border-t border-emerald-100/40" : ""}>
-                  <h3 className="text-base font-bold text-gray-900 mb-4 px-3 py-1 bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl border border-emerald-100/40">
+                <div key={section.title} className={sectionIndex > 0 ? "mt-8 pt-6 border-t border-primary/10/40" : ""}>
+                  <h3 className="text-base font-bold text-gray-900 mb-4 px-3 py-1 bg-gradient-to-r from-primary/5 to-teal-50 rounded-xl border border-primary/10/40">
                     {section.title}
                   </h3>
                   <div className="space-y-3">
@@ -146,15 +146,15 @@ const DesktopNavigation = () => {
                       <DropdownMenuItem key={item.path} asChild>
                         <NavLink
                           to={item.path}
-                          className="flex items-center gap-4 w-full p-4 rounded-2xl hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all duration-300 group cursor-pointer border border-transparent hover:border-emerald-100/60 hover:shadow-lg"
+                          className="flex items-center gap-4 w-full p-4 rounded-2xl hover:bg-gradient-to-r hover:from-primary/5 hover:to-teal-50 transition-all duration-300 group cursor-pointer border border-transparent hover:border-primary/10/60 hover:shadow-lg"
                         >
                           <div className="relative">
-                            <item.icon className="w-6 h-6 text-emerald-600 group-hover:scale-110 group-hover:text-emerald-700 transition-all duration-300" />
-                            <div className="absolute -inset-1 bg-emerald-400/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <item.icon className="w-6 h-6 text-primary group-hover:scale-110 group-hover:text-primary transition-all duration-300" />
+                            <div className="absolute -inset-1 bg-primary/80/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="font-semibold text-gray-900 group-hover:text-emerald-800 transition-colors duration-300">{item.label}</div>
-                            <div className="text-sm text-gray-600 group-hover:text-emerald-700 transition-colors duration-300">{item.description}</div>
+                            <div className="font-semibold text-gray-900 group-hover:text-primary transition-colors duration-300">{item.label}</div>
+                            <div className="text-sm text-gray-600 group-hover:text-primary transition-colors duration-300">{item.description}</div>
                           </div>
                           <div className="opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-0 group-hover:translate-x-1">
                             <div className="w-2 h-2 border-t-2 border-r-2 border-emerald-600 transform rotate-45"></div>
@@ -167,10 +167,10 @@ const DesktopNavigation = () => {
               ))}
 
               {/* Footer CTA */}
-              <div className="mt-8 pt-6 border-t border-emerald-100/40">
+              <div className="mt-8 pt-6 border-t border-primary/10/40">
                 <div className="text-center">
                   <p className="text-sm text-gray-600 mb-2">Ready to find your perfect match?</p>
-                  <Badge className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 text-sm font-bold shadow-lg">
+                  <Badge className="bg-gradient-to-r from-primary/50 to-primary text-white px-4 py-2 text-sm font-bold shadow-lg">
                     LoveQuest Premium ✨
                   </Badge>
                 </div>
@@ -184,16 +184,16 @@ const DesktopNavigation = () => {
           {user && (
             <div className="flex items-center gap-4">
               {/* Enhanced Status Badge */}
-              <div className="hidden lg:flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 rounded-2xl border border-emerald-200/60 shadow-lg">
-                <div className="w-4 h-4 bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full animate-pulse shadow-sm"></div>
-                <span className="text-sm font-bold text-emerald-800">Online Now</span>
+              <div className="hidden lg:flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-green-50 via-emerald-50 to-teal-50 rounded-2xl border border-primary/20/60 shadow-lg">
+                <div className="w-4 h-4 bg-gradient-to-r from-primary/50 to-primary rounded-full animate-pulse shadow-sm"></div>
+                <span className="text-sm font-bold text-primary">Online Now</span>
               </div>
 
               {/* Premium User Avatar with Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <div className="relative group cursor-pointer">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 via-emerald-600 to-emerald-700 rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-500 border-2 border-white">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary/50 via-emerald-600 to-primary/90 rounded-full flex items-center justify-center shadow-2xl transform hover:scale-110 transition-all duration-500 border-2 border-white">
                       <span className="text-lg font-black text-white">
                         {user.email?.[0].toUpperCase() || 'U'}
                       </span>
@@ -210,17 +210,17 @@ const DesktopNavigation = () => {
                   </div>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent className="w-72 bg-white/98 backdrop-blur-2xl border-2 border-emerald-100/60 shadow-2xl rounded-3xl p-4 mt-3" align="end">
+                <DropdownMenuContent className="w-72 bg-white/98 backdrop-blur-2xl border-2 border-primary/10/60 shadow-2xl rounded-3xl p-4 mt-3" align="end">
                   {/* User Info Header */}
-                  <div className="flex items-center gap-3 px-2 py-3 mb-4 border-b border-emerald-100/40">
-                    <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center border-2 border-white shadow-lg">
+                  <div className="flex items-center gap-3 px-2 py-3 mb-4 border-b border-primary/10/40">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary/50 to-primary rounded-full flex items-center justify-center border-2 border-white shadow-lg">
                       <span className="text-lg font-black text-white">
                         {user.email?.[0].toUpperCase() || 'U'}
                       </span>
                     </div>
                     <div>
                       <div className="text-sm font-bold text-gray-900">Premium Member</div>
-                      <div className="text-xs text-emerald-600">{user.email}</div>
+                      <div className="text-xs text-primary">{user.email}</div>
                     </div>
                   </div>
 
@@ -228,10 +228,10 @@ const DesktopNavigation = () => {
                   <div className="space-y-2">
                     <DropdownMenuItem
                       onClick={() => navigate('/edit-profile')}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-emerald-50 transition-colors duration-200 cursor-pointer"
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/5 transition-colors duration-200 cursor-pointer"
                     >
-                      <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                        <User className="w-4 h-4 text-emerald-600" />
+                      <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <User className="w-4 h-4 text-primary" />
                       </div>
                       <div>
                         <div className="font-medium text-gray-900">Edit Profile</div>
@@ -241,7 +241,7 @@ const DesktopNavigation = () => {
 
                     <DropdownMenuItem
                       onClick={() => navigate('/settings')}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-emerald-50 transition-colors duration-200 cursor-pointer"
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/5 transition-colors duration-200 cursor-pointer"
                     >
                       <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
                         <Settings className="w-4 h-4 text-blue-600" />
@@ -254,7 +254,7 @@ const DesktopNavigation = () => {
 
                     <DropdownMenuItem
                       onClick={() => navigate('/notifications')}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-emerald-50 transition-colors duration-200 cursor-pointer"
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/5 transition-colors duration-200 cursor-pointer"
                     >
                       <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center">
                         <Bell className="w-4 h-4 text-amber-600" />
@@ -272,7 +272,7 @@ const DesktopNavigation = () => {
 
                     <DropdownMenuItem
                       onClick={() => navigate('/privacy-safety')}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-emerald-50 transition-colors duration-200 cursor-pointer"
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/5 transition-colors duration-200 cursor-pointer"
                     >
                       <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
                         <Shield className="w-4 h-4 text-green-600" />
@@ -285,7 +285,7 @@ const DesktopNavigation = () => {
 
                     <DropdownMenuItem
                       onClick={() => navigate('/account')}
-                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-emerald-50 transition-colors duration-200 cursor-pointer"
+                      className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-primary/5 transition-colors duration-200 cursor-pointer"
                     >
                       <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                         <CreditCard className="w-4 h-4 text-purple-600" />
@@ -297,7 +297,7 @@ const DesktopNavigation = () => {
                     </DropdownMenuItem>
                   </div>
 
-                  <DropdownMenuSeparator className="my-4 bg-emerald-100/50" />
+                  <DropdownMenuSeparator className="my-4 bg-primary/10/50" />
 
                   {/* Logout */}
                   <DropdownMenuItem

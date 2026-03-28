@@ -49,7 +49,7 @@ const CommunityHeader = ({ activeTab, onTabChange, onCreatePost, postsCount = 0 
             <Button
               onClick={onCreatePost}
               size="sm"
-              className="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 hover:shadow-lg hover:scale-105 transition-all duration-300 px-4 py-2 sm:px-6 sm:py-3 font-semibold text-white shadow-md border-0 animate-fade-in text-base sm:text-lg"
+              className="w-full sm:w-auto rounded-2xl bg-gradient-to-r from-primary/50 to-primary hover:from-primary hover:to-primary/90 hover:shadow-lg hover:scale-105 transition-all duration-300 px-4 py-2 sm:px-6 sm:py-3 font-semibold text-white shadow-md border-0 animate-fade-in text-base sm:text-lg"
             >
               <Plus className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
               New Post

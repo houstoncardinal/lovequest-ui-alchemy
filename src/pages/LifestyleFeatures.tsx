@@ -147,7 +147,7 @@ const LifestyleFeatures = () => {
       title: "Quick Stretch",
       description: "10-minute desk stretch routine",
       icon: Dumbbell,
-      color: "from-green-500 to-emerald-500",
+      color: "from-green-500 to-primary/50",
       action: () => {
         toast({
           title: "Time for stretching!",

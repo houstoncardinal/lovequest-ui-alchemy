@@ -76,7 +76,7 @@ const BlockReport = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-md mx-auto px-4 py-4">
@@ -114,8 +114,8 @@ const BlockReport = () => {
           </CardHeader>
           <CardContent className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                <span className="text-emerald-600 font-semibold">A</span>
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <span className="text-primary font-semibold">A</span>
               </div>
               <div>
                 <p className="font-medium text-gray-900">Ahmed, 28</p>
@@ -156,7 +156,7 @@ const BlockReport = () => {
                       <p className="text-sm text-gray-500">{action.description}</p>
                     </div>
                     {selectedAction === action.id && (
-                      <div className="w-3 h-3 bg-emerald-500 rounded-full" />
+                      <div className="w-3 h-3 bg-primary/50 rounded-full" />
                     )}
                   </div>
                 </div>
@@ -289,7 +289,7 @@ const BlockReport = () => {
               className={`flex-1 ${
                 selectedAction === "block" 
                   ? "bg-red-600 hover:bg-red-700" 
-                  : "bg-emerald-600 hover:bg-emerald-700"
+                  : "bg-primary hover:bg-primary/90"
               }`}
               onClick={handleSubmit}
               disabled={selectedAction === "report" && !reportReason}
@@ -303,7 +303,7 @@ const BlockReport = () => {
         {/* Contact Support */}
         <div className="text-center">
           <p className="text-sm text-gray-500 mb-2">Need help?</p>
-          <Button variant="link" className="text-emerald-600">
+          <Button variant="link" className="text-primary">
             Contact Support
           </Button>
         </div>

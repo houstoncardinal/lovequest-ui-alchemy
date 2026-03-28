@@ -114,7 +114,7 @@ const AdvancedFilters = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-white">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-white">
       {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-md mx-auto px-4 py-4">
@@ -144,7 +144,7 @@ const AdvancedFilters = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Heart className="h-5 w-5 text-emerald-600" />
+              <Heart className="h-5 w-5 text-primary" />
               Age Range
             </CardTitle>
             <CardDescription>
@@ -171,7 +171,7 @@ const AdvancedFilters = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <MapPin className="h-5 w-5 text-emerald-600" />
+              <MapPin className="h-5 w-5 text-primary" />
               Distance
             </CardTitle>
             <CardDescription>
@@ -206,7 +206,7 @@ const AdvancedFilters = () => {
                 key={option.value}
                 className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
                   filters.religiousPractice === option.value
-                    ? "border-emerald-500 bg-emerald-50"
+                    ? "border-primary bg-primary/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
                 onClick={() => handleFilterChange('religiousPractice', option.value)}
@@ -216,7 +216,7 @@ const AdvancedFilters = () => {
                   <span className="font-medium">{option.label}</span>
                 </div>
                 {filters.religiousPractice === option.value && (
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full" />
                 )}
               </div>
             ))}
@@ -227,7 +227,7 @@ const AdvancedFilters = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <GraduationCap className="h-5 w-5 text-emerald-600" />
+              <GraduationCap className="h-5 w-5 text-primary" />
               Education
             </CardTitle>
             <CardDescription>Preferred education level</CardDescription>
@@ -238,14 +238,14 @@ const AdvancedFilters = () => {
                 key={option.value}
                 className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
                   filters.education === option.value
-                    ? "border-emerald-500 bg-emerald-50"
+                    ? "border-primary bg-primary/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
                 onClick={() => handleFilterChange('education', option.value)}
               >
                 <span className="font-medium">{option.label}</span>
                 {filters.education === option.value && (
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full" />
                 )}
               </div>
             ))}
@@ -256,7 +256,7 @@ const AdvancedFilters = () => {
         <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
-              <Users className="h-5 w-5 text-emerald-600" />
+              <Users className="h-5 w-5 text-primary" />
               Family Values
             </CardTitle>
             <CardDescription>Preferred family values and lifestyle</CardDescription>
@@ -267,7 +267,7 @@ const AdvancedFilters = () => {
                 key={option.value}
                 className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
                   filters.familyValues === option.value
-                    ? "border-emerald-500 bg-emerald-50"
+                    ? "border-primary bg-primary/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
                 onClick={() => handleFilterChange('familyValues', option.value)}
@@ -277,7 +277,7 @@ const AdvancedFilters = () => {
                   <span className="font-medium">{option.label}</span>
                 </div>
                 {filters.familyValues === option.value && (
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full" />
                 )}
               </div>
             ))}
@@ -296,14 +296,14 @@ const AdvancedFilters = () => {
                 key={option.value}
                 className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
                   filters.maritalStatus === option.value
-                    ? "border-emerald-500 bg-emerald-50"
+                    ? "border-primary bg-primary/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
                 onClick={() => handleFilterChange('maritalStatus', option.value)}
               >
                 <span className="font-medium">{option.label}</span>
                 {filters.maritalStatus === option.value && (
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full" />
                 )}
               </div>
             ))}
@@ -322,14 +322,14 @@ const AdvancedFilters = () => {
                 key={option.value}
                 className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
                   filters.children === option.value
-                    ? "border-emerald-500 bg-emerald-50"
+                    ? "border-primary bg-primary/5"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
                 onClick={() => handleFilterChange('children', option.value)}
               >
                 <span className="font-medium">{option.label}</span>
                 {filters.children === option.value && (
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full" />
+                  <div className="w-2 h-2 bg-primary/50 rounded-full" />
                 )}
               </div>
             ))}
@@ -350,8 +350,8 @@ const AdvancedFilters = () => {
                   variant={filters.interests.includes(interest) ? "default" : "outline"}
                   className={`cursor-pointer transition-colors ${
                     filters.interests.includes(interest)
-                      ? "bg-emerald-500 text-white"
-                      : "hover:bg-emerald-50"
+                      ? "bg-primary/50 text-white"
+                      : "hover:bg-primary/5"
                   }`}
                   onClick={() => handleInterestToggle(interest)}
                 >
@@ -376,8 +376,8 @@ const AdvancedFilters = () => {
                   variant={filters.languages.includes(language) ? "default" : "outline"}
                   className={`cursor-pointer transition-colors ${
                     filters.languages.includes(language)
-                      ? "bg-emerald-500 text-white"
-                      : "hover:bg-emerald-50"
+                      ? "bg-primary/50 text-white"
+                      : "hover:bg-primary/5"
                   }`}
                   onClick={() => handleLanguageToggle(language)}
                 >
@@ -398,7 +398,7 @@ const AdvancedFilters = () => {
             Reset
           </Button>
           <Button
-            className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+            className="flex-1 bg-primary hover:bg-primary/90"
             onClick={applyFilters}
           >
             <Filter className="h-4 w-4 mr-2" />
@@ -410,9 +410,9 @@ const AdvancedFilters = () => {
         {Object.values(filters).some(value => 
           Array.isArray(value) ? value.length > 0 : value !== "moderate" && value !== "bachelors" && value !== "traditional" && value !== "never_married" && value !== "no_preference"
         ) && (
-          <Card className="border-0 shadow-sm bg-emerald-50/50">
+          <Card className="border-0 shadow-sm bg-primary/5/50">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm text-emerald-700">Active Filters</CardTitle>
+              <CardTitle className="text-sm text-primary">Active Filters</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-wrap gap-2">

@@ -789,7 +789,7 @@ const Chat = () => {
         <div className="mt-8 mb-6">
           <div className="px-4 mb-4">
             <div className="flex items-center space-x-2">
-              <Heart className="w-5 h-5 text-emerald-500" />
+              <Heart className="w-5 h-5 text-primary" />
               <h2 className="text-lg font-semibold text-foreground">People who liked you</h2>
               <Badge className="bg-gradient-to-r from-amber-400 to-amber-500 text-white text-xs font-medium">
                 <Sparkles className="w-3 h-3 mr-1" />

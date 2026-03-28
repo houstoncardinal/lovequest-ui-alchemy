@@ -671,7 +671,7 @@ export const MessagingInterface = () => {
                     variant="outline"
                     size="sm"
                     onClick={() => setIsVideoCallOpen(true)}
-                    className="bg-emerald-50 hover:bg-emerald-100 border-emerald-200 text-emerald-700"
+                    className="bg-primary/5 hover:bg-primary/10 border-primary/20 text-primary"
                   >
                     <Video className="w-4 h-4 mr-2" />
                     Video Call

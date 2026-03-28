@@ -400,59 +400,59 @@ const ProfileDetail = () => {
         return (
           <div className="space-y-6">
             {/* Bio */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Bio</h3>
               <p className="text-gray-700 leading-relaxed">{profile.bio}</p>
             </div>
 
             {/* Basic Info */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">About Me</h3>
               <div className="grid grid-cols-2 gap-4 text-sm">
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">👤</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">👤</span>
                   <span className="text-gray-700 font-medium">{profile.details.gender}</span>
                 </div>
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">📏</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">📏</span>
                   <span className="text-gray-700 font-medium">{profile.details.height}</span>
                 </div>
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">🌙</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">🌙</span>
                   <span className="text-gray-700 font-medium">{profile.details.religion}</span>
                 </div>
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">♉</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">♉</span>
                   <span className="text-gray-700 font-medium">{profile.details.zodiac}</span>
                 </div>
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">🚫</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">🚫</span>
                   <span className="text-gray-700 font-medium">{profile.details.drinking}</span>
                 </div>
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">🚬</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">🚬</span>
                   <span className="text-gray-700 font-medium">{profile.details.smoking}</span>
                 </div>
               </div>
             </div>
 
             {/* Work & Education */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Work & Education</h3>
               <div className="space-y-3">
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">💼</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">💼</span>
                   <span className="text-gray-700 font-medium">{profile.details.jobTitle} at {profile.details.company}</span>
                 </div>
-                <div className="flex items-center p-3 bg-emerald-50 rounded-xl">
-                  <span className="text-emerald-600 mr-3 text-lg">🎓</span>
+                <div className="flex items-center p-3 bg-primary/5 rounded-xl">
+                  <span className="text-primary mr-3 text-lg">🎓</span>
                   <span className="text-gray-700 font-medium">{profile.details.education}</span>
                 </div>
               </div>
             </div>
 
             {/* Interests */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Interests</h3>
               <div className="flex flex-wrap gap-3">
                 {profile.interests.map((interest, index) => (
@@ -467,11 +467,11 @@ const ProfileDetail = () => {
             </div>
 
             {/* Values */}
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">My Values</h3>
               <div className="flex flex-wrap gap-3">
                 {profile.values.map((value, index) => (
-                  <Badge key={index} className="bg-emerald-100 text-emerald-700 border-emerald-200 font-medium">
+                  <Badge key={index} className="bg-primary/10 text-primary border-primary/20 font-medium">
                     {value}
                   </Badge>
                 ))}
@@ -484,7 +484,7 @@ const ProfileDetail = () => {
         return (
           <div className="grid grid-cols-1 gap-4">
             {profile.photos.map((photo, index) => (
-              <div key={index} className="relative bg-white rounded-3xl shadow-lg border border-emerald-100 overflow-hidden">
+              <div key={index} className="relative bg-white rounded-3xl shadow-lg border border-primary/10 overflow-hidden">
                 <img 
                   src={photo.url} 
                   alt={`${profile.name}'s photo ${index + 1}`}
@@ -503,16 +503,16 @@ const ProfileDetail = () => {
       case "Voice":
         return (
           <div className="space-y-4">
-            <div className="text-center mb-6 bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="text-center mb-6 bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-2">Voice Notes</h3>
               <p className="text-gray-600 text-sm">Get to know {profile.name.split(' ')[0]} better through her voice</p>
             </div>
             
             {profile.voiceNotes.map((note) => (
-              <div key={note.id} className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+              <div key={note.id} className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h4 className="font-bold text-gray-900">{note.prompt}</h4>
-                  <Badge className="bg-emerald-100 text-emerald-700 text-xs font-medium">
+                  <Badge className="bg-primary/10 text-primary text-xs font-medium">
                     {note.duration}
                   </Badge>
                 </div>
@@ -522,8 +522,8 @@ const ProfileDetail = () => {
                     onClick={() => playVoiceNote(note.id)}
                     className={`w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300 shadow-lg ${
                       playingVoiceNote === note.id
-                        ? "bg-gradient-to-br from-emerald-500 to-emerald-600 text-white"
-                        : "bg-emerald-50 border-2 border-emerald-200 text-emerald-600 hover:bg-emerald-100"
+                        ? "bg-gradient-to-br from-primary/50 to-primary text-white"
+                        : "bg-primary/5 border-2 border-primary/20 text-primary hover:bg-primary/10"
                     }`}
                   >
                     {playingVoiceNote === note.id ? (
@@ -535,10 +535,10 @@ const ProfileDetail = () => {
                   
                   <div className="flex-1">
                     <div className="flex items-center space-x-3">
-                      <Volume2 className="w-5 h-5 text-emerald-500" />
-                      <div className="flex-1 bg-emerald-100 rounded-full h-3 relative overflow-hidden">
+                      <Volume2 className="w-5 h-5 text-primary" />
+                      <div className="flex-1 bg-primary/10 rounded-full h-3 relative overflow-hidden">
                         <div 
-                          className={`h-full bg-gradient-to-r from-emerald-500 to-emerald-600 rounded-full transition-all duration-300 ${
+                          className={`h-full bg-gradient-to-r from-primary/50 to-primary rounded-full transition-all duration-300 ${
                             playingVoiceNote === note.id ? "w-full" : "w-0"
                           }`}
                           style={{
@@ -552,8 +552,8 @@ const ProfileDetail = () => {
               </div>
             ))}
             
-            <div className="text-center mt-6 bg-emerald-50 rounded-3xl p-4">
-              <p className="text-sm text-emerald-700 font-medium">
+            <div className="text-center mt-6 bg-primary/5 rounded-3xl p-4">
+              <p className="text-sm text-primary font-medium">
                 👋 Voice notes help you connect on a deeper level
               </p>
             </div>
@@ -563,10 +563,10 @@ const ProfileDetail = () => {
       case "Lifestyle":
         return (
           <div className="space-y-4">
-            <div className="bg-white rounded-3xl shadow-lg border border-emerald-100 p-6">
+            <div className="bg-white rounded-3xl shadow-lg border border-primary/10 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">Lifestyle</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl">
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-2xl">
                   <div className="flex items-center">
                     <span className="text-2xl mr-4">🐾</span>
                     <span className="font-bold text-gray-700">Pets</span>
@@ -574,7 +574,7 @@ const ProfileDetail = () => {
                   <span className="text-gray-600 font-medium">{profile.lifestyle.pets}</span>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl">
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-2xl">
                   <div className="flex items-center">
                     <span className="text-2xl mr-4">💪</span>
                     <span className="font-bold text-gray-700">Workout</span>
@@ -582,7 +582,7 @@ const ProfileDetail = () => {
                   <span className="text-gray-600 font-medium">{profile.lifestyle.workout}</span>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl">
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-2xl">
                   <div className="flex items-center">
                     <span className="text-2xl mr-4">🍽️</span>
                     <span className="font-bold text-gray-700">Diet</span>
@@ -590,7 +590,7 @@ const ProfileDetail = () => {
                   <span className="text-gray-600 font-medium">{profile.lifestyle.diet}</span>
                 </div>
                 
-                <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-2xl">
+                <div className="flex items-center justify-between p-4 bg-primary/5 rounded-2xl">
                   <div className="flex items-center">
                     <span className="text-2xl mr-4">🎭</span>
                     <span className="font-bold text-gray-700">Social</span>
@@ -608,7 +608,7 @@ const ProfileDetail = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-emerald-50 pb-32 relative">
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 via-white to-primary/5 pb-32 relative">
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 z-10 flex items-center justify-between p-4">
         <button 
@@ -642,7 +642,7 @@ const ProfileDetail = () => {
             )}
           </div>
           <div className="flex items-center text-sm mb-1">
-            <MapPin className="w-4 h-4 mr-2 text-emerald-400" />
+            <MapPin className="w-4 h-4 mr-2 text-primary" />
             <span>{profile.distance}</span>
             <Star className="w-4 h-4 ml-4 mr-2 text-amber-400" />
             <span>{profile.commonInterests} Common Interest</span>
@@ -651,7 +651,7 @@ const ProfileDetail = () => {
       </div>
 
       {/* Tabs */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-emerald-100 sticky top-0 z-20 shadow-sm">
+      <div className="bg-white/80 backdrop-blur-sm border-b border-primary/10 sticky top-0 z-20 shadow-sm">
         <div className="flex px-4 py-4 space-x-8 overflow-x-auto">
           {tabs.map((tab) => (
             <button
@@ -659,7 +659,7 @@ const ProfileDetail = () => {
               onClick={() => setActiveTab(tab)}
               className={`whitespace-nowrap pb-2 px-1 text-sm font-bold transition-colors duration-200 ${
                 activeTab === tab
-                  ? "text-emerald-600 border-b-2 border-emerald-600"
+                  ? "text-primary border-b-2 border-emerald-600"
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
