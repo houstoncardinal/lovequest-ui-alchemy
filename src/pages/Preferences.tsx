@@ -394,7 +394,7 @@ const Preferences = () => {
           </Card>
         </motion.div>
 
-        {/* Religious Preferences */}
+        {/* Values & Lifestyle Preferences */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -403,26 +403,26 @@ const Preferences = () => {
           <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
             <div className="flex items-center gap-3 mb-6">
               <div className="p-2 rounded-xl bg-gradient-primary">
-                <Church className="w-5 h-5 text-primary-foreground" />
+                <Sparkles className="w-5 h-5 text-primary-foreground" />
               </div>
-              <h3 className="font-bold text-foreground text-lg">Religious Preferences</h3>
+              <h3 className="font-bold text-foreground text-lg">Values & Lifestyle</h3>
             </div>
             
             <div className="space-y-6">
               <div>
-                <Label className="text-sm font-medium mb-3 block">Minimum Religion Level</Label>
+                <Label className="text-sm font-medium mb-3 block">How important are shared values?</Label>
                 <Select 
-                  value={preferences.religion_preferences.min_religion_level}
+                  value={preferences.values_preferences.importance_level}
                   onValueChange={(value) => setPreferences(prev => ({
                     ...prev,
-                    religion_preferences: { ...prev.religion_preferences, min_religion_level: value }
+                    values_preferences: { ...prev.values_preferences, importance_level: value }
                   }))}
                 >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
-                    {religionLevels.map(level => (
+                    {valuesImportance.map(level => (
                       <SelectItem key={level.value} value={level.value}>
                         {level.label}
                       </SelectItem>
@@ -432,49 +432,33 @@ const Preferences = () => {
               </div>
 
               <div>
-                <Label className="text-sm font-medium mb-3 block">Prayer Frequency Preference</Label>
-                <Select 
-                  value={preferences.religion_preferences.prayer_frequency_preference}
-                  onValueChange={(value) => setPreferences(prev => ({
-                    ...prev,
-                    religion_preferences: { ...prev.religion_preferences, prayer_frequency_preference: value }
-                  }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
-                    <SelectItem value="any">Any</SelectItem>
-                    {prayerFrequencies.map(freq => (
-                      <SelectItem key={freq.value} value={freq.value}>
-                        {freq.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {userProfile?.gender === 'male' && (
-                <div>
-                  <Label className="text-sm font-medium mb-3 block">Hijab Preference</Label>
-                  <Select 
-                    value={preferences.religion_preferences.hijab_preference}
-                    onValueChange={(value) => setPreferences(prev => ({
-                      ...prev,
-                      religion_preferences: { ...prev.religion_preferences, hijab_preference: value }
-                    }))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="bg-background border border-border/50 shadow-glow z-50">
-                      <SelectItem value="any">Any</SelectItem>
-                      <SelectItem value="wears_hijab">Wears Hijab</SelectItem>
-                      <SelectItem value="prefers_hijab">Prefers Hijab</SelectItem>
-                    </SelectContent>
-                  </Select>
+                <Label className="text-sm font-medium mb-3 block">Core Values (select all that matter)</Label>
+                <div className="grid grid-cols-2 gap-2">
+                  {coreValueOptions.map(value => (
+                    <button
+                      key={value.value}
+                      type="button"
+                      onClick={() => {
+                        const current = preferences.values_preferences.core_values;
+                        const updated = current.includes(value.value)
+                          ? current.filter(v => v !== value.value)
+                          : [...current, value.value];
+                        setPreferences(prev => ({
+                          ...prev,
+                          values_preferences: { ...prev.values_preferences, core_values: updated }
+                        }));
+                      }}
+                      className={`p-3 rounded-xl border text-sm font-medium transition-all ${
+                        preferences.values_preferences.core_values.includes(value.value)
+                          ? 'border-primary bg-primary/10 text-primary'
+                          : 'border-border/30 text-muted-foreground hover:border-primary/30'
+                      }`}
+                    >
+                      {value.label}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
           </Card>
         </motion.div>
@@ -487,8 +471,8 @@ const Preferences = () => {
         >
           <Card className="p-6 shadow-elegant border-border/50 bg-gradient-glow">
             <div className="flex items-center gap-3 mb-6">
-              <div className="p-2 rounded-xl bg-red-500/20">
-                <Shield className="w-5 h-5 text-red-500" />
+              <div className="p-2 rounded-xl bg-destructive/20">
+                <Shield className="w-5 h-5 text-destructive" />
               </div>
               <h3 className="font-bold text-foreground text-lg">Deal Breakers</h3>
             </div>
@@ -499,11 +483,11 @@ const Preferences = () => {
             <div className="space-y-4">
               {[
                 { key: 'smoking', label: 'Smoking', icon: '🚬' },
+                { key: 'drinking', label: 'Heavy drinking', icon: '🍷' },
                 { key: 'has_children', label: 'Has children', icon: '👶' },
                 { key: 'previous_marriage', label: 'Previously married', icon: '💍' },
-                { key: 'different_religion_level', label: 'Very different religion level', icon: '📿' },
-                { key: 'spiritual', label: 'Spiritual/Religious', icon: '🙏' },
-                ...(userProfile?.gender === 'male' ? [{ key: 'no_hijab', label: 'Does not wear hijab', icon: '🧕' }] : []),
+                { key: 'different_values', label: 'Very different values', icon: '⚖️' },
+                { key: 'non_active', label: 'Inactive on app', icon: '📵' },
               ].map((item) => (
                 <div key={item.key} className="flex items-center justify-between p-4 rounded-xl border border-border/30 hover:border-primary/30 transition-colors">
                   <div className="flex items-center gap-3">
