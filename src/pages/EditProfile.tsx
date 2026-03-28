@@ -536,7 +536,7 @@ const EditProfile = () => {
 
               <div className="text-center p-4 bg-card rounded-2xl border border-primary/20 shadow-sm">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
-                  <Church className="w-6 h-6 text-primary" />
+                  <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <div className="text-sm font-semibold text-foreground mb-1">Values</div>
                 <div className="text-xs text-primary">+10% matches</div>
@@ -807,86 +807,68 @@ const EditProfile = () => {
         <Card className="p-6 space-y-4">
           <div className="flex items-center gap-3 mb-4">
             <div className="p-2 rounded-xl bg-gradient-primary">
-              <Church className="w-5 h-5 text-primary-foreground" />
+              <Sparkles className="w-5 h-5 text-primary-foreground" />
             </div>
             <h3 className="font-semibold text-foreground">Personal Values</h3>
           </div>
           
           <div>
-            <Label htmlFor="religionLevel">Religious Level</Label>
-            <Select value={formData.religionLevel} onValueChange={(value) => handleSelectChange('religionLevel', value)}>
+            <Label htmlFor="valuesLevel">What matters most to you?</Label>
+            <Select value={formData.valuesLevel} onValueChange={(value) => handleSelectChange('valuesLevel', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="How would you describe your religious practice?" />
+                <SelectValue placeholder="Select what drives you" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="very_religious">Very Religious</SelectItem>
-                <SelectItem value="religious">Religious</SelectItem>
-                <SelectItem value="somewhat_religious">Somewhat Religious</SelectItem>
-                <SelectItem value="not_very_religious">Not Very Religious</SelectItem>
+                <SelectItem value="family_first">Family First</SelectItem>
+                <SelectItem value="career_driven">Career Driven</SelectItem>
+                <SelectItem value="balanced">Balanced Lifestyle</SelectItem>
+                <SelectItem value="adventure">Adventure & Experience</SelectItem>
+                <SelectItem value="growth">Personal Growth</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="prayerFrequency">Prayer Frequency</Label>
-            <Select value={formData.prayerFrequency} onValueChange={(value) => handleSelectChange('prayerFrequency', value)}>
+            <Label htmlFor="socialStyle">Social Style</Label>
+            <Select value={formData.socialStyle} onValueChange={(value) => handleSelectChange('socialStyle', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="How often do you pray?" />
+                <SelectValue placeholder="How would you describe your social life?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="5_times_daily">5 times daily</SelectItem>
-                <SelectItem value="daily">Daily</SelectItem>
-                <SelectItem value="weekly">Weekly</SelectItem>
-                <SelectItem value="occasionally">Occasionally</SelectItem>
-                <SelectItem value="rarely">Rarely</SelectItem>
+                <SelectItem value="extrovert">Extrovert — love being around people</SelectItem>
+                <SelectItem value="ambivert">Ambivert — mix of both</SelectItem>
+                <SelectItem value="introvert">Introvert — prefer small groups</SelectItem>
+                <SelectItem value="homebody">Homebody — love staying in</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="madhab">Madhab (School of Thought)</Label>
-            <Select value={formData.madhab} onValueChange={(value) => handleSelectChange('madhab', value)}>
+            <Label htmlFor="communicationStyle">Communication Style</Label>
+            <Select value={formData.communicationStyle} onValueChange={(value) => handleSelectChange('communicationStyle', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select your madhab" />
+                <SelectValue placeholder="How do you communicate best?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="hanafi">Hanafi</SelectItem>
-                <SelectItem value="maliki">Maliki</SelectItem>
-                <SelectItem value="shafi">Shafi'i</SelectItem>
-                <SelectItem value="hanbali">Hanbali</SelectItem>
-                <SelectItem value="jafari">Ja'fari</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
-                <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+                <SelectItem value="direct">Direct & honest</SelectItem>
+                <SelectItem value="thoughtful">Thoughtful & considerate</SelectItem>
+                <SelectItem value="playful">Playful & witty</SelectItem>
+                <SelectItem value="deep">Deep & philosophical</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div>
-            <Label htmlFor="hijabStatus">Hijab Status (if applicable)</Label>
-            <Select value={formData.hijabStatus} onValueChange={(value) => handleSelectChange('hijabStatus', value)}>
+            <Label htmlFor="personalGrowthLevel">Personal Growth Focus</Label>
+            <Select value={formData.personalGrowthLevel} onValueChange={(value) => handleSelectChange('personalGrowthLevel', value)}>
               <SelectTrigger>
-                <SelectValue placeholder="Select hijab status" />
+                <SelectValue placeholder="How important is self-improvement?" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="always">Always wear hijab</SelectItem>
-                <SelectItem value="sometimes">Sometimes wear hijab</SelectItem>
-                <SelectItem value="planning_to">Planning to wear hijab</SelectItem>
-                <SelectItem value="not_applicable">Not applicable</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div>
-            <Label htmlFor="islamicKnowledgeLevel">Personal Values Level</Label>
-            <Select value={formData.islamicKnowledgeLevel} onValueChange={(value) => handleSelectChange('islamicKnowledgeLevel', value)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select your personal values level" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="basic">Basic</SelectItem>
-                <SelectItem value="intermediate">Intermediate</SelectItem>
-                <SelectItem value="advanced">Advanced</SelectItem>
-                <SelectItem value="scholar">Scholar</SelectItem>
+                <SelectItem value="very_important">Very important — always learning</SelectItem>
+                <SelectItem value="important">Important — regularly invest in myself</SelectItem>
+                <SelectItem value="moderate">Moderate — when it comes naturally</SelectItem>
+                <SelectItem value="relaxed">Relaxed — happy where I am</SelectItem>
               </SelectContent>
             </Select>
           </div>
