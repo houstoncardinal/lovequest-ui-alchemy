@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Loader2, Heart, Users, MapPin, Shield, Star, Church, Baby, GraduationCap, Briefcase, Home, Calendar, Clock, User } from "lucide-react";
+import { ArrowLeft, Save, Loader2, Heart, Users, MapPin, Shield, Star, Sparkles, Baby, GraduationCap, Briefcase, Home, Calendar, Clock, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -25,18 +25,12 @@ interface UserPreferences {
     drinking: boolean;
     has_children: boolean;
     previous_marriage: boolean;
-    different_religion_level: boolean;
-    different_madhab: boolean;
-    no_hijab: boolean; // For men looking for women
-    non_practicing: boolean;
-    different_prayer_frequency: boolean;
+    different_values: boolean;
+    non_active: boolean;
   };
-  religion_preferences: {
-    min_religion_level: string;
-    preferred_madhab: string[];
-    prayer_frequency_preference: string;
-    hijab_preference: string; // For men
-    islamic_knowledge_preference: string;
+  values_preferences: {
+    importance_level: string;
+    core_values: string[];
   };
   lifestyle_preferences: {
     education_level_preference: string[];
@@ -63,25 +57,19 @@ const Preferences = () => {
     age_range_min: 22,
     age_range_max: 35,
     max_distance_km: 50,
-    looking_for: "marriage",
-    show_me: "opposite", // Will be determined by user's gender
+    looking_for: "serious_relationship",
+    show_me: "opposite",
     deal_breakers: {
       smoking: false,
       drinking: false,
       has_children: false,
       previous_marriage: false,
-      different_religion_level: false,
-      different_madhab: false,
-      no_hijab: false,
-      non_practicing: false,
-      different_prayer_frequency: false,
+      different_values: false,
+      non_active: false,
     },
-    religion_preferences: {
-      min_religion_level: "somewhat_religious",
-      preferred_madhab: [],
-      prayer_frequency_preference: "any",
-      hijab_preference: "any",
-      islamic_knowledge_preference: "any",
+    values_preferences: {
+      importance_level: "moderate",
+      core_values: [],
     },
     lifestyle_preferences: {
       education_level_preference: [],
@@ -140,20 +128,17 @@ const Preferences = () => {
           age_range_min: data.age_range_min || 22,
           age_range_max: data.age_range_max || 35,
           max_distance_km: data.max_distance_km || 50,
-          looking_for: data.looking_for || "marriage",
+          looking_for: data.looking_for || "serious_relationship",
           show_me: data.show_me || "opposite",
           deal_breakers: {
             smoking: dealBreakers.smoking || false,
             drinking: dealBreakers.drinking || false,
             has_children: dealBreakers.has_children || false,
             previous_marriage: dealBreakers.previous_marriage || false,
-            different_religion_level: dealBreakers.different_religion_level || false,
-            different_madhab: dealBreakers.different_madhab || false,
-            no_hijab: dealBreakers.no_hijab || false,
-            non_practicing: dealBreakers.non_practicing || false,
-            different_prayer_frequency: dealBreakers.different_prayer_frequency || false,
+            different_values: dealBreakers.different_values || false,
+            non_active: dealBreakers.non_active || false,
           },
-          religion_preferences: dealBreakers.religion_preferences || preferences.religion_preferences,
+          values_preferences: dealBreakers.values_preferences || preferences.values_preferences,
           lifestyle_preferences: dealBreakers.lifestyle_preferences || preferences.lifestyle_preferences,
           family_preferences: dealBreakers.family_preferences || preferences.family_preferences,
         });
@@ -187,14 +172,10 @@ const Preferences = () => {
           drinking: preferences.deal_breakers.drinking,
           has_children: preferences.deal_breakers.has_children,
           previous_marriage: preferences.deal_breakers.previous_marriage,
-          different_religion_level: preferences.deal_breakers.different_religion_level,
-          different_madhab: preferences.deal_breakers.different_madhab,
-          no_hijab: preferences.deal_breakers.no_hijab,
-          non_practicing: preferences.deal_breakers.non_practicing,
-          different_prayer_frequency: preferences.deal_breakers.different_prayer_frequency,
+          different_values: preferences.deal_breakers.different_values,
+          non_active: preferences.deal_breakers.non_active,
           
-          // Extended preferences stored within deal_breakers JSON
-          religion_preferences: preferences.religion_preferences,
+          values_preferences: preferences.values_preferences,
           lifestyle_preferences: preferences.lifestyle_preferences,
           family_preferences: preferences.family_preferences,
         },
@@ -225,39 +206,31 @@ const Preferences = () => {
     }
   };
 
-  // Helper function to get opposite gender options
   const getGenderOptions = () => {
     if (!userProfile) return [];
-    
-    // In Islam, only opposite gender matching is allowed
-    if (userProfile.gender === 'male') {
-      return [{ value: 'female', label: 'Women', icon: '👩' }];
-    } else if (userProfile.gender === 'female') {
-      return [{ value: 'male', label: 'Men', icon: '👨' }];
-    }
-    return [];
+    return [
+      { value: 'male', label: 'Men', icon: '👨' },
+      { value: 'female', label: 'Women', icon: '👩' },
+      { value: 'everyone', label: 'Everyone', icon: '👥' },
+    ];
   };
 
-  const religionLevels = [
-    { value: 'very_religious', label: 'Very Religious' },
-    { value: 'religious', label: 'Religious' },
-    { value: 'somewhat_religious', label: 'Somewhat Religious' },
-    { value: 'not_very_religious', label: 'Not Very Religious' },
+  const valuesImportance = [
+    { value: 'very_important', label: 'Very Important' },
+    { value: 'important', label: 'Important' },
+    { value: 'moderate', label: 'Moderate' },
+    { value: 'not_important', label: 'Not Important' },
   ];
 
-  const madhabs = [
-    { value: 'hanafi', label: 'Hanafi' },
-    { value: 'maliki', label: 'Maliki' },
-    { value: 'shafii', label: 'Shafi\'i' },
-    { value: 'hanbali', label: 'Hanbali' },
-  ];
-
-  const prayerFrequencies = [
-    { value: '5_times_daily', label: '5 times daily' },
-    { value: 'daily', label: 'Daily' },
-    { value: 'weekly', label: 'Weekly' },
-    { value: 'occasionally', label: 'Occasionally' },
-    { value: 'rarely', label: 'Rarely' },
+  const coreValueOptions = [
+    { value: 'family', label: 'Family-Oriented' },
+    { value: 'ambition', label: 'Ambition & Career' },
+    { value: 'adventure', label: 'Adventure & Travel' },
+    { value: 'kindness', label: 'Kindness & Empathy' },
+    { value: 'humor', label: 'Humor & Fun' },
+    { value: 'honesty', label: 'Honesty & Loyalty' },
+    { value: 'health', label: 'Health & Fitness' },
+    { value: 'creativity', label: 'Creativity & Art' },
   ];
 
   const educationLevels = [
