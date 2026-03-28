@@ -50,9 +50,9 @@ const BlockReport = () => {
       title: "Hide Profile",
       description: "Hide this profile from your recommendations",
       icon: EyeOff,
-      color: "text-gray-600",
-      bgColor: "bg-gray-50",
-      borderColor: "border-gray-200"
+      color: "text-muted-foreground",
+      bgColor: "bg-muted",
+      borderColor: "border-border"
     }
   ];
 
@@ -78,14 +78,14 @@ const BlockReport = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-white">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-card shadow-sm border-b">
         <div className="max-w-md mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate(-1)}
-              className="text-gray-600"
+              className="text-muted-foreground"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
@@ -103,12 +103,12 @@ const BlockReport = () => {
               <Shield className="h-8 w-8 text-red-600" />
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Safety & Privacy</h1>
-          <p className="text-gray-600">Choose how to handle this user</p>
+          <h1 className="text-2xl font-bold text-foreground mb-2">Safety & Privacy</h1>
+          <p className="text-muted-foreground">Choose how to handle this user</p>
         </div>
 
         {/* User Info */}
-        <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg">User Information</CardTitle>
           </CardHeader>
@@ -118,15 +118,15 @@ const BlockReport = () => {
                 <span className="text-primary font-semibold">A</span>
               </div>
               <div>
-                <p className="font-medium text-gray-900">Ahmed, 28</p>
-                <p className="text-sm text-gray-500">Last active: 2 hours ago</p>
+                <p className="font-medium text-foreground">Ahmed, 28</p>
+                <p className="text-sm text-muted-foreground">Last active: 2 hours ago</p>
               </div>
             </div>
           </CardContent>
         </Card>
 
         {/* Safety Actions */}
-        <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg flex items-center gap-2">
               <AlertTriangle className="h-5 w-5 text-orange-600" />
@@ -143,7 +143,7 @@ const BlockReport = () => {
                   className={`p-4 rounded-lg border cursor-pointer transition-all ${
                     selectedAction === action.id
                       ? `${action.borderColor} ${action.bgColor}`
-                      : "border-gray-200 hover:border-gray-300"
+                      : "border-border hover:border-border"
                   }`}
                   onClick={() => handleAction(action.id)}
                 >
@@ -152,8 +152,8 @@ const BlockReport = () => {
                       <Icon className={`h-5 w-5 ${action.color}`} />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-medium text-gray-900">{action.title}</h3>
-                      <p className="text-sm text-gray-500">{action.description}</p>
+                      <h3 className="font-medium text-foreground">{action.title}</h3>
+                      <p className="text-sm text-muted-foreground">{action.description}</p>
                     </div>
                     {selectedAction === action.id && (
                       <div className="w-3 h-3 bg-primary/50 rounded-full" />
@@ -167,7 +167,7 @@ const BlockReport = () => {
 
         {/* Report Reason */}
         {selectedAction === "report" && (
-          <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
+          <Card className="border-0 shadow-sm bg-card/80 backdrop-blur-sm">
             <CardHeader className="pb-4">
               <CardTitle className="text-lg">Report Reason</CardTitle>
               <CardDescription>Why are you reporting this user?</CardDescription>
@@ -179,7 +179,7 @@ const BlockReport = () => {
                   className={`p-3 rounded-lg border cursor-pointer transition-colors ${
                     reportReason === reason
                       ? "border-orange-500 bg-orange-50"
-                      : "border-gray-200 hover:border-gray-300"
+                      : "border-border hover:border-border"
                   }`}
                   onClick={() => setReportReason(reason)}
                 >
@@ -251,7 +251,7 @@ const BlockReport = () => {
         </Card>
 
         {/* Emergency Contact */}
-        <Card className="border-0 shadow-sm bg-white/80 backdrop-blur-sm">
+        <Card className="border-0 shadow-sm bg-card/80 backdrop-blur-sm">
           <CardHeader className="pb-4">
             <CardTitle className="text-lg">Emergency Contact</CardTitle>
             <CardDescription>Add a trusted contact for safety</CardDescription>
@@ -259,8 +259,8 @@ const BlockReport = () => {
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Emergency Contact</p>
-                <p className="text-sm text-gray-500">+1 (555) 123-4567</p>
+                <p className="font-medium text-foreground">Emergency Contact</p>
+                <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
               </div>
               <Button variant="outline" size="sm">Edit</Button>
             </div>
@@ -302,7 +302,7 @@ const BlockReport = () => {
 
         {/* Contact Support */}
         <div className="text-center">
-          <p className="text-sm text-gray-500 mb-2">Need help?</p>
+          <p className="text-sm text-muted-foreground mb-2">Need help?</p>
           <Button variant="link" className="text-primary">
             Contact Support
           </Button>

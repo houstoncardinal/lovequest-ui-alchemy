@@ -246,14 +246,14 @@ const Notifications = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-muted pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="bg-card border-b border-border">
         <div className="flex items-center justify-between p-4">
           <button onClick={() => navigate("/account")}>
-            <ArrowLeft className="w-6 h-6 text-gray-600" />
+            <ArrowLeft className="w-6 h-6 text-muted-foreground" />
           </button>
-          <h1 className="text-xl font-bold text-gray-900">Notifications</h1>
+          <h1 className="text-xl font-bold text-foreground">Notifications</h1>
           <button 
             onClick={saveSettings}
             disabled={loading}
@@ -271,14 +271,14 @@ const Notifications = () => {
 
       <div className="p-4 space-y-6">
         {/* Push Notifications */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Push Notifications</h3>
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4">Push Notifications</h3>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Enable Push Notifications</p>
-                <p className="text-sm text-gray-500">Receive notifications on your device</p>
+                <p className="font-medium text-foreground">Enable Push Notifications</p>
+                <p className="text-sm text-muted-foreground">Receive notifications on your device</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -287,7 +287,7 @@ const Notifications = () => {
                   onChange={() => handleToggle("pushNotifications")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
 
@@ -302,7 +302,7 @@ const Notifications = () => {
                       onChange={() => handleToggle("newMatches")}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
 
@@ -315,7 +315,7 @@ const Notifications = () => {
                       onChange={() => handleToggle("messages")}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
 
@@ -328,7 +328,7 @@ const Notifications = () => {
                       onChange={() => handleToggle("likes")}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
               </>
@@ -337,14 +337,14 @@ const Notifications = () => {
         </div>
 
         {/* Email Notifications */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Email Notifications</h3>
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4">Email Notifications</h3>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Email Updates</p>
-                <p className="text-sm text-gray-500">Receive important updates via email</p>
+                <p className="font-medium text-foreground">Email Updates</p>
+                <p className="text-sm text-muted-foreground">Receive important updates via email</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -353,14 +353,14 @@ const Notifications = () => {
                   onChange={() => handleToggle("emailNotifications")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
 
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-gray-900">Marketing Emails</p>
-                <p className="text-sm text-gray-500">Tips, promotions, and feature updates</p>
+                <p className="font-medium text-foreground">Marketing Emails</p>
+                <p className="text-sm text-muted-foreground">Tips, promotions, and feature updates</p>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
                 <input
@@ -369,15 +369,15 @@ const Notifications = () => {
                   onChange={() => handleToggle("marketing")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </div>
         </div>
 
         {/* Sound & Vibration */}
-        <div className="bg-white rounded-2xl p-6">
-          <h3 className="font-semibold text-gray-900 mb-4">Sound & Vibration</h3>
+        <div className="bg-card rounded-2xl p-6">
+          <h3 className="font-semibold text-foreground mb-4">Sound & Vibration</h3>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between">
@@ -389,7 +389,7 @@ const Notifications = () => {
                   onChange={() => handleToggle("soundEnabled")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
 
@@ -402,7 +402,7 @@ const Notifications = () => {
                   onChange={() => handleToggle("vibrationEnabled")}
                   className="sr-only peer"
                 />
-                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                <div className="w-11 h-6 bg-border peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
               </label>
             </div>
           </div>

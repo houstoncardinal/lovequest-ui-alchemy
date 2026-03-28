@@ -184,7 +184,7 @@ const LifestyleFeatures = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       {/* Header */}
-      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-border">
+      <div className="sticky top-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
         <div className="flex items-center justify-between p-4">
           <Button
             variant="ghost"
@@ -231,10 +231,10 @@ const LifestyleFeatures = () => {
                     </Button>
                     <Button
                       onClick={() => handleMoodSelect('neutral')}
-                      className={`p-3 rounded-full ${todaysMood === 'neutral' ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+                      className={`p-3 rounded-full ${todaysMood === 'neutral' ? 'bg-muted' : 'hover:bg-muted'}`}
                       variant="ghost"
                     >
-                      <Meh className="h-6 w-6 text-gray-500" />
+                      <Meh className="h-6 w-6 text-muted-foreground" />
                     </Button>
                     <Button
                       onClick={() => handleMoodSelect('sad')}
@@ -255,7 +255,7 @@ const LifestyleFeatures = () => {
 
                 {/* Progress Overview */}
                 <div className="grid grid-cols-2 gap-4 mb-4">
-                  <div className="text-center p-4 bg-white/50 rounded-xl">
+                  <div className="text-center p-4 bg-card/50 rounded-xl">
                     <Water className="h-8 w-8 mx-auto mb-2 text-blue-500" />
                     <p className="text-2xl font-bold text-foreground">{waterIntake}/8</p>
                     <p className="text-sm text-muted-foreground">Water Intake</p>
@@ -263,7 +263,7 @@ const LifestyleFeatures = () => {
                       + Add Glass
                     </Button>
                   </div>
-                  <div className="text-center p-4 bg-white/50 rounded-xl">
+                  <div className="text-center p-4 bg-card/50 rounded-xl">
                     <Target className="h-8 w-8 mx-auto mb-2 text-green-500" />
                     <p className="text-2xl font-bold text-foreground">
                       {goals.filter(g => g.completed).length}/{goals.length}

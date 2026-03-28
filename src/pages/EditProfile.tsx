@@ -421,9 +421,9 @@ const EditProfile = () => {
   return (
     <>
       {/* Desktop Layout */}
-      <div className="hidden md:block min-h-screen bg-gray-50">
+      <div className="hidden md:block min-h-screen bg-muted">
         {/* Enhanced Desktop Header */}
-        <div className="bg-white/98 backdrop-blur-xl border-b border-primary/10/60 shadow-lg">
+        <div className="bg-card/98 backdrop-blur-xl border-b border-primary/10/60 shadow-lg">
           <div className="max-w-screen-2xl mx-auto px-8 py-6">
             {/* Primary Row - Title and Main Actions */}
             <div className="flex items-center justify-between mb-6">
@@ -439,7 +439,7 @@ const EditProfile = () => {
                 <div className="flex items-center gap-4">
                   <User className="w-10 h-10 text-primary" />
                   <div>
-                    <h1 className="text-3xl font-bold text-gray-900 bg-gradient-to-r from-gray-900 to-primary/80 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-bold text-foreground bg-gradient-to-r from-gray-900 to-primary/80 bg-clip-text text-transparent">
                       Edit Profile
                     </h1>
                     <p className="text-sm text-primary font-medium">Complete your profile for better matches</p>
@@ -449,7 +449,7 @@ const EditProfile = () => {
 
               <div className="flex items-center gap-4">
                 {/* Progress Indicator */}
-                <div className="text-sm text-gray-600 bg-white/60 px-4 py-2 rounded-xl border border-primary/10">
+                <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-primary/10">
                   <span className="font-semibold text-primary">85%</span> complete
                 </div>
 
@@ -479,26 +479,26 @@ const EditProfile = () => {
             </div>
 
             {/* Secondary Row - Section Navigation */}
-            <div className="bg-white/80 rounded-2xl border border-primary/20/50 p-4">
+            <div className="bg-card/80 rounded-2xl border border-primary/20/50 p-4">
               <div className="flex items-center gap-8">
-                <h2 className="text-lg font-semibold text-gray-900">Profile Sections</h2>
+                <h2 className="text-lg font-semibold text-foreground">Profile Sections</h2>
                 <div className="flex items-center gap-4 text-sm">
                   <button className="px-3 py-2 bg-primary/10 text-primary rounded-lg font-medium">Basic Info</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Professional</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Personal Values</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Interests</button>
-                  <button className="px-3 py-2 text-gray-600 hover:bg-primary/5 rounded-lg transition-colors">Lifestyle</button>
+                  <button className="px-3 py-2 text-muted-foreground hover:bg-primary/5 rounded-lg transition-colors">Professional</button>
+                  <button className="px-3 py-2 text-muted-foreground hover:bg-primary/5 rounded-lg transition-colors">Personal Values</button>
+                  <button className="px-3 py-2 text-muted-foreground hover:bg-primary/5 rounded-lg transition-colors">Interests</button>
+                  <button className="px-3 py-2 text-muted-foreground hover:bg-primary/5 rounded-lg transition-colors">Lifestyle</button>
                 </div>
 
                 <div className="ml-auto flex items-center gap-4">
                   {/* Tips */}
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <Star className="w-4 h-4 text-amber-500" />
                     <span>Tip: Upload photos for 2x more matches!</span>
                   </div>
 
                   {/* Quick Help */}
-                  <button className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 transition-colors" title="Help">
+                  <button className="p-2 rounded-lg bg-muted hover:bg-border transition-colors" title="Help">
                     ❓
                   </button>
                 </div>
@@ -513,57 +513,57 @@ const EditProfile = () => {
           <div className="bg-gradient-to-r from-primary/5 via-white to-teal-50 rounded-3xl p-8 mb-8 border border-primary/10/60">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">Complete Your Profile</h2>
+                <h2 className="text-2xl font-bold text-foreground mb-2">Complete Your Profile</h2>
                 <p className="text-primary">Fill out more sections to improve your match recommendations</p>
               </div>
               <div className="text-right">
                 <div className="text-3xl font-bold text-primary mb-1">85%</div>
-                <div className="text-sm text-gray-600">Profile Complete</div>
+                <div className="text-sm text-muted-foreground">Profile Complete</div>
               </div>
             </div>
 
             <div className="grid grid-cols-4 gap-4">
-              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+              <div className="text-center p-4 bg-card rounded-2xl border border-primary/20 shadow-sm">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Camera className="w-6 h-6 text-primary" />
                 </div>
-                <div className="text-sm font-semibold text-gray-900 mb-1">Photos</div>
+                <div className="text-sm font-semibold text-foreground mb-1">Photos</div>
                 <div className="text-xs text-primary">+15% matches</div>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                <div className="mt-2 w-full bg-border rounded-full h-2">
                   <div className="bg-primary h-2 rounded-full" style={{ width: '75%' }}></div>
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+              <div className="text-center p-4 bg-card rounded-2xl border border-primary/20 shadow-sm">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Church className="w-6 h-6 text-primary" />
                 </div>
-                <div className="text-sm font-semibold text-gray-900 mb-1">Values</div>
+                <div className="text-sm font-semibold text-foreground mb-1">Values</div>
                 <div className="text-xs text-primary">+10% matches</div>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                <div className="mt-2 w-full bg-border rounded-full h-2">
                   <div className="bg-primary h-2 rounded-full" style={{ width: '100%' }}></div>
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+              <div className="text-center p-4 bg-card rounded-2xl border border-primary/20 shadow-sm">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Heart className="w-6 h-6 text-primary" />
                 </div>
-                <div className="text-sm font-semibold text-gray-900 mb-1">Interests</div>
+                <div className="text-sm font-semibold text-foreground mb-1">Interests</div>
                 <div className="text-xs text-primary">+20% matches</div>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                <div className="mt-2 w-full bg-border rounded-full h-2">
                   <div className="bg-primary h-2 rounded-full" style={{ width: '60%' }}></div>
                 </div>
               </div>
 
-              <div className="text-center p-4 bg-white rounded-2xl border border-primary/20 shadow-sm">
+              <div className="text-center p-4 bg-card rounded-2xl border border-primary/20 shadow-sm">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">
                   <Mic className="w-6 h-6 text-primary" />
                 </div>
-                <div className="text-sm font-semibold text-gray-900 mb-1">Voice</div>
+                <div className="text-sm font-semibold text-foreground mb-1">Voice</div>
                 <div className="text-xs text-primary">+25% matches</div>
-                <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-gray-200 h-2 rounded-full" style={{ width: '0%' }}></div>
+                <div className="mt-2 w-full bg-border rounded-full h-2">
+                  <div className="bg-border h-2 rounded-full" style={{ width: '0%' }}></div>
                 </div>
               </div>
             </div>
@@ -575,14 +575,14 @@ const EditProfile = () => {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden min-h-screen bg-gray-50 pb-20">
+      <div className="md:hidden min-h-screen bg-muted pb-20">
         {/* Header */}
-        <div className="bg-white border-b border-gray-100">
+        <div className="bg-card border-b border-border">
           <div className="flex items-center justify-between p-4">
             <button onClick={() => navigate("/account")}>
-              <ArrowLeft className="w-6 h-6 text-gray-600" />
+              <ArrowLeft className="w-6 h-6 text-muted-foreground" />
             </button>
-            <h1 className="text-xl font-bold text-gray-900">Edit Profile</h1>
+            <h1 className="text-xl font-bold text-foreground">Edit Profile</h1>
             <button
               onClick={handleSave}
               disabled={loading}
@@ -605,7 +605,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Camera className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Profile Photo</h3>
+            <h3 className="font-semibold text-foreground">Profile Photo</h3>
           </div>
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -633,8 +633,8 @@ const EditProfile = () => {
               </label>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Update your profile photo</p>
-              <p className="text-xs text-gray-500">JPG, PNG up to 5MB</p>
+              <p className="text-sm text-muted-foreground">Update your profile photo</p>
+              <p className="text-xs text-muted-foreground">JPG, PNG up to 5MB</p>
             </div>
           </div>
         </Card>
@@ -645,7 +645,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <User className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Basic Information</h3>
+            <h3 className="font-semibold text-foreground">Basic Information</h3>
           </div>
           
           <div className="grid grid-cols-2 gap-4">
@@ -719,7 +719,7 @@ const EditProfile = () => {
               className="resize-none"
               maxLength={500}
             />
-            <div className="text-right text-xs text-gray-500 mt-1">
+            <div className="text-right text-xs text-muted-foreground mt-1">
               {formData.bio.length}/500 characters
             </div>
           </div>
@@ -742,7 +742,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Briefcase className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Professional</h3>
+            <h3 className="font-semibold text-foreground">Professional</h3>
           </div>
           
           <div>
@@ -809,7 +809,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Church className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Personal Values</h3>
+            <h3 className="font-semibold text-foreground">Personal Values</h3>
           </div>
           
           <div>
@@ -898,7 +898,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Heart className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Personal Details</h3>
+            <h3 className="font-semibold text-foreground">Personal Details</h3>
           </div>
           
           <div>
@@ -985,7 +985,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Heart className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Marriage & Family</h3>
+            <h3 className="font-semibold text-foreground">Marriage & Family</h3>
           </div>
           
           <div>
@@ -1042,7 +1042,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Heart className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Interests & Hobbies</h3>
+            <h3 className="font-semibold text-foreground">Interests & Hobbies</h3>
           </div>
           
           <div>
@@ -1056,14 +1056,14 @@ const EditProfile = () => {
                   className={`p-2 rounded-lg border text-sm font-medium transition-all ${
                     formData.hobbiesInterests.includes(interest)
                       ? 'border-primary bg-primary/10 text-primary'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-primary/50'
+                      : 'border-border bg-card text-foreground/80 hover:border-primary/50'
                   }`}
                 >
                   {interest}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               Selected: {formData.hobbiesInterests.length} interests
             </p>
           </div>
@@ -1075,7 +1075,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <MapPin className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Languages</h3>
+            <h3 className="font-semibold text-foreground">Languages</h3>
           </div>
           
           <div>
@@ -1089,14 +1089,14 @@ const EditProfile = () => {
                   className={`p-2 rounded-lg border text-sm font-medium transition-all ${
                     formData.languagesSpoken.includes(language)
                       ? 'border-primary bg-primary/10 text-primary'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-primary/50'
+                      : 'border-border bg-card text-foreground/80 hover:border-primary/50'
                   }`}
                 >
                   {language}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               Selected: {formData.languagesSpoken.length} languages
             </p>
           </div>
@@ -1108,11 +1108,11 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Mic className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Voice Introduction</h3>
+            <h3 className="font-semibold text-foreground">Voice Introduction</h3>
           </div>
 
           <div className="space-y-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-muted-foreground">
               Record a short voice message to introduce yourself (up to 60 seconds)
             </p>
 
@@ -1129,7 +1129,7 @@ const EditProfile = () => {
             {recordingVoice && (
               <div className="text-center space-y-3">
                 <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                  <div className="w-4 h-4 bg-white rounded-full"></div>
+                  <div className="w-4 h-4 bg-card rounded-full"></div>
                 </div>
                 <Button onClick={stopVoiceRecording} className="w-full bg-red-500 hover:bg-red-600">
                   Stop Recording
@@ -1139,7 +1139,7 @@ const EditProfile = () => {
 
             {audioUrl && !recordingVoice && (
               <div className="space-y-3">
-                <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
                   <Button
                     size="sm"
                     variant="outline"
@@ -1147,7 +1147,7 @@ const EditProfile = () => {
                   >
                     {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                   </Button>
-                  <span className="text-sm text-gray-600">Voice note recorded</span>
+                  <span className="text-sm text-muted-foreground">Voice note recorded</span>
                 </div>
                 <div className="flex gap-2">
                   <Button onClick={startVoiceRecording} variant="outline" className="flex-1">
@@ -1173,7 +1173,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <User className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Lifestyle Preferences</h3>
+            <h3 className="font-semibold text-foreground">Lifestyle Preferences</h3>
           </div>
 
           <div>
@@ -1252,7 +1252,7 @@ const EditProfile = () => {
             <div className="p-2 rounded-xl bg-gradient-primary">
               <Star className="w-5 h-5 text-primary-foreground" />
             </div>
-            <h3 className="font-semibold text-gray-900">Personality & Zodiac</h3>
+            <h3 className="font-semibold text-foreground">Personality & Zodiac</h3>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -1310,14 +1310,14 @@ const EditProfile = () => {
                   className={`p-2 rounded-lg border text-sm font-medium transition-all ${
                     (formData.coreValues || []).includes(value)
                       ? 'border-primary bg-primary/10 text-primary'
-                      : 'border-gray-200 bg-white text-gray-700 hover:border-primary/50'
+                      : 'border-border bg-card text-foreground/80 hover:border-primary/50'
                   }`}
                 >
                   {value}
                 </button>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               Selected: {(formData.coreValues || []).length} values
             </p>
           </div>
