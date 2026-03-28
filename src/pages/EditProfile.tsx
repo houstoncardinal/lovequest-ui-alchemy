@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Camera, Plus, X, Save, Loader2, User, Church, Heart, MapPin, Briefcase, GraduationCap, Upload, Mic, Play, Pause, Star } from "lucide-react";
+import { ArrowLeft, Camera, Plus, X, Save, Loader2, User, Sparkles, Heart, MapPin, Briefcase, GraduationCap, Upload, Mic, Play, Pause, Star } from "lucide-react";
 import InteractiveMenu from "@/components/ui/modern-mobile-menu";
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
@@ -40,12 +40,12 @@ const EditProfile = () => {
     educationLevel: "",
     incomeRange: "",
 
-    // Islamic Practice
-    religionLevel: "",
-    prayerFrequency: "",
-    hijabStatus: "",
-    madhab: "",
-    islamicKnowledgeLevel: "",
+    // Personal Values
+    valuesLevel: "",
+    fitnessFrequency: "",
+    socialStyle: "",
+    communicationStyle: "",
+    personalGrowthLevel: "",
     communityInvolvementLevel: "",
 
     // Personal Details
@@ -114,11 +114,11 @@ const EditProfile = () => {
           educationLevel: data.education_level || "",
           incomeRange: data.income_range || "",
 
-          religionLevel: data.religion_level || "",
-          prayerFrequency: data.prayer_frequency || "",
-          hijabStatus: data.hijab_status || "",
-          madhab: data.madhab || "",
-          islamicKnowledgeLevel: data.islamic_knowledge_level || "",
+          valuesLevel: data.religion_level || "",
+          fitnessFrequency: data.exercise_frequency || "",
+          socialStyle: "",
+          communicationStyle: "",
+          personalGrowthLevel: data.islamic_knowledge_level || "",
           communityInvolvementLevel: data.community_involvement_level || "",
 
           maritalStatus: data.marital_status || "",
@@ -338,11 +338,11 @@ const EditProfile = () => {
         education_level: formData.educationLevel,
         income_range: formData.incomeRange,
         
-        religion_level: formData.religionLevel,
-        prayer_frequency: formData.prayerFrequency,
-        hijab_status: formData.hijabStatus,
-        madhab: formData.madhab,
-        islamic_knowledge_level: formData.islamicKnowledgeLevel,
+        religion_level: formData.valuesLevel,
+        prayer_frequency: formData.fitnessFrequency,
+        hijab_status: formData.socialStyle,
+        madhab: formData.communicationStyle,
+        islamic_knowledge_level: formData.personalGrowthLevel,
         community_involvement_level: formData.communityInvolvementLevel,
         
         marital_status: formData.maritalStatus,
