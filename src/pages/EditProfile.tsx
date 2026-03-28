@@ -997,7 +997,7 @@ const EditProfile = () => {
                 <SelectItem value="3_4_children">3-4 children</SelectItem>
                 <SelectItem value="5_plus_children">5+ children</SelectItem>
                 <SelectItem value="no_preference">No preference</SelectItem>
-                <SelectItem value="depends_on_allah">Depends on Allah's will</SelectItem>
+                <SelectItem value="open_to_anything">Open to whatever life brings</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -1203,7 +1203,7 @@ const EditProfile = () => {
                 <SelectItem value="no_restrictions">No Restrictions</SelectItem>
                 <SelectItem value="vegetarian">Vegetarian</SelectItem>
                 <SelectItem value="vegan">Vegan</SelectItem>
-                <SelectItem value="halal_certified">Halal Certified</SelectItem>
+                <SelectItem value="gluten_free">Gluten Free</SelectItem>
                 <SelectItem value="organic">Organic</SelectItem>
                 <SelectItem value="pescatarian">Pescatarian</SelectItem>
                 <SelectItem value="low_carb">Low Carb</SelectItem>
