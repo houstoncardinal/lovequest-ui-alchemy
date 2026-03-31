@@ -65,17 +65,34 @@ const BlockReport = () => {
     setSelectedAction(action);
   };
 
-  const handleSubmit = () => {
-    // Handle the action submission
-    if (selectedAction === "block") {
-      // Block user logic
-      alert("User has been blocked successfully");
-    } else if (selectedAction === "report") {
-      // Report user logic
-      alert("Report submitted successfully. Our team will review it within 24 hours.");
-    } else if (selectedAction === "hide") {
-      // Hide profile logic
-      alert("Profile hidden from your recommendations");
+  const handleSubmit = async () => {
+    if (!user || !id) return;
+    
+    try {
+      if (selectedAction === "block" || selectedAction === "hide") {
+        // Insert block record
+        const { error } = await supabase.from('blocks').insert({
+          blocker_id: user.id,
+          blocked_id: id,
+        });
+        if (error && !error.message.includes('duplicate')) throw error;
+        toast({ title: selectedAction === "block" ? "User blocked" : "Profile hidden", description: "They won't appear in your feed anymore." });
+      } else if (selectedAction === "report") {
+        // Insert report record
+        const { error } = await supabase.from('reports').insert({
+          reporter_id: user.id,
+          reported_user_id: id,
+          reason: reportReason,
+        });
+        if (error) throw error;
+        
+        // Also block them
+        await supabase.from('blocks').insert({ blocker_id: user.id, blocked_id: id });
+        toast({ title: "Report submitted", description: "Our team will review it within 24 hours. This user has been blocked." });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast({ title: "Error", description: "Something went wrong. Please try again.", variant: "destructive" });
     }
     navigate(-1);
   };
