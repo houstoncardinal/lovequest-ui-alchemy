@@ -249,20 +249,10 @@ const Chat = () => {
     if (!user?.id) return;
     
     try {
-      const { data, error } = await supabase
-        .rpc('get_mutual_matches', { target_user_id: user.id });
-      
-      if (error) throw error;
-      
-      // Use real matches if available, otherwise use demo matches
-      if (data && data.length > 0) {
-        setMatches(data);
-      } else {
-        setMatches(demoMatches);
-      }
+      // Use demo matches for now (RPCs not yet created)
+      setMatches(demoMatches);
     } catch (error) {
       console.error('Error fetching matches:', error);
-      // Fallback to demo matches on error
       setMatches(demoMatches);
     } finally {
       setLoading(false);
