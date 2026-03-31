@@ -222,7 +222,9 @@ const ProfileDetail = () => {
         </div>
       </div>
 
-      <NewMatchCelebration show={showMatchCelebration} matchName={profile.name} matchImage={profile.image} onClose={() => setShowMatchCelebration(false)} onSendMessage={() => { setShowMatchCelebration(false); navigate('/messages'); }} />
+      {showMatchCelebration && (
+        <NewMatchCelebration matchedProfile={{ name: profile.name, image: profile.image, age: profile.age }} onClose={() => { setShowMatchCelebration(false); navigate(-1); }} />
+      )}
     </div>
   );
 };

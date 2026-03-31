@@ -284,7 +284,7 @@ const Home = () => {
         </div>
       </div>
 
-      <LikeLimitModal open={showLimitModal} onOpenChange={setShowLimitModal} />
+      <LikeLimitModal isOpen={showLimitModal} onClose={() => setShowLimitModal(false)} resetTime={null} />
     </div>
   );
 };
