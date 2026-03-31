@@ -52,12 +52,15 @@ const AppWithNavigation = () => {
   const showNavigation = !hideNavigationOn.includes(location.pathname);
 
   return (
+    const isAuthPage = hideNavigationOn.includes(location.pathname);
+
+    return (
     <>
       {/* Desktop Navigation - only shown on desktop */}
       {showNavigation && <DesktopNavigation />}
       
       {/* Main Content with responsive padding */}
-      <div className="pb-20 md:pb-0 md:pt-20">
+      <div className={isAuthPage ? "" : "pb-20 md:pb-0 md:pt-20"}>
         <Routes>
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
