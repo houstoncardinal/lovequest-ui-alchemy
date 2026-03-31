@@ -39,6 +39,7 @@ import EnhancedMatching from "./pages/EnhancedMatching";
 import AdminDashboard from "./pages/AdminDashboard";
 import Messages from "./pages/Messages";
 import PhotoManager from "./pages/PhotoManager";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import PostDetailView from "./components/PostDetailView";
 
