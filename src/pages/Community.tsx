@@ -432,7 +432,7 @@ const Community = () => {
         />
 
         {/* Posts Feed */}
-        <div className="max-w-md mx-auto px-6 pb-6">
+        <div className="max-w-md mx-auto px-3 pb-6">
           <AnimatePresence mode="wait">
             {posts.length === 0 ? (
               <CommunityEmptyState onCreatePost={() => setShowCreateModal(true)} />
