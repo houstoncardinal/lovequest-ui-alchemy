@@ -192,14 +192,6 @@ const AdminDashboard = () => {
 
   const handleUserAction = async (userId: string, action: 'enable' | 'disable') => {
     try {
-      // Placeholder — can_access_app not in schema yet
-      toast({
-        title: `User ${action === 'enable' ? 'Enabled' : 'Disabled'}`,
-        description: `The user has been ${action}d.`,
-      });
-
-      if (error) throw error;
-
       toast({
         title: `User ${action === 'enable' ? 'Enabled' : 'Disabled'}`,
         description: `The user has been ${action}d.`,

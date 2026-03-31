@@ -22,20 +22,17 @@ interface PostCardProps {
   post: {
     id: string;
     content: string;
-    image_url?: string;
-    location?: string;
-    hashtags?: string[];
-    mood?: string;
-    is_trending: boolean;
-    likes_count: number;
-    comments_count: number;
+    image_url?: string | null;
+    location?: string | null;
+    hashtags?: string[] | null;
+    mood?: string | null;
+    likes_count: number | null;
+    comments_count: number | null;
     created_at: string;
-    user_id: string;
+    author_id: string;
     profiles?: {
-      display_name?: string;
-      avatar_url?: string;
-      first_name?: string;
-      last_name?: string;
+      display_name?: string | null;
+      photos?: string[] | null;
     } | null;
     user_liked?: boolean;
   };
