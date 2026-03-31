@@ -102,55 +102,55 @@ const EditProfile = () => {
       
       if (data) {
         setFormData({
-          firstName: data.first_name || "",
-          lastName: data.last_name || "",
+          firstName: data.display_name?.split(' ')[0] || "",
+          lastName: data.display_name?.split(' ').slice(1).join(' ') || "",
           displayName: data.display_name || "",
           age: data.age?.toString() || "",
           bio: data.bio || "",
           location: data.location || "",
-          avatarUrl: data.avatar_url || "",
+          avatarUrl: data.photos?.[0] || "",
 
-          careerField: data.career_field || "",
-          educationLevel: data.education_level || "",
-          incomeRange: data.income_range || "",
+          careerField: data.occupation || "",
+          educationLevel: data.education || "",
+          incomeRange: "",
 
-          valuesLevel: data.religion_level || "",
-          fitnessFrequency: data.exercise_frequency || "",
+          valuesLevel: data.religion || "",
+          fitnessFrequency: "",
           socialStyle: "",
           communicationStyle: "",
-          personalGrowthLevel: data.islamic_knowledge_level || "",
-          communityInvolvementLevel: data.community_involvement_level || "",
+          personalGrowthLevel: "",
+          communityInvolvementLevel: "",
 
-          maritalStatus: data.marital_status || "",
-          smokingStatus: data.smoking_status || "",
-          hasChildren: data.has_children || false,
-          childrenPreference: data.children_preference || "",
-          bodyType: data.body_type || "",
-          heightCm: data.height_cm?.toString() || "",
-          exerciseFrequency: data.exercise_frequency || "",
+          maritalStatus: "",
+          smokingStatus: data.smoking || "",
+          hasChildren: data.children === 'yes',
+          childrenPreference: data.children || "",
+          bodyType: "",
+          heightCm: data.height || "",
+          exerciseFrequency: "",
 
-          marriageTimeline: data.marriage_timeline || "",
-          financialReadiness: data.financial_readiness || "",
-          familySizePreference: data.family_size_preference || "",
+          marriageTimeline: data.looking_for || "",
+          financialReadiness: "",
+          familySizePreference: "",
 
-          hobbiesInterests: data.hobbies_interests || [],
-          languagesSpoken: data.languages_spoken || [],
-          dietaryPreferences: data.dietary_preferences || [],
-          personalityTraits: data.personality_traits || [],
-          relationshipGoals: data.relationship_goals || [],
+          hobbiesInterests: data.interests || [],
+          languagesSpoken: [],
+          dietaryPreferences: [],
+          personalityTraits: [],
+          relationshipGoals: [],
 
-          voiceNoteUrl: data.avatar_url || "", // Using avatar_url for now, will add voice_note_url to schema later
+          voiceNoteUrl: "",
 
           // Lifestyle Preferences
-          petsPreference: "", // Will be added to schema later
-          workoutPreference: "", // Will be added to schema later
-          dietPreference: "", // Will be added to schema later
-          socialPreference: "", // Will be added to schema later
+          petsPreference: "",
+          workoutPreference: "",
+          dietPreference: "",
+          socialPreference: "",
 
           // Zodiac & Values
-          zodiacSign: "", // Will be added to schema later
-          drinkingStatus: "", // Will be added to schema later
-          coreValues: [] // Will be added to schema later
+          zodiacSign: "",
+          drinkingStatus: data.drinking || "",
+          coreValues: []
         });
         
         // Check if there's a voice note in the avatar_url (temporary solution)
