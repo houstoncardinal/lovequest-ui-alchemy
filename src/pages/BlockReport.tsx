@@ -5,11 +5,16 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 import Logo from "@/components/Logo";
 
 const BlockReport = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [selectedAction, setSelectedAction] = useState<string>("");
   const [reportReason, setReportReason] = useState<string>("");
   const [showPassword, setShowPassword] = useState(false);
