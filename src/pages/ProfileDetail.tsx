@@ -293,7 +293,7 @@ const ProfileDetail = () => {
             transition={{ delay: 0.15 }}
             className="w-16 h-16 rounded-full bg-primary shadow-xl shadow-primary/30 flex items-center justify-center transition-all hover:shadow-2xl hover:shadow-primary/40 hover:scale-105"
           >
-            <span className="text-2xl">❤️</span>
+            <Heart className="w-7 h-7 text-primary-foreground" strokeWidth={1.5} />
           </motion.button>
           <motion.button
             whileTap={{ scale: 0.85 }}
