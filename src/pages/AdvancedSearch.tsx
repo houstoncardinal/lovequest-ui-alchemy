@@ -47,18 +47,15 @@ interface SearchFilters {
 
 interface Profile {
   user_id: string;
-  first_name: string;
-  last_name: string;
-  age: number;
-  location: string;
-  bio: string;
-  avatar_url: string;
-  education_level: string;
-  career_field: string;
-  religion_level: string;
-  prayer_frequency: string;
-  is_verified: boolean;
-  verification_level: string;
+  display_name: string | null;
+  age: number | null;
+  location: string | null;
+  bio: string | null;
+  photos: string[] | null;
+  education: string | null;
+  occupation: string | null;
+  religion: string | null;
+  is_verified: boolean | null;
 }
 
 const AdvancedSearch = () => {
