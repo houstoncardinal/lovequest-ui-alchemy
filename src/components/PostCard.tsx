@@ -248,7 +248,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
             <div className="flex items-center gap-3">
               <div className="relative group">
                 <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background transition-all duration-300 group-hover:ring-primary/40">
-                  <AvatarImage src={post.profiles?.avatar_url} className="object-cover" />
+                  <AvatarImage src={post.profiles?.photos?.[0]} className="object-cover" />
                   <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">
                     {initials}
                   </AvatarFallback>
