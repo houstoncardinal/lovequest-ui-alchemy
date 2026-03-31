@@ -127,9 +127,11 @@ const Settings = () => {
     if (confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
       try {
         // Call the delete account function
-        const { error } = await supabase.rpc('delete_user_account', {
-          target_user_id: user?.id
-        });
+        // Delete user profile data
+        const { error } = await supabase
+          .from('profiles')
+          .delete()
+          .eq('user_id', user?.id ?? '');
         
         if (error) throw error;
         

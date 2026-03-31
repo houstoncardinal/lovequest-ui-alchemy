@@ -459,16 +459,13 @@ const Chat = () => {
               key={message.id}
               className={`flex ${message.sender_id === user?.id ? 'justify-end' : 'justify-start'}`}
             >
-              {message.message_type === 'voice' && message.attachment_url ? (
+              {message.message_type === 'voice' ? (
                 <div className={`max-w-[80%] px-4 py-3 rounded-2xl shadow-sm ${
                   message.sender_id === user?.id
                     ? 'bg-gradient-to-br from-primary to-primary text-white rounded-br-md'
                     : 'bg-card border border-border text-foreground rounded-bl-md'
                 }`}>
-                  <p className="text-sm">Voice message</p>
-                  <audio controls className="mt-2 w-full">
-                    <source src={message.attachment_url} type="audio/webm" />
-                  </audio>
+                  <p className="text-sm">🎤 Voice message</p>
                   <p className={`text-xs mt-2 ${
                     message.sender_id === user?.id ? 'text-white/70' : 'text-muted-foreground'
                   }`}>

@@ -146,7 +146,7 @@ const Welcome = () => {
       <div className="relative z-10 h-0.5 bg-gradient-hero" />
 
       {/* Dev bypass */}
-      {process.env.NODE_ENV === "development" && (
+      {import.meta.env.DEV && (
         <button onClick={handleBypass} className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 text-[10px] text-muted-foreground/50 hover:text-foreground">
           Dev Skip
         </button>

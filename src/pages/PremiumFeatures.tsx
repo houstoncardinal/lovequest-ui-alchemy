@@ -198,14 +198,11 @@ const PremiumFeatures = () => {
       const endDate = new Date();
       endDate.setMonth(endDate.getMonth() + 1);
 
+      // Update profile premium status (subscription table not yet created)
       const { error } = await supabase
-        .from('premium_subscriptions')
-        .upsert({
-          user_id: user?.id,
-          plan_type: planType,
-          end_date: endDate.toISOString(),
-          is_active: true
-        });
+        .from('profiles')
+        .update({ is_premium: true })
+        .eq('user_id', user?.id ?? '');
 
       if (error) throw error;
 

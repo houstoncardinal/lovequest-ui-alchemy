@@ -288,27 +288,23 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <h4 className="font-semibold text-sm text-muted-foreground mb-1">Education</h4>
-                <p className="text-sm">{profile.education_level || 'Not specified'}</p>
+                <p className="text-sm">{profile.education || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Career</h4>
-                <p className="text-sm">{profile.career_field || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Occupation</h4>
+                <p className="text-sm">{profile.occupation || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Religion Level</h4>
-                <p className="text-sm">{profile.religion_level || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Religion</h4>
+                <p className="text-sm">{profile.religion || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Prayer Frequency</h4>
-                <p className="text-sm">{profile.prayer_frequency || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Children</h4>
+                <p className="text-sm capitalize">{profile.children?.replace('_', ' ') || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Children Preference</h4>
-                <p className="text-sm capitalize">{profile.children_preference?.replace('_', ' ') || 'Not specified'}</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Smoking Status</h4>
-                <p className="text-sm capitalize">{profile.smoking_status?.replace('_', ' ') || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Smoking</h4>
+                <p className="text-sm capitalize">{profile.smoking?.replace('_', ' ') || 'Not specified'}</p>
               </div>
             </div>
             

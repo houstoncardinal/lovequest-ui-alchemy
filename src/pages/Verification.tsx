@@ -191,26 +191,26 @@ const Verification = () => {
             
             {/* Access Status */}
             <div className={`p-4 rounded-lg border ${
-              profile?.can_access_app 
+              profile?.is_verified 
                 ? 'bg-green-50 border-green-200' 
                 : 'bg-amber-50 border-amber-200'
             }`}>
               <div className="flex items-start gap-2">
-                {profile?.can_access_app ? (
+                {profile?.is_verified ? (
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 ) : (
                   <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
                 )}
                 <div>
                   <p className={`font-medium ${
-                    profile?.can_access_app ? 'text-green-800' : 'text-amber-800'
+                    profile?.is_verified ? 'text-green-800' : 'text-amber-800'
                   }`}>
-                    {profile?.can_access_app ? 'Full Access Granted' : 'Limited Access'}
+                    {profile?.is_verified ? 'Full Access Granted' : 'Limited Access'}
                   </p>
                   <p className={`text-sm ${
-                    profile?.can_access_app ? 'text-green-700' : 'text-amber-700'
+                    profile?.is_verified ? 'text-green-700' : 'text-amber-700'
                   }`}>
-                    {profile?.can_access_app 
+                    {profile?.is_verified 
                       ? 'You can access all app features including messaging and matching.'
                       : 'You can browse profiles but cannot send messages until verified.'
                     }
