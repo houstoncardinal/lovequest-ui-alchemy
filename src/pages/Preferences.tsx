@@ -110,47 +110,7 @@ const Preferences = () => {
 
   const fetchPreferences = async () => {
     if (!user) return;
-    
-    try {
-      const { data, error } = await supabase
-        .from('user_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (error) throw error;
-      
-      if (data) {
-        // Parse the deal_breakers JSON properly
-        const dealBreakers = data.deal_breakers as any || {};
-        
-        setPreferences({
-          age_range_min: data.age_range_min || 22,
-          age_range_max: data.age_range_max || 35,
-          max_distance_km: data.max_distance_km || 50,
-          looking_for: data.looking_for || "serious_relationship",
-          show_me: data.show_me || "opposite",
-          deal_breakers: {
-            smoking: dealBreakers.smoking || false,
-            drinking: dealBreakers.drinking || false,
-            has_children: dealBreakers.has_children || false,
-            previous_marriage: dealBreakers.previous_marriage || false,
-            different_values: dealBreakers.different_values || false,
-            non_active: dealBreakers.non_active || false,
-          },
-          values_preferences: dealBreakers.values_preferences || preferences.values_preferences,
-          lifestyle_preferences: dealBreakers.lifestyle_preferences || preferences.lifestyle_preferences,
-          family_preferences: dealBreakers.family_preferences || preferences.family_preferences,
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching preferences:', error);
-      toast({
-        title: "Error loading preferences",
-        description: "Failed to load your saved preferences. Using defaults.",
-        variant: "destructive",
-      });
-    }
+    // user_preferences table not yet created - use defaults
   };
 
   const savePreferences = async () => {
