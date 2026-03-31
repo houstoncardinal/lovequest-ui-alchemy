@@ -83,34 +83,12 @@ const Settings = () => {
     
     setLoading(true);
     try {
-      // Save user settings
-      const { error: settingsError } = await supabase
-        .from('user_settings')
-        .upsert({
-          user_id: user.id,
-          profile_visibility: privacy.profileVisibility,
-          show_active_status: privacy.showOnlineStatus,
-          show_distance: privacy.showLastSeen,
-          sound_enabled: appSettings.soundEffects,
-          vibration_enabled: appSettings.hapticFeedback,
-          updated_at: new Date().toISOString()
-        });
-
-      if (settingsError) throw settingsError;
-
-      // Save notification preferences
-      const { error: notificationError } = await supabase
-        .from('notification_preferences')
-        .upsert({
-          user_id: user.id,
-          new_matches: notifications.newMatches,
-          new_messages: notifications.messages,
-          super_likes: notifications.likes,
-          marketing_emails: notifications.marketing,
-          updated_at: new Date().toISOString()
-        });
-
-      if (notificationError) throw notificationError;
+      // Save settings locally until dedicated tables are created
+      localStorage.setItem('userSettings', JSON.stringify({
+        privacy,
+        notifications,
+        appSettings,
+      }));
 
       toast({
         title: "Settings saved",
