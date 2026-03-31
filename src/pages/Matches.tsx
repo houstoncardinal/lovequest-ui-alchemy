@@ -576,7 +576,6 @@ const Chat = () => {
           userImage={currentUser?.avatar_url || ""}
         />
 
-        <InteractiveMenu />
       </div>
     );
   }
