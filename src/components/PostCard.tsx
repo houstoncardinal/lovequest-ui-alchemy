@@ -253,11 +253,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                {post.is_trending && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-primary rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-background rounded-full"></div>
-                  </div>
-                )}
+                {(post.likes_count || 0) > 40 && (
               </div>
               
               <div className="flex-1 min-w-0">
