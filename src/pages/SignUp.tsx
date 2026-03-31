@@ -51,7 +51,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-background flex flex-col relative overflow-hidden">
+    <div className="h-[100dvh] bg-background flex flex-col relative overflow-hidden">
       {/* Background blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 to-accent/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl" />
