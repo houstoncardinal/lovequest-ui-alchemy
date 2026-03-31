@@ -129,15 +129,15 @@ export const MessagingInterface = () => {
             user1_profile:profiles!matches_user1_id_fkey (
               user_id,
               display_name,
-              first_name,
-              last_name,
+              display_name,
+              ,
               avatar_url
             ),
             user2_profile:profiles!matches_user2_id_fkey (
               user_id,
               display_name,
-              first_name,
-              last_name,
+              display_name,
+              ,
               avatar_url
             )
           `)
@@ -199,7 +199,7 @@ export const MessagingInterface = () => {
               avatar_url
             )
           `)
-          .or(`and(sender_id.eq.${user.id},receiver_id.eq.${matchedUserId}),and(sender_id.eq.${matchedUserId},receiver_id.eq.${user.id})`)
+          .or(`and(sender_id.eq.${user.id},match_id.eq.${matchedUserId}),and(sender_id.eq.${matchedUserId},match_id.eq.${user.id})`)
           .order('created_at', { ascending: true });
 
         if (error) throw error;
@@ -226,7 +226,7 @@ export const MessagingInterface = () => {
           event: 'INSERT',
           schema: 'public',
           table: 'messages',
-          filter: hasRealData ? `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})` : undefined
+          filter: hasRealData ? `or(sender_id.eq.${user.id},match_id.eq.${user.id})` : undefined
         },
         (payload) => {
           if (hasRealData) {
@@ -249,7 +249,7 @@ export const MessagingInterface = () => {
       const demoMessage: Message = {
         id: `demo-${Date.now()}`,
         sender_id: user.id,
-        receiver_id: selectedMatch.user2_id === user.id ? selectedMatch.user1_id : selectedMatch.user2_id,
+        match_id: selectedMatch.user2_id === user.id ? selectedMatch.user1_id : selectedMatch.user2_id,
         content: newMessage.trim(),
         message_type: 'text',
         is_read: false,
@@ -293,7 +293,7 @@ export const MessagingInterface = () => {
         .from('messages')
         .insert({
           sender_id: user.id,
-          receiver_id: matchedUserId,
+          match_id: matchedUserId,
           content: newMessage.trim(),
           message_type: 'text'
         });
@@ -377,10 +377,10 @@ export const MessagingInterface = () => {
         const demoMessage: Message = {
           id: `demo-${Date.now()}`,
           sender_id: user.id,
-          receiver_id: matchedUserId,
+          match_id: matchedUserId,
           content: "",
           message_type: 'image',
-          attachment_url: publicUrl,
+          content: publicUrl,
           is_read: false,
           created_at: new Date().toISOString(),
         };
@@ -395,10 +395,10 @@ export const MessagingInterface = () => {
           .from('messages')
           .insert({
             sender_id: user.id,
-            receiver_id: matchedUserId,
+            match_id: matchedUserId,
             content: "",
             message_type: 'image',
-            attachment_url: publicUrl
+            content: publicUrl
           });
 
         if (messageError) throw messageError;
@@ -530,10 +530,10 @@ export const MessagingInterface = () => {
         const demoMessage: Message = {
           id: `demo-${Date.now()}`,
           sender_id: user.id,
-          receiver_id: matchedUserId,
+          match_id: matchedUserId,
           content: `Voice message (${duration}s)`,
           message_type: 'voice',
-          attachment_url: publicUrl,
+          content: publicUrl,
           is_read: false,
           created_at: new Date().toISOString(),
         };
@@ -548,10 +548,10 @@ export const MessagingInterface = () => {
           .from('messages')
           .insert({
             sender_id: user.id,
-            receiver_id: matchedUserId,
+            match_id: matchedUserId,
             content: "",
             message_type: 'voice',
-            attachment_url: publicUrl
+            content: publicUrl
           });
 
         if (messageError) throw messageError;
@@ -599,14 +599,14 @@ export const MessagingInterface = () => {
                 >
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src={match.matched_user?.avatar_url} />
+                      <AvatarImage src={match.matched_user??.photos?.[0]} />
                       <AvatarFallback>
-                        {match.matched_user?.first_name?.[0]}{match.matched_user?.last_name?.[0]}
+                        {match.matched_user?.display_name?.[0]}{match.matched_user??.[0]}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">
-                        {match.matched_user?.display_name || `${match.matched_user?.first_name} ${match.matched_user?.last_name}`}
+                        {match.matched_user?.display_name || `${match.matched_user?.display_name} ${match.matched_user?}`}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Matched {new Date(match.created_at).toLocaleDateString()}
@@ -633,14 +633,14 @@ export const MessagingInterface = () => {
               <CardHeader className="flex-row items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={selectedMatch.matched_user?.avatar_url} />
+                    <AvatarImage src={selectedMatch.matched_user??.photos?.[0]} />
                     <AvatarFallback>
-                      {selectedMatch.matched_user?.first_name?.[0]}{selectedMatch.matched_user?.last_name?.[0]}
+                      {selectedMatch.matched_user?.display_name?.[0]}{selectedMatch.matched_user??.[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <CardTitle className="text-lg">
-                      {selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.first_name} ${selectedMatch.matched_user?.last_name}`}
+                      {selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.display_name} ${selectedMatch.matched_user?}`}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">Online now</p>
                   </div>
@@ -687,10 +687,10 @@ export const MessagingInterface = () => {
                           message.sender_id === user?.id ? 'justify-end' : 'justify-start'
                         }`}
                       >
-                        {message.message_type === 'image' && message.attachment_url ? (
+                        {message.message_type === 'image' && message.content ? (
                           <div className="max-w-[70%] rounded-lg overflow-hidden">
                             <img
-                              src={message.attachment_url}
+                              src={message.content}
                               alt="Shared image"
                               className="w-full h-auto rounded-lg max-h-64 object-cover"
                             />
@@ -785,8 +785,8 @@ export const MessagingInterface = () => {
         <VideoCallModal
           isOpen={isVideoCallOpen}
           onClose={() => setIsVideoCallOpen(false)}
-          userName={selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.first_name} ${selectedMatch.matched_user?.last_name}` || 'User'}
-          userImage={selectedMatch.matched_user?.avatar_url || '/assets/profile-1.jpg'}
+          userName={selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.display_name} ${selectedMatch.matched_user?}` || 'User'}
+          userImage={selectedMatch.matched_user??.photos?.[0] || '/assets/profile-1.jpg'}
         />
       )}
 
