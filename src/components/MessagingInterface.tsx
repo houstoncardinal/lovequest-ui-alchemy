@@ -22,16 +22,11 @@ import {
 interface Message {
   id: string;
   sender_id: string;
-  receiver_id: string;
+  match_id: string;
   content: string;
   message_type: string;
-  attachment_url?: string;
   is_read: boolean;
   created_at: string;
-  sender_profile?: {
-    display_name: string;
-    avatar_url?: string;
-  };
 }
 
 interface Match {
