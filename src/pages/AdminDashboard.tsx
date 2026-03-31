@@ -113,28 +113,20 @@ const AdminDashboard = () => {
   }, [isAdmin]);
 
   const checkAdminAccess = async () => {
-    if (!user) {
-      navigate('/login');
-      return;
-    }
-
+    if (!user) { navigate('/login'); return; }
     try {
       const { data, error } = await supabase
-        .from('admin_users')
-        .select('*')
+        .from('user_roles')
+        .select('role')
         .eq('user_id', user.id)
-        .single();
+        .eq('role', 'admin')
+        .maybeSingle();
 
       if (error || !data) {
-        toast({
-          title: "Access Denied",
-          description: "You don't have admin access to this dashboard.",
-          variant: "destructive",
-        });
+        toast({ title: "Access Denied", description: "You don't have admin access.", variant: "destructive" });
         navigate('/');
         return;
       }
-
       setIsAdmin(true);
     } catch (error) {
       console.error('Admin check error:', error);
@@ -148,89 +140,33 @@ const AdminDashboard = () => {
     try {
       const { data, error } = await supabase
         .from('profiles')
-        .select(`
-          user_id,
-          first_name,
-          last_name,
-          display_name,
-          age,
-          location,
-          bio,
-          avatar_url,
-          verification_level,
-          can_access_app,
-          last_active,
-          created_at
-        `)
+        .select('user_id, display_name, age, location, bio, photos, is_verified, last_active, created_at')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
 
-      // Transform data to match User interface
-      const usersData = data.map(profile => ({
+      const usersData = (data || []).map((profile: any) => ({
         id: profile.user_id,
-        email: '', // We'll need to fetch this separately if needed
+        email: '',
         created_at: profile.created_at,
         profile: {
-          first_name: profile.first_name,
-          last_name: profile.last_name,
           display_name: profile.display_name,
           age: profile.age,
           location: profile.location,
           bio: profile.bio,
-          avatar_url: profile.avatar_url,
-          verification_level: profile.verification_level,
-          can_access_app: profile.can_access_app,
+          avatar_url: profile.photos?.[0] || '',
           last_active: profile.last_active,
         }
       }));
-
       setUsers(usersData);
     } catch (error) {
       console.error('Load users error:', error);
-      toast({
-        title: "Load Error",
-        description: "Failed to load users.",
-        variant: "destructive",
-      });
     }
   };
 
   const loadVerificationRequests = async () => {
-    try {
-      // First get verification requests
-      const { data: requests, error: requestsError } = await supabase
-        .from('verification_requests')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (requestsError) throw requestsError;
-
-      // Then get profiles for each request
-      const requestsWithProfiles = await Promise.all(
-        (requests || []).map(async (request) => {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('first_name, last_name, display_name, avatar_url')
-            .eq('user_id', request.user_id)
-            .single();
-
-          return {
-            ...request,
-            profiles: profile
-          };
-        })
-      );
-
-      setVerificationRequests(requestsWithProfiles);
-    } catch (error) {
-      console.error('Load verification requests error:', error);
-      toast({
-        title: "Load Error",
-        description: "Failed to load verification requests.",
-        variant: "destructive",
-      });
-    }
+    // verification_requests table not yet created — placeholder
+    setVerificationRequests([]);
   };
 
   const loadReportedContent = async () => {
