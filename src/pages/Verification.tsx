@@ -53,31 +53,18 @@ const Verification = () => {
 
   const loadVerificationData = async () => {
     try {
-      // Load verification request
-      const { data: verificationData, error: verificationError } = await supabase
-        .from('verification_requests')
-        .select('*')
-        .eq('user_id', user?.id)
-        .eq('verification_type', 'identity')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (verificationError && verificationError.code !== 'PGRST116') {
-        throw verificationError;
-      }
-
-      setVerificationRequest(verificationData as VerificationRequest | null);
+      // Verification requests table not yet created — use profile is_verified
+      setVerificationRequest(null);
 
       // Load profile data
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('can_access_app, verification_level, is_verified')
-        .eq('user_id', user?.id)
+        .select('is_verified')
+        .eq('user_id', user?.id ?? '')
         .single();
 
       if (profileError) throw profileError;
-      setProfile(profileData);
+      setProfile(profileData as Profile);
 
     } catch (error) {
       console.error('Error loading verification data:', error);
