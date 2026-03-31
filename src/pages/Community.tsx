@@ -58,7 +58,7 @@ const Community = () => {
         .select('*');
 
       if (activeTab === "trending") {
-        query = query.eq('is_trending', true).order('likes_count', { ascending: false });
+        query = query.order('likes_count', { ascending: false });
       } else {
         query = query.order('created_at', { ascending: false });
       }
