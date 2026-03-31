@@ -14,16 +14,351 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      likes: {
+        Row: {
+          created_at: string
+          id: string
+          like_type: Database["public"]["Enums"]["like_type"]
+          liked_id: string
+          liker_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          like_type?: Database["public"]["Enums"]["like_type"]
+          liked_id: string
+          liker_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          like_type?: Database["public"]["Enums"]["like_type"]
+          liked_id?: string
+          liker_id?: string
+        }
+        Relationships: []
+      }
+      matches: {
+        Row: {
+          created_at: string
+          id: string
+          matched_at: string | null
+          status: Database["public"]["Enums"]["match_status"]
+          updated_at: string
+          user1_id: string
+          user2_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          matched_at?: string | null
+          status?: Database["public"]["Enums"]["match_status"]
+          updated_at?: string
+          user1_id: string
+          user2_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          matched_at?: string | null
+          status?: Database["public"]["Enums"]["match_status"]
+          updated_at?: string
+          user1_id?: string
+          user2_id?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          is_read: boolean | null
+          match_id: string
+          message_type: string | null
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          match_id: string
+          message_type?: string | null
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          is_read?: boolean | null
+          match_id?: string
+          message_type?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_comments: {
+        Row: {
+          author_id: string
+          content: string
+          created_at: string
+          id: string
+          post_id: string
+        }
+        Insert: {
+          author_id: string
+          content: string
+          created_at?: string
+          id?: string
+          post_id: string
+        }
+        Update: {
+          author_id?: string
+          content?: string
+          created_at?: string
+          id?: string
+          post_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_comments_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      post_likes: {
+        Row: {
+          created_at: string
+          id: string
+          post_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          post_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          post_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "post_likes_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      posts: {
+        Row: {
+          author_id: string
+          comments_count: number | null
+          content: string
+          created_at: string
+          hashtags: string[] | null
+          id: string
+          image_url: string | null
+          likes_count: number | null
+          location: string | null
+          mood: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          comments_count?: number | null
+          content: string
+          created_at?: string
+          hashtags?: string[] | null
+          id?: string
+          image_url?: string | null
+          likes_count?: number | null
+          location?: string | null
+          mood?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          comments_count?: number | null
+          content?: string
+          created_at?: string
+          hashtags?: string[] | null
+          id?: string
+          image_url?: string | null
+          likes_count?: number | null
+          location?: string | null
+          mood?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          bio: string | null
+          children: string | null
+          created_at: string
+          display_name: string | null
+          drinking: string | null
+          education: string | null
+          gender: string | null
+          height: string | null
+          id: string
+          interests: string[] | null
+          is_premium: boolean | null
+          is_verified: boolean | null
+          last_active: string | null
+          latitude: number | null
+          location: string | null
+          longitude: number | null
+          looking_for: string | null
+          occupation: string | null
+          photos: string[] | null
+          religion: string | null
+          smoking: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          bio?: string | null
+          children?: string | null
+          created_at?: string
+          display_name?: string | null
+          drinking?: string | null
+          education?: string | null
+          gender?: string | null
+          height?: string | null
+          id?: string
+          interests?: string[] | null
+          is_premium?: boolean | null
+          is_verified?: boolean | null
+          last_active?: string | null
+          latitude?: number | null
+          location?: string | null
+          longitude?: number | null
+          looking_for?: string | null
+          occupation?: string | null
+          photos?: string[] | null
+          religion?: string | null
+          smoking?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          bio?: string | null
+          children?: string | null
+          created_at?: string
+          display_name?: string | null
+          drinking?: string | null
+          education?: string | null
+          gender?: string | null
+          height?: string | null
+          id?: string
+          interests?: string[] | null
+          is_premium?: boolean | null
+          is_verified?: boolean | null
+          last_active?: string | null
+          latitude?: number | null
+          location?: string | null
+          longitude?: number | null
+          looking_for?: string | null
+          occupation?: string | null
+          photos?: string[] | null
+          religion?: string | null
+          smoking?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          created_at: string
+          details: string | null
+          id: string
+          reason: string
+          reported_user_id: string
+          reporter_id: string
+          status: Database["public"]["Enums"]["report_status"] | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason: string
+          reported_user_id: string
+          reporter_id: string
+          status?: Database["public"]["Enums"]["report_status"] | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          reason?: string
+          reported_user_id?: string
+          reporter_id?: string
+          status?: Database["public"]["Enums"]["report_status"] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      like_type: "like" | "superlike" | "pass"
+      match_status: "pending" | "matched" | "unmatched"
+      report_status: "pending" | "reviewed" | "resolved" | "dismissed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +485,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      like_type: ["like", "superlike", "pass"],
+      match_status: ["pending", "matched", "unmatched"],
+      report_status: ["pending", "reviewed", "resolved", "dismissed"],
+    },
   },
 } as const
