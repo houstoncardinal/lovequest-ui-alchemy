@@ -114,7 +114,7 @@ const PostDetailView = () => {
     // Also try to persist
     if (user && postId) {
       try {
-        await supabase.from('post_comments').insert({ post_id: postId, user_id: user.id, content: newC.content });
+        await supabase.from('post_comments').insert({ post_id: postId, author_id: user.id, content: newC.content });
       } catch {}
     }
   };

@@ -16,7 +16,7 @@ const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onSend, onClose }) => {
   
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {

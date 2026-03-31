@@ -58,7 +58,7 @@ const Community = () => {
         .select('*');
 
       if (activeTab === "trending") {
-        query = query.eq('is_trending', true).order('likes_count', { ascending: false });
+        query = query.order('likes_count', { ascending: false });
       } else {
         query = query.order('created_at', { ascending: false });
       }
@@ -74,10 +74,10 @@ const Community = () => {
         })));
       } else {
         // Fetch profiles separately for now
-        const userIds = postsData?.map(post => post.user_id) || [];
+        const userIds = postsData?.map(post => post.author_id) || [];
         const { data: profilesData } = await supabase
           .from('profiles')
-          .select('user_id, display_name, avatar_url, first_name, last_name')
+          .select('user_id, display_name, photos')
           .in('user_id', userIds);
 
         // Check which posts current user has liked
@@ -95,7 +95,7 @@ const Community = () => {
         // Combine posts with profiles and like status
         const postsWithProfiles = postsData?.map(post => ({
           ...post,
-          profiles: profilesData?.find(profile => profile.user_id === post.user_id) || null,
+          profiles: profilesData?.find(profile => profile.user_id === post.author_id) || null,
           user_liked: userLikes.includes(post.id)
         })) || [];
 

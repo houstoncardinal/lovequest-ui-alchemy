@@ -183,7 +183,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
         .from('post_comments')
         .insert({
           post_id: post.id,
-          user_id: user.id,
+          author_id: user.id,
           content: newComment.trim()
         });
 

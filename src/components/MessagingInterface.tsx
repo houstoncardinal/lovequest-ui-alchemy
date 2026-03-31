@@ -22,16 +22,11 @@ import {
 interface Message {
   id: string;
   sender_id: string;
-  receiver_id: string;
+  match_id: string;
   content: string;
   message_type: string;
-  attachment_url?: string;
   is_read: boolean;
   created_at: string;
-  sender_profile?: {
-    display_name: string;
-    avatar_url?: string;
-  };
 }
 
 interface Match {
@@ -42,9 +37,7 @@ interface Match {
   matched_user?: {
     user_id: string;
     display_name: string;
-    avatar_url?: string;
-    first_name: string;
-    last_name: string;
+    photos?: string[];
   };
 }
 
@@ -52,20 +45,16 @@ const DEMO_MESSAGES: Message[] = [
   {
     id: 'demo-1',
     sender_id: 'demo-user-1',
-    receiver_id: 'current-user',
+    match_id: 'demo-match-1',
     content: "Hey! I noticed we both love hiking and coffee. What's your favorite trail?",
     message_type: 'text',
     is_read: true,
     created_at: new Date(Date.now() - 3600000).toISOString(),
-    sender_profile: {
-      display_name: 'Sarah',
-      avatar_url: '/lovable-uploads/a89fa103-cf18-412f-82e7-7e83b5aa0a85.png'
-    }
   },
   {
     id: 'demo-2',
     sender_id: 'current-user',
-    receiver_id: 'demo-user-1',
+    match_id: 'demo-match-1',
     content: "I love the trails up in the Catskills! Have you been to Kaaterskill Falls?",
     message_type: 'text',
     is_read: true,
@@ -74,15 +63,11 @@ const DEMO_MESSAGES: Message[] = [
   {
     id: 'demo-3',
     sender_id: 'demo-user-1',
-    receiver_id: 'current-user',
+    match_id: 'demo-match-1',
     content: "Not yet but it's been on my list forever! We should totally go together sometime 😊",
     message_type: 'text',
     is_read: false,
     created_at: new Date(Date.now() - 1800000).toISOString(),
-    sender_profile: {
-      display_name: 'Sarah',
-      avatar_url: '/lovable-uploads/a89fa103-cf18-412f-82e7-7e83b5aa0a85.png'
-    }
   }
 ];
 
@@ -95,9 +80,6 @@ const DEMO_MATCHES: Match[] = [
     matched_user: {
       user_id: 'demo-user-1',
       display_name: 'Sarah Johnson',
-      first_name: 'Sarah',
-      last_name: 'Johnson',
-      avatar_url: '/lovable-uploads/a89fa103-cf18-412f-82e7-7e83b5aa0a85.png'
     }
   },
   {
@@ -108,9 +90,6 @@ const DEMO_MATCHES: Match[] = [
     matched_user: {
       user_id: 'demo-user-2',
       display_name: 'Emily Chen',
-      first_name: 'Emily',
-      last_name: 'Chen',
-      avatar_url: '/assets/profile-2.jpg'
     }
   }
 ];
@@ -127,17 +106,16 @@ export const MessagingInterface = () => {
   const [isVoiceRecorderOpen, setIsVoiceRecorderOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
-  const [isInputFocused, setIsInputFocused] = useState(false);
 
-  const scrollToBottom = () => {
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, scrollToBottom]);
 
-  // Fetch matches and set up real-time subscriptions
+  // Fetch matches
   useEffect(() => {
     if (!user) return;
 
@@ -145,43 +123,35 @@ export const MessagingInterface = () => {
       try {
         const { data: realMatches, error } = await supabase
           .from('matches')
-          .select(`
-            *,
-            user1_profile:profiles!matches_user1_id_fkey (
-              user_id,
-              display_name,
-              first_name,
-              last_name,
-              avatar_url
-            ),
-            user2_profile:profiles!matches_user2_id_fkey (
-              user_id,
-              display_name,
-              first_name,
-              last_name,
-              avatar_url
-            )
-          `)
+          .select('*')
           .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`)
           .order('created_at', { ascending: false });
 
         if (error) throw error;
 
         if (realMatches && realMatches.length > 0) {
-          // Transform real data to match our interface
-          const transformedMatches: Match[] = realMatches.map(match => ({
-            id: match.id,
-            user1_id: match.user1_id,
-            user2_id: match.user2_id,
-            created_at: match.created_at,
-            matched_user: match.user1_id === user.id 
-              ? (match as any).user2_profile
-              : (match as any).user1_profile
-          }));
+          // Fetch profiles for matched users
+          const transformedMatches: Match[] = await Promise.all(
+            realMatches.map(async (match) => {
+              const otherUserId = match.user1_id === user.id ? match.user2_id : match.user1_id;
+              const { data: profile } = await supabase
+                .from('profiles')
+                .select('user_id, display_name, photos')
+                .eq('user_id', otherUserId)
+                .single();
+              
+              return {
+                id: match.id,
+                user1_id: match.user1_id,
+                user2_id: match.user2_id,
+                created_at: match.created_at,
+                matched_user: profile || { user_id: otherUserId, display_name: 'User' }
+              };
+            })
+          );
           setMatches(transformedMatches);
           setHasRealData(true);
         } else {
-          // Use demo data if no real matches
           setMatches(DEMO_MATCHES);
           setHasRealData(false);
         }
@@ -201,58 +171,39 @@ export const MessagingInterface = () => {
 
     const fetchMessages = async () => {
       if (!hasRealData) {
-        // Use demo messages
         setMessages(DEMO_MESSAGES);
         return;
       }
 
       try {
-        const matchedUserId = selectedMatch.user1_id === user.id 
-          ? selectedMatch.user2_id 
-          : selectedMatch.user1_id;
-
         const { data: realMessages, error } = await supabase
           .from('messages')
-          .select(`
-            *,
-            profiles!messages_sender_id_fkey (
-              display_name,
-              avatar_url
-            )
-          `)
-          .or(`and(sender_id.eq.${user.id},receiver_id.eq.${matchedUserId}),and(sender_id.eq.${matchedUserId},receiver_id.eq.${user.id})`)
+          .select('*')
+          .eq('match_id', selectedMatch.id)
           .order('created_at', { ascending: true });
 
         if (error) throw error;
-
         setMessages(realMessages || []);
       } catch (error) {
         console.error('Error fetching messages:', error);
-        toast({
-          title: "Error",
-          description: "Failed to load messages",
-          variant: "destructive",
-        });
       }
     };
 
     fetchMessages();
 
-    // Set up real-time subscription for messages
+    // Real-time subscription
     const channel = supabase
-      .channel('schema-db-changes')
+      .channel(`messages-${selectedMatch.id}`)
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'messages',
-          filter: hasRealData ? `or(sender_id.eq.${user.id},receiver_id.eq.${user.id})` : undefined
+          filter: `match_id=eq.${selectedMatch.id}`
         },
         (payload) => {
-          if (hasRealData) {
-            setMessages(prev => [...prev, payload.new as Message]);
-          }
+          setMessages(prev => [...prev, payload.new as Message]);
         }
       )
       .subscribe();
@@ -266,11 +217,10 @@ export const MessagingInterface = () => {
     if (!newMessage.trim() || !selectedMatch || !user) return;
 
     if (!hasRealData) {
-      // Demo mode - just add to local state
       const demoMessage: Message = {
         id: `demo-${Date.now()}`,
         sender_id: user.id,
-        receiver_id: selectedMatch.user2_id === user.id ? selectedMatch.user1_id : selectedMatch.user2_id,
+        match_id: selectedMatch.id,
         content: newMessage.trim(),
         message_type: 'text',
         is_read: false,
@@ -278,61 +228,25 @@ export const MessagingInterface = () => {
       };
       setMessages(prev => [...prev, demoMessage]);
       setNewMessage('');
-      toast({
-        title: "Demo Mode",
-        description: "Message sent in demo mode",
-      });
       return;
     }
 
     setLoading(true);
-
     try {
-      const matchedUserId = selectedMatch.user1_id === user.id 
-        ? selectedMatch.user2_id 
-        : selectedMatch.user1_id;
-
-      // Check content with moderation
-      const { data: moderationResult } = await supabase.functions.invoke('content-moderation', {
-        body: {
-          action: 'analyze_content',
-          content: newMessage.trim()
-        }
-      });
-
-      if (moderationResult?.recommended_action === 'block') {
-        toast({
-          title: "Message Blocked",
-          description: "Your message contains inappropriate content and cannot be sent.",
-          variant: "destructive",
-        });
-        setLoading(false);
-        return;
-      }
-
       const { error } = await supabase
         .from('messages')
         .insert({
           sender_id: user.id,
-          receiver_id: matchedUserId,
+          match_id: selectedMatch.id,
           content: newMessage.trim(),
           message_type: 'text'
         });
 
       if (error) throw error;
-
       setNewMessage('');
-      toast({
-        title: "Message sent",
-        description: "Your message has been delivered",
-      });
     } catch (error) {
       console.error('Error sending message:', error);
-      toast({
-        title: "Error",
-        description: "Failed to send message",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to send message", variant: "destructive" });
     } finally {
       setLoading(false);
     }
@@ -342,268 +256,124 @@ export const MessagingInterface = () => {
     imageInputRef.current?.click();
   };
 
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (!file || !selectedMatch || !user) return;
 
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast({
-        title: "Invalid File",
-        description: "Please select an image file",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Validate file size (max 10MB)
-    if (file.size > 10 * 1024 * 1024) {
-      toast({
-        title: "File Too Large",
-        description: "Please select an image smaller than 10MB",
-        variant: "destructive",
-      });
-      return;
-    }
-
     try {
-      toast({
-        title: "Uploading Image",
-        description: "Please wait...",
-      });
-
-      // Create unique file name
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}-${Date.now()}.${fileExt}`;
       const filePath = `message-images/${fileName}`;
 
-      // Upload to Supabase Storage
       const { error: uploadError } = await supabase.storage
-        .from('uploads')
+        .from('user-photos')
         .upload(filePath, file);
 
       if (uploadError) throw uploadError;
 
-      // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('uploads')
+        .from('user-photos')
         .getPublicUrl(filePath);
 
-      const matchedUserId = selectedMatch.user1_id === user.id
-        ? selectedMatch.user2_id
-        : selectedMatch.user1_id;
-
       if (!hasRealData) {
-        // Demo mode - show image in chat
         const demoMessage: Message = {
           id: `demo-${Date.now()}`,
           sender_id: user.id,
-          receiver_id: matchedUserId,
-          content: "",
+          match_id: selectedMatch.id,
+          content: publicUrl,
           message_type: 'image',
-          attachment_url: publicUrl,
           is_read: false,
           created_at: new Date().toISOString(),
         };
         setMessages(prev => [...prev, demoMessage]);
-        toast({
-          title: "Image Sent",
-          description: "Image shared in demo mode",
-        });
       } else {
-        // Send image message to database
-        const { error: messageError } = await supabase
-          .from('messages')
-          .insert({
-            sender_id: user.id,
-            receiver_id: matchedUserId,
-            content: "",
-            message_type: 'image',
-            attachment_url: publicUrl
-          });
-
-        if (messageError) throw messageError;
-
-        toast({
-          title: "Image Sent",
-          description: "Your image has been shared",
+        await supabase.from('messages').insert({
+          sender_id: user.id,
+          match_id: selectedMatch.id,
+          content: publicUrl,
+          message_type: 'image'
         });
-      }
-
-      // Clear file input
-      if (imageInputRef.current) {
-        imageInputRef.current.value = '';
       }
     } catch (error) {
       console.error('Error uploading image:', error);
-      toast({
-        title: "Upload Failed",
-        description: "Failed to upload image. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Upload Failed", description: "Failed to upload image.", variant: "destructive" });
     }
   };
 
-  const reportUser = async (reportType: string, reason?: string) => {
+  const reportUser = async (reportType: string) => {
     if (!selectedMatch || !user) return;
-
-    const matchedUserId = selectedMatch.user1_id === user.id
-      ? selectedMatch.user2_id
-      : selectedMatch.user1_id;
-
+    const matchedUserId = selectedMatch.user1_id === user.id ? selectedMatch.user2_id : selectedMatch.user1_id;
     try {
-      const { error } = await supabase.functions.invoke('content-moderation', {
-        body: {
-          action: 'report_user',
-          reported_user_id: matchedUserId,
-          report_type: reportType,
-          reason: reason
-        }
+      await supabase.from('reports').insert({
+        reporter_id: user.id,
+        reported_user_id: matchedUserId,
+        reason: reportType,
       });
-
-      if (error) throw error;
-
-      toast({
-        title: "Report Submitted",
-        description: "Thank you for reporting. We'll review this shortly.",
-      });
+      toast({ title: "Report Submitted", description: "Thank you for reporting." });
     } catch (error) {
-      console.error('Error reporting user:', error);
-      toast({
-        title: "Error",
-        description: "Failed to submit report",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to submit report", variant: "destructive" });
     }
   };
 
   const blockUser = async () => {
     if (!selectedMatch || !user) return;
-
-    const matchedUserId = selectedMatch.user1_id === user.id
-      ? selectedMatch.user2_id
-      : selectedMatch.user1_id;
-
+    const matchedUserId = selectedMatch.user1_id === user.id ? selectedMatch.user2_id : selectedMatch.user1_id;
     try {
-      const { error } = await supabase.functions.invoke('content-moderation', {
-        body: {
-          action: 'block_user',
-          reported_user_id: matchedUserId,
-          reason: 'Blocked from conversation'
-        }
+      await supabase.from('reports').insert({
+        reporter_id: user.id,
+        reported_user_id: matchedUserId,
+        reason: 'blocked',
+        details: 'Blocked from conversation',
       });
-
-      if (error) throw error;
-
-      toast({
-        title: "User Blocked",
-        description: "You won't receive messages from this user anymore.",
-      });
-
-      // Remove from matches
       setMatches(prev => prev.filter(match => match.id !== selectedMatch.id));
       setSelectedMatch(null);
+      toast({ title: "User Blocked" });
     } catch (error) {
-      console.error('Error blocking user:', error);
-      toast({
-        title: "Error",
-        description: "Failed to block user",
-        variant: "destructive",
-      });
+      toast({ title: "Error", description: "Failed to block user", variant: "destructive" });
     }
-  };
-
-  const handleVoiceSelect = () => {
-    setIsVoiceRecorderOpen(true);
   };
 
   const handleVoiceSend = async (audioBlob: Blob, duration: number) => {
     if (!selectedMatch || !user) return;
-
     try {
-      toast({
-        title: "Processing Voice Message",
-        description: "Please wait...",
-      });
-
-      // Create unique file name for voice message
       const fileName = `${user.id}-voice-${Date.now()}.wav`;
       const filePath = `voice-messages/${fileName}`;
-
-      // Upload to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from('uploads')
-        .upload(filePath, audioBlob);
-
-      if (uploadError) throw uploadError;
-
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from('uploads')
-        .getPublicUrl(filePath);
-
-      const matchedUserId = selectedMatch.user1_id === user.id
-        ? selectedMatch.user2_id
-        : selectedMatch.user1_id;
+      await supabase.storage.from('user-photos').upload(filePath, audioBlob);
+      const { data: { publicUrl } } = supabase.storage.from('user-photos').getPublicUrl(filePath);
 
       if (!hasRealData) {
-        // Demo mode - show voice message in chat
         const demoMessage: Message = {
           id: `demo-${Date.now()}`,
           sender_id: user.id,
-          receiver_id: matchedUserId,
-          content: `Voice message (${duration}s)`,
+          match_id: selectedMatch.id,
+          content: publicUrl,
           message_type: 'voice',
-          attachment_url: publicUrl,
           is_read: false,
           created_at: new Date().toISOString(),
         };
         setMessages(prev => [...prev, demoMessage]);
-        toast({
-          title: "Voice Message Sent",
-          description: "Voice message shared in demo mode",
-        });
       } else {
-        // Send voice message to database
-        const { error: messageError } = await supabase
-          .from('messages')
-          .insert({
-            sender_id: user.id,
-            receiver_id: matchedUserId,
-            content: "",
-            message_type: 'voice',
-            attachment_url: publicUrl
-          });
-
-        if (messageError) throw messageError;
-
-        toast({
-          title: "Voice Message Sent",
-          description: "Your voice message has been shared",
+        await supabase.from('messages').insert({
+          sender_id: user.id,
+          match_id: selectedMatch.id,
+          content: publicUrl,
+          message_type: 'voice'
         });
       }
     } catch (error) {
-      console.error('Error sending voice message:', error);
-      toast({
-        title: "Upload Failed",
-        description: "Failed to send voice message. Please try again.",
-        variant: "destructive",
-      });
+      toast({ title: "Upload Failed", description: "Failed to send voice message.", variant: "destructive" });
     }
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <div className="grid md:grid-cols-3 gap-6 h-[600px]">
+    <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Matches List */}
-        <Card className="md:col-span-1">
+        <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Send className="w-5 h-5" />
-              Your Matches
-              {!hasRealData && (
-                <Badge variant="secondary" className="text-xs">Demo</Badge>
-              )}
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Badge variant="secondary">{matches.length}</Badge>
+              Matches
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
@@ -620,14 +390,14 @@ export const MessagingInterface = () => {
                 >
                   <div className="flex items-center gap-3">
                     <Avatar>
-                      <AvatarImage src={match.matched_user?.avatar_url} />
+                      <AvatarImage src={match.matched_user?.photos?.[0]} />
                       <AvatarFallback>
-                        {match.matched_user?.first_name?.[0]}{match.matched_user?.last_name?.[0]}
+                        {match.matched_user?.display_name?.[0] || '?'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium truncate">
-                        {match.matched_user?.display_name || `${match.matched_user?.first_name} ${match.matched_user?.last_name}`}
+                        {match.matched_user?.display_name || 'User'}
                       </p>
                       <p className="text-sm text-muted-foreground">
                         Matched {new Date(match.created_at).toLocaleDateString()}
@@ -654,27 +424,21 @@ export const MessagingInterface = () => {
               <CardHeader className="flex-row items-center justify-between sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b border-border">
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarImage src={selectedMatch.matched_user?.avatar_url} />
+                    <AvatarImage src={selectedMatch.matched_user?.photos?.[0]} />
                     <AvatarFallback>
-                      {selectedMatch.matched_user?.first_name?.[0]}{selectedMatch.matched_user?.last_name?.[0]}
+                      {selectedMatch.matched_user?.display_name?.[0] || '?'}
                     </AvatarFallback>
                   </Avatar>
                   <div>
                     <CardTitle className="text-lg">
-                      {selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.first_name} ${selectedMatch.matched_user?.last_name}`}
+                      {selectedMatch.matched_user?.display_name || 'User'}
                     </CardTitle>
                     <p className="text-sm text-muted-foreground">Online now</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsVideoCallOpen(true)}
-                    className="bg-primary/5 hover:bg-primary/10 border-primary/20 text-primary"
-                  >
-                    <Video className="w-4 h-4 mr-2" />
-                    Video Call
+                  <Button variant="ghost" size="sm" onClick={() => setIsVideoCallOpen(true)}>
+                    <Video className="w-4 h-4" />
                   </Button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -696,7 +460,6 @@ export const MessagingInterface = () => {
                 </div>
               </CardHeader>
               <CardContent className="p-0 flex flex-col h-[500px]">
-                {/* Messages */}
                 <ScrollArea className="flex-1 p-4">
                   <AnimatePresence>
                     {messages.map((message) => (
@@ -708,32 +471,20 @@ export const MessagingInterface = () => {
                           message.sender_id === user?.id ? 'justify-end' : 'justify-start'
                         }`}
                       >
-                        {message.message_type === 'image' && message.attachment_url ? (
+                        {message.message_type === 'image' && message.content ? (
                           <div className="max-w-[70%] rounded-lg overflow-hidden">
-                            <img
-                              src={message.attachment_url}
-                              alt="Shared image"
-                              className="w-full h-auto rounded-lg max-h-64 object-cover"
-                            />
+                            <img src={message.content} alt="Shared image" className="w-full h-auto rounded-lg max-h-64 object-cover" />
                             <p className="text-xs opacity-70 mt-1 px-3 py-1">
-                              {new Date(message.created_at).toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
+                              {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </p>
                           </div>
                         ) : (
                           <div className={`max-w-[70%] ${
-                            message.sender_id === user?.id
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted'
+                            message.sender_id === user?.id ? 'bg-primary text-primary-foreground' : 'bg-muted'
                           } rounded-lg p-3`}>
                             <p className="text-sm">{message.content}</p>
                             <p className="text-xs opacity-70 mt-1">
-                              {new Date(message.created_at).toLocaleTimeString([], {
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
+                              {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                             </p>
                           </div>
                         )}
@@ -743,23 +494,12 @@ export const MessagingInterface = () => {
                   <div ref={messagesEndRef} />
                 </ScrollArea>
 
-                {/* Message Input */}
                 <div className="p-4 border-t">
                   <div className="flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleImageSelect}
-                      title="Send image"
-                    >
+                    <Button variant="outline" size="sm" onClick={handleImageSelect} title="Send image">
                       <Image className="w-4 h-4" />
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={handleVoiceSelect}
-                      title="Send voice message"
-                    >
+                    <Button variant="outline" size="sm" onClick={() => setIsVoiceRecorderOpen(true)} title="Send voice message">
                       <Mic className="w-4 h-4" />
                     </Button>
                     <Input
@@ -769,23 +509,11 @@ export const MessagingInterface = () => {
                       onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                       className="flex-1"
                     />
-                    <Button
-                      onClick={sendMessage}
-                      disabled={!newMessage.trim() || loading}
-                      size="sm"
-                    >
+                    <Button onClick={sendMessage} disabled={!newMessage.trim() || loading} size="sm">
                       <Send className="w-4 h-4" />
                     </Button>
                   </div>
-                  {/* Hidden file input for images */}
-                  <input
-                    type="file"
-                    ref={imageInputRef}
-                    onChange={handleImageUpload}
-                    accept="image/*"
-                    capture="environment"
-                    className="hidden"
-                  />
+                  <input type="file" ref={imageInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
                 </div>
               </CardContent>
             </>
@@ -801,17 +529,15 @@ export const MessagingInterface = () => {
         </Card>
       </div>
 
-      {/* Video Call Modal */}
       {selectedMatch && (
         <VideoCallModal
           isOpen={isVideoCallOpen}
           onClose={() => setIsVideoCallOpen(false)}
-          userName={selectedMatch.matched_user?.display_name || `${selectedMatch.matched_user?.first_name} ${selectedMatch.matched_user?.last_name}` || 'User'}
-          userImage={selectedMatch.matched_user?.avatar_url || '/assets/profile-1.jpg'}
+          userName={selectedMatch.matched_user?.display_name || 'User'}
+          userImage={selectedMatch.matched_user?.photos?.[0] || '/assets/profile-1.jpg'}
         />
       )}
 
-      {/* Voice Recorder */}
       {isVoiceRecorderOpen && selectedMatch && (
         <VoiceRecorder
           onSend={(audioBlob, duration) => {
