@@ -194,9 +194,6 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Email</p>
                 <p className="text-sm text-gray-500">{user?.email || "No email provided"}</p>
               </div>
-              <Button variant="outline" size="sm" disabled>
-                Change
-              </Button>
             </div>
             
             <div className="flex items-center justify-between">
@@ -204,7 +201,18 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Password</p>
                 <p className="text-sm text-gray-500">••••••••</p>
               </div>
-              <Button variant="outline" size="sm" disabled>
+              <Button variant="outline" size="sm" onClick={async () => {
+                if (!user?.email) return;
+                try {
+                  const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+                    redirectTo: `${window.location.origin}/reset-password`,
+                  });
+                  if (error) throw error;
+                  toast({ title: "Check your email", description: "Password reset link sent." });
+                } catch (err: any) {
+                  toast({ title: "Error", description: err.message, variant: "destructive" });
+                }
+              }}>
                 Change
               </Button>
             </div>
