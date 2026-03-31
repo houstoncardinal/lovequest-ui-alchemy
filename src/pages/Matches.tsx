@@ -147,7 +147,7 @@ const Chat = () => {
       {
         id: "demo-msg-1",
         sender_id: "demo-user-1",
-        receiver_id: user?.id || "",
+        match_id: "demo-match-1",
         content: "Hey! I saw you're into music too 🎵",
         message_type: "text",
         created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
@@ -156,7 +156,7 @@ const Chat = () => {
       {
         id: "demo-msg-2",
         sender_id: user?.id || "",
-        receiver_id: "demo-user-1",
+        match_id: "demo-match-1",
         content: "Yes! I love discovering new artists. What's your favorite genre?",
         message_type: "text",
         created_at: new Date(Date.now() - 28 * 60 * 1000).toISOString(),
@@ -165,7 +165,7 @@ const Chat = () => {
       {
         id: "demo-msg-3",
         sender_id: "demo-user-1",
-        receiver_id: user?.id || "",
+        match_id: "demo-match-1",
         content: "I'm really into indie rock and some electronic music. There's this new band I found called Aurora Dreams - they're incredible!",
         message_type: "text",
         created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
@@ -174,7 +174,7 @@ const Chat = () => {
       {
         id: "demo-msg-4",
         sender_id: user?.id || "",
-        receiver_id: "demo-user-1",
+        match_id: "demo-match-1",
         content: "That sounds amazing! I'd love to check them out. Do you want to go to a concert together sometime?",
         message_type: "text",
         created_at: new Date(Date.now() - 23 * 60 * 1000).toISOString(),
@@ -183,7 +183,7 @@ const Chat = () => {
       {
         id: "demo-msg-5",
         sender_id: "demo-user-1",
-        receiver_id: user?.id || "",
+        match_id: "demo-match-1",
         content: "That sounds amazing! I'd love to go 🎵",
         message_type: "text",
         created_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(),

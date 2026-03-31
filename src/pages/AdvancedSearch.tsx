@@ -137,23 +137,9 @@ const AdvancedSearch = () => {
         .lte('age', filters.ageRange[1])
         .limit(20);
 
-      if (filters.isVerified) {
-        query = query.eq('is_verified', true);
-      }
-
-      // Last active filter
-      if (filters.lastActiveWithin !== 'any') {
-        const days = parseInt(filters.lastActiveWithin);
-        const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() - days);
-        query = query.gte('last_active', cutoffDate.toISOString());
-      }
-
-      const { data, error } = await query.limit(20);
-
       if (error) throw error;
 
-      setResults(data || []);
+      setResults((data as unknown as Profile[]) || []);
       
       toast({
         title: "Search Complete",
