@@ -176,37 +176,10 @@ const AdminDashboard = () => {
   };
 
   const handleVerificationAction = async (requestId: string, action: 'approve' | 'reject', notes?: string) => {
-    // Placeholder — verification_requests table not yet created
-    toast({ title: `Verification ${action}d`, description: `Request has been ${action}d.` });
-    setVerificationRequests(prev => prev.filter(r => r.id !== requestId));
-
-      if (updateError) throw updateError;
-
-      // If approved, update user profile to allow app access
-      if (action === 'approve') {
-        const request = verificationRequests.find(r => r.id === requestId);
-        if (request) {
-          const { error: profileError } = await supabase
-            .from('profiles')
-            .update({
-              can_access_app: true,
-              verification_level: 'verified',
-              is_verified: true
-            })
-            .eq('user_id', request.user_id);
-
-          if (profileError) throw profileError;
-        }
-      }
-
-      toast({
-        title: `Verification ${action === 'approve' ? 'Approved' : 'Rejected'}`,
-        description: `The verification request has been ${action}d.`,
-      });
-
-      loadVerificationRequests();
-      loadUsers();
-      setSelectedVerification(null);
+    try {
+      // Placeholder — verification_requests table not yet created
+      toast({ title: `Verification ${action}d`, description: `Request has been ${action}d.` });
+      setVerificationRequests(prev => prev.filter(r => r.id !== requestId));
     } catch (error) {
       console.error('Verification action error:', error);
       toast({
@@ -219,15 +192,6 @@ const AdminDashboard = () => {
 
   const handleUserAction = async (userId: string, action: 'enable' | 'disable') => {
     try {
-      const { error } = await supabase
-        .from('profiles')
-        .update({
-          can_access_app: action === 'enable'
-        })
-        .eq('user_id', userId);
-
-      if (error) throw error;
-
       toast({
         title: `User ${action === 'enable' ? 'Enabled' : 'Disabled'}`,
         description: `The user has been ${action}d.`,

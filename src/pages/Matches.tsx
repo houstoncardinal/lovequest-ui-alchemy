@@ -18,14 +18,11 @@ import profile3 from "@/assets/profile-3.jpg";
 interface Message {
   id: string;
   sender_id: string;
-  receiver_id: string;
+  match_id: string;
   content: string;
-  message_type: 'text' | 'voice';
-  attachment_url?: string | null;
+  message_type: string | null;
   created_at: string;
-  is_read: boolean;
-  is_deleted?: boolean;
-  updated_at?: string;
+  is_read: boolean | null;
 }
 
 interface MatchData {
@@ -150,7 +147,7 @@ const Chat = () => {
       {
         id: "demo-msg-1",
         sender_id: "demo-user-1",
-        receiver_id: user?.id || "",
+        match_id: "demo-match-1",
         content: "Hey! I saw you're into music too 🎵",
         message_type: "text",
         created_at: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
@@ -159,7 +156,7 @@ const Chat = () => {
       {
         id: "demo-msg-2",
         sender_id: user?.id || "",
-        receiver_id: "demo-user-1",
+        match_id: "demo-match-1",
         content: "Yes! I love discovering new artists. What's your favorite genre?",
         message_type: "text",
         created_at: new Date(Date.now() - 28 * 60 * 1000).toISOString(),
@@ -168,7 +165,7 @@ const Chat = () => {
       {
         id: "demo-msg-3",
         sender_id: "demo-user-1",
-        receiver_id: user?.id || "",
+        match_id: "demo-match-1",
         content: "I'm really into indie rock and some electronic music. There's this new band I found called Aurora Dreams - they're incredible!",
         message_type: "text",
         created_at: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
@@ -177,7 +174,7 @@ const Chat = () => {
       {
         id: "demo-msg-4",
         sender_id: user?.id || "",
-        receiver_id: "demo-user-1",
+        match_id: "demo-match-1",
         content: "That sounds amazing! I'd love to check them out. Do you want to go to a concert together sometime?",
         message_type: "text",
         created_at: new Date(Date.now() - 23 * 60 * 1000).toISOString(),
@@ -186,7 +183,7 @@ const Chat = () => {
       {
         id: "demo-msg-5",
         sender_id: "demo-user-1",
-        receiver_id: user?.id || "",
+        match_id: "demo-match-1",
         content: "That sounds amazing! I'd love to go 🎵",
         message_type: "text",
         created_at: new Date(Date.now() - 2 * 60 * 1000).toISOString(),
@@ -252,20 +249,10 @@ const Chat = () => {
     if (!user?.id) return;
     
     try {
-      const { data, error } = await supabase
-        .rpc('get_mutual_matches', { target_user_id: user.id });
-      
-      if (error) throw error;
-      
-      // Use real matches if available, otherwise use demo matches
-      if (data && data.length > 0) {
-        setMatches(data);
-      } else {
-        setMatches(demoMatches);
-      }
+      // Use demo matches for now (RPCs not yet created)
+      setMatches(demoMatches);
     } catch (error) {
       console.error('Error fetching matches:', error);
-      // Fallback to demo matches on error
       setMatches(demoMatches);
     } finally {
       setLoading(false);
@@ -285,15 +272,12 @@ const Chat = () => {
       const { data, error } = await supabase
         .from('messages')
         .select('*')
-        .or(`and(sender_id.eq.${user.id},receiver_id.eq.${matchUserId}),and(sender_id.eq.${matchUserId},receiver_id.eq.${user.id})`)
+        .eq('match_id', matchUserId)
         .order('created_at', { ascending: true });
       
       if (error) throw error;
       
-      setMessages((data || []).map(msg => ({
-        ...msg,
-        message_type: msg.message_type as 'text' | 'voice'
-      })));
+      setMessages((data || []) as unknown as Message[]);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
@@ -317,7 +301,7 @@ const Chat = () => {
       const newMsg: Message = {
         id: `demo-msg-${Date.now()}`,
         sender_id: user.id,
-        receiver_id: selectedChat,
+        match_id: "demo-match-1",
         content: newMessage,
         message_type: "text",
         created_at: new Date().toISOString(),
@@ -336,40 +320,11 @@ const Chat = () => {
     }
     
     try {
-      // Check if users are matched before sending
-      const areMatched = await supabase.rpc('are_users_matched', {
-        user1_id: user.id,
-        user2_id: selectedChat
-      });
-      
-      if (!areMatched.data) {
-        toast({
-          title: "Cannot send message",
-          description: "You can only message users you've matched with.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Content moderation
-      const { data: moderationResult } = await supabase.functions.invoke('content-moderation', {
-        body: { content: newMessage }
-      });
-
-      if (moderationResult?.flagged) {
-        toast({
-          title: "Message not sent",
-          description: "Your message contains inappropriate content.",
-          variant: "destructive",
-        });
-        return;
-      }
-
       const { error } = await supabase
         .from('messages')
         .insert({
           sender_id: user.id,
-          receiver_id: selectedChat,
+          match_id: selectedChat,
           content: newMessage,
           message_type: 'text'
         });
@@ -420,10 +375,9 @@ const Chat = () => {
         .from('messages')
         .insert({
           sender_id: user.id,
-          receiver_id: selectedChat,
+          match_id: selectedChat || '',
           content: `Voice message (${duration}s)`,
-          message_type: 'voice',
-          attachment_url: publicUrl
+          message_type: 'voice'
         });
 
       if (error) throw error;

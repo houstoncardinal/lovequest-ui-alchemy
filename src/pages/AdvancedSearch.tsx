@@ -47,18 +47,15 @@ interface SearchFilters {
 
 interface Profile {
   user_id: string;
-  first_name: string;
-  last_name: string;
-  age: number;
-  location: string;
-  bio: string;
-  avatar_url: string;
-  education_level: string;
-  career_field: string;
-  religion_level: string;
-  prayer_frequency: string;
-  is_verified: boolean;
-  verification_level: string;
+  display_name: string | null;
+  age: number | null;
+  location: string | null;
+  bio: string | null;
+  photos: string[] | null;
+  education: string | null;
+  occupation: string | null;
+  religion: string | null;
+  is_verified: boolean | null;
 }
 
 const AdvancedSearch = () => {
@@ -132,71 +129,17 @@ const AdvancedSearch = () => {
   const performSearch = async () => {
     setLoading(true);
     try {
-      let query = supabase
+      const { data, error } = await supabase
         .from('profiles')
-        .select('*')
-        .neq('user_id', user?.id)
+        .select('user_id, display_name, age, location, bio, photos, education, occupation, religion, is_verified')
+        .neq('user_id', user?.id || '')
         .gte('age', filters.ageRange[0])
-        .lte('age', filters.ageRange[1]);
-
-      // Apply filters
-      if (filters.location) {
-        query = query.ilike('location', `%${filters.location}%`);
-      }
-
-      if (filters.educationLevel.length > 0) {
-        query = query.in('education_level', filters.educationLevel);
-      }
-
-      if (filters.careerField.length > 0) {
-        query = query.in('career_field', filters.careerField);
-      }
-
-      if (filters.marriageTimeline.length > 0) {
-        query = query.in('marriage_timeline', filters.marriageTimeline);
-      }
-
-      if (filters.smokingStatus.length > 0) {
-        query = query.in('smoking_status', filters.smokingStatus);
-      }
-
-      if (filters.maritalStatus.length > 0) {
-        query = query.in('marital_status', filters.maritalStatus);
-      }
-
-      if (filters.childrenPreference.length > 0) {
-        query = query.in('children_preference', filters.childrenPreference);
-      }
-
-      if (filters.previousMarriage !== null) {
-        query = query.eq('previous_marriage', filters.previousMarriage);
-      }
-
-      if (filters.wantsChildren !== null) {
-        query = query.eq('wants_children', filters.wantsChildren);
-      }
-
-      if (filters.hasChildren !== null) {
-        query = query.eq('has_children', filters.hasChildren);
-      }
-
-      if (filters.isVerified) {
-        query = query.eq('is_verified', true);
-      }
-
-      // Last active filter
-      if (filters.lastActiveWithin !== 'any') {
-        const days = parseInt(filters.lastActiveWithin);
-        const cutoffDate = new Date();
-        cutoffDate.setDate(cutoffDate.getDate() - days);
-        query = query.gte('last_active', cutoffDate.toISOString());
-      }
-
-      const { data, error } = await query.limit(20);
+        .lte('age', filters.ageRange[1])
+        .limit(20);
 
       if (error) throw error;
 
-      setResults(data || []);
+      setResults((data as unknown as Profile[]) || []);
       
       toast({
         title: "Search Complete",
@@ -540,11 +483,11 @@ const AdvancedSearch = () => {
                   <ProfileCard
                     key={profile.user_id}
                     id={profile.user_id}
-                    name={`${profile.first_name} ${profile.last_name}`}
+                    name={profile.display_name || 'Unknown'}
                     age={profile.age}
                     location={profile.location}
                     bio={profile.bio}
-                    image={profile.avatar_url}
+                    image={profile.photos?.[0] || ''}
                     verified={profile.is_verified}
                     matchScore={85} // This would be calculated
                     badges={[]}

@@ -88,7 +88,7 @@ const ManagePhotos = () => {
                           Main
                         </div>
                       )}
-                      {getStatusBadge(upload.upload_status)}
+                      {upload.is_primary && getStatusBadge('approved')}
                     </div>
                     <button
                       onClick={() => deletePhoto(upload.id)}
@@ -99,7 +99,7 @@ const ManagePhotos = () => {
                   </div>
 
                   {/* Set as Main Button */}
-                  {!upload.is_primary && upload.upload_status === 'approved' && (
+                  {!upload.is_primary && (
                     <button
                       onClick={() => setPrimaryPhoto(upload.id)}
                       className="absolute bottom-2 left-2 right-2 bg-white/90 backdrop-blur-sm text-gray-900 py-2 rounded-lg text-sm font-medium"

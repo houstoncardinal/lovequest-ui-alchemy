@@ -147,7 +147,7 @@ const PostDetailView = () => {
   }
 
   const displayName = post.profiles?.display_name || 'Unknown';
-  const initials = (post.profiles?.first_name?.[0] || '') + (post.profiles?.last_name?.[0] || '');
+  const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2);
   const selectedMood = post.mood ? moods.find(m => m.id === post.mood) : null;
 
   return (
@@ -169,7 +169,7 @@ const PostDetailView = () => {
           {/* Author */}
           <div className="flex items-center gap-3 mb-4">
             <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
-              <AvatarImage src={post.profiles?.avatar_url} />
+              <AvatarImage src={post.profiles?.photos?.[0]} />
               <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">{initials}</AvatarFallback>
             </Avatar>
             <div className="flex-1">

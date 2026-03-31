@@ -22,20 +22,17 @@ interface PostCardProps {
   post: {
     id: string;
     content: string;
-    image_url?: string;
-    location?: string;
-    hashtags?: string[];
-    mood?: string;
-    is_trending: boolean;
-    likes_count: number;
-    comments_count: number;
+    image_url?: string | null;
+    location?: string | null;
+    hashtags?: string[] | null;
+    mood?: string | null;
+    likes_count: number | null;
+    comments_count: number | null;
     created_at: string;
-    user_id: string;
+    author_id: string;
     profiles?: {
-      display_name?: string;
-      avatar_url?: string;
-      first_name?: string;
-      last_name?: string;
+      display_name?: string | null;
+      photos?: string[] | null;
     } | null;
     user_liked?: boolean;
   };
@@ -232,11 +229,8 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
     }
   };
 
-  const displayName = post.profiles?.display_name || 
-    `${post.profiles?.first_name} ${post.profiles?.last_name}`.trim() || 
-    'Unknown User';
-
-  const initials = post.profiles?.first_name?.[0] + (post.profiles?.last_name?.[0] || '');
+  const displayName = post.profiles?.display_name || 'Unknown User';
+  const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2);
 
   const selectedMood = post.mood ? moods.find(mood => mood.id === post.mood) : null;
 
@@ -254,12 +248,12 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
             <div className="flex items-center gap-3">
               <div className="relative group">
                 <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background transition-all duration-300 group-hover:ring-primary/40">
-                  <AvatarImage src={post.profiles?.avatar_url} className="object-cover" />
+                  <AvatarImage src={post.profiles?.photos?.[0]} className="object-cover" />
                   <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">
                     {initials}
                   </AvatarFallback>
                 </Avatar>
-                {post.is_trending && (
+                {(post.likes_count || 0) > 40 && (
                   <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-primary rounded-full flex items-center justify-center">
                     <div className="w-2 h-2 bg-background rounded-full"></div>
                   </div>
@@ -277,7 +271,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
                       {selectedMood.label}
                     </Badge>
                   )}
-                  {post.is_trending && (
+                  {(post.likes_count || 0) > 40 && (
                     <Badge variant="secondary" className="bg-gradient-primary/10 text-primary border-primary/20 text-xs shadow-sm">
                       ✨ Trending
                     </Badge>
@@ -296,7 +290,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
               </div>
             </div>
 
-            {currentUserId === post.user_id && (
+            {currentUserId === post.author_id && (
               <PostMenu
                 postId={post.id}
                 onEdit={() => onEdit(post)}
@@ -443,7 +437,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
             <div className="border rounded-lg p-4 bg-card">
               <div className="flex items-center gap-3 mb-3">
                 <Avatar>
-                  <AvatarImage src={post.profiles?.avatar_url} />
+                  <AvatarImage src={post.profiles?.photos?.[0]} />
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <div>

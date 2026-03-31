@@ -18,20 +18,17 @@ import { DEMO_POSTS } from "@/data/demoData";
 interface Post {
   id: string;
   content: string;
-  image_url?: string;
-  location?: string;
-  hashtags?: string[];
-  mood?: string;
-  is_trending: boolean;
-  likes_count: number;
-  comments_count: number;
+  image_url?: string | null;
+  location?: string | null;
+  hashtags?: string[] | null;
+  mood?: string | null;
+  likes_count: number | null;
+  comments_count: number | null;
   created_at: string;
-  user_id: string;
+  author_id: string;
   profiles?: {
-    display_name?: string;
-    avatar_url?: string;
-    first_name?: string;
-    last_name?: string;
+    display_name?: string | null;
+    photos?: string[] | null;
   } | null;
   user_liked?: boolean;
 }
@@ -214,7 +211,7 @@ const Community = () => {
                   >
                     🔥 Trending
                     <Badge className={`text-xs ${activeTab === "trending" ? "bg-primary/15 text-primary" : "bg-primary/15 text-primary"}`}>
-                      {posts.filter(p => p.is_trending).length}
+                       {posts.filter(p => (p.likes_count || 0) > 40).length}
                     </Badge>
                   </button>
                   <button
@@ -227,7 +224,7 @@ const Community = () => {
                   >
                     🆕 Latest
                     <Badge className={`text-xs ${activeTab === "latest" ? "bg-primary/15 text-primary" : "bg-primary/15 text-primary"}`}>
-                      {posts.filter(p => !p.is_trending).length}
+                      {posts.filter(p => (p.likes_count || 0) <= 40).length}
                     </Badge>
                   </button>
                 </div>
@@ -268,7 +265,7 @@ const Community = () => {
                     <span className="font-bold text-primary">{posts.length}</span> posts shared
                   </div>
                   <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
-                    <span className="font-bold text-blue-600">{posts.filter(p => p.is_trending).length}</span> trending now
+                    <span className="font-bold text-blue-600">{posts.filter(p => (p.likes_count || 0) > 40).length}</span> trending now
                   </div>
                   <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-purple-600">{new Set(posts.flatMap(p => p.hashtags || [])).size}</span> topics discussed

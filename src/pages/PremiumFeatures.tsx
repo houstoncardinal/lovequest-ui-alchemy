@@ -51,43 +51,14 @@ const PremiumFeatures = () => {
   }, [user]);
 
   const fetchSubscription = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('premium_subscriptions')
-        .select('*')
-        .eq('user_id', user?.id)
-        .eq('is_active', true)
-        .single();
-
-      if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching subscription:', error);
-        return;
-      }
-
-      setSubscription(data as PremiumSubscription);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    // premium_subscriptions table not yet created
+    setSubscription(null);
   };
 
   const fetchFeatureUsage = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('premium_feature_usage')
-        .select('*')
-        .eq('user_id', user?.id);
-
-      if (error) {
-        console.error('Error fetching usage:', error);
-        return;
-      }
-
-      setFeatureUsage(data || []);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
+    // premium_feature_usage table not yet created
+    setFeatureUsage([]);
+    setLoading(false);
   };
 
   const plans = [

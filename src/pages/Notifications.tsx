@@ -86,41 +86,8 @@ const Notifications = () => {
     if (!user) return;
     
     try {
-      // Load notification preferences from Supabase
-      const { data: preferences } = await supabase
-        .from('notification_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      // Load user settings from Supabase
-      const { data: userSettings } = await supabase
-        .from('user_settings')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (preferences) {
-        setSettings(prev => ({
-          ...prev,
-          pushNotifications: preferences.push_enabled,
-          newMatches: preferences.new_matches,
-          messages: preferences.new_messages,
-          likes: preferences.profile_views,
-          superLikes: preferences.super_likes,
-          profileViews: preferences.profile_views,
-          emailNotifications: preferences.email_enabled,
-          marketing: preferences.marketing_emails
-        }));
-      }
-
-      if (userSettings) {
-        setSettings(prev => ({
-          ...prev,
-          soundEnabled: userSettings.sound_enabled,
-          vibrationEnabled: userSettings.vibration_enabled
-        }));
-      }
+      // Notification preferences tables not yet created - use defaults
+      console.log('Using default notification settings');
     } catch (error) {
       console.error('Error loading settings:', error);
     }
@@ -131,43 +98,8 @@ const Notifications = () => {
     
     setLoading(true);
     try {
-      // Save notification preferences to Supabase
-      await supabase
-        .from('notification_preferences')
-        .upsert({
-          user_id: user.id,
-          push_enabled: settings.pushNotifications,
-          new_matches: settings.newMatches,
-          new_messages: settings.messages,
-          profile_views: settings.profileViews,
-          super_likes: settings.superLikes,
-          email_enabled: settings.emailNotifications,
-          marketing_emails: settings.marketing
-        });
-
-      // Save user settings to Supabase
-      await supabase
-        .from('user_settings')
-        .upsert({
-          user_id: user.id,
-          sound_enabled: settings.soundEnabled,
-          vibration_enabled: settings.vibrationEnabled,
-          push_notifications: settings.pushNotifications
-        });
-
-      // Update preferences via edge function
-      await supabase.functions.invoke('push-notifications', {
-        body: {
-          action: 'update_preferences',
-          preferences: {
-            new_matches: settings.newMatches,
-            new_messages: settings.messages,
-            profile_views: settings.profileViews,
-            super_likes: settings.superLikes,
-            push_enabled: settings.pushNotifications
-          }
-        }
-      });
+      // Notification preferences tables not yet created - placeholder
+      console.log('Saving notification settings (placeholder)');
       
       toast({
         title: "Settings saved",

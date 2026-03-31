@@ -75,18 +75,10 @@ const Home = () => {
     if (!user) return;
     try {
       setLoading(true);
-      const { data, error } = await supabase.rpc('get_enhanced_match_recommendations_with_gender', {
-        target_user_id: user.id, limit_count: 10,
-      });
-      if (user.id === 'dev-user-id' || error || !data || data.length === 0) {
-        setProfiles(DEMO_PROFILES as MatchProfile[]);
-        setCurrentProfileIndex(0);
-        setNoMoreProfiles(false);
-      } else {
-        setProfiles(data);
-        setCurrentProfileIndex(0);
-        setNoMoreProfiles(false);
-      }
+      // Use demo profiles as the primary source for now
+      setProfiles(DEMO_PROFILES as MatchProfile[]);
+      setCurrentProfileIndex(0);
+      setNoMoreProfiles(false);
     } catch {
       setProfiles(DEMO_PROFILES as MatchProfile[]);
     } finally {
@@ -106,7 +98,7 @@ const Home = () => {
         return;
       }
       try {
-        const { error } = await supabase.from('user_likes').insert({ liker_id: user.id, liked_id: currentProfile.user_id });
+        const { error } = await supabase.from('likes').insert({ liker_id: user.id, liked_id: currentProfile.user_id, like_type: 'like' as const });
         if (!error) {
           recordLike();
           setIsLiking(true);
