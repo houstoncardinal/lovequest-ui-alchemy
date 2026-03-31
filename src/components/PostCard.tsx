@@ -267,7 +267,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
                       {selectedMood.label}
                     </Badge>
                   )}
-                  {post.is_trending && (
+                  {(post.likes_count || 0) > 40 && (
                     <Badge variant="secondary" className="bg-gradient-primary/10 text-primary border-primary/20 text-xs shadow-sm">
                       ✨ Trending
                     </Badge>
