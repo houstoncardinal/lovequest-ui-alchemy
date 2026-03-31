@@ -537,7 +537,7 @@ const AdvancedSearch = () => {
                   <ProfileCard
                     key={profile.user_id}
                     id={profile.user_id}
-                    name={`${profile.first_name} ${profile.last_name}`}
+                    name={profile.display_name || 'Unknown'}
                     age={profile.age}
                     location={profile.location}
                     bio={profile.bio}
