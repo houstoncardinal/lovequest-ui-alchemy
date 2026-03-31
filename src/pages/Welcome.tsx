@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, MessageCircle, Shield, Users, ArrowRight, LogIn, Sparkles, Star } from "lucide-react";
+import { Heart, MessageCircle, Shield, Users, ArrowRight, LogIn, Sparkles, Star, Crown } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
@@ -18,133 +18,132 @@ const Welcome = () => {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-background flex flex-col relative overflow-hidden">
-      {/* Background gradient blobs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-primary/15 to-accent/10 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-primary/10 to-violet-400/10 rounded-full translate-y-1/3 -translate-x-1/3 blur-3xl" />
+    <div className="h-[100dvh] bg-background flex flex-col relative overflow-hidden">
+      {/* Ambient background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] right-[-15%] w-[60vw] h-[60vw] max-w-[500px] max-h-[500px] bg-gradient-to-br from-primary/12 to-accent/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-15%] left-[-15%] w-[50vw] h-[50vw] max-w-[400px] max-h-[400px] bg-gradient-to-tr from-primary/8 to-violet-400/6 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] max-w-[600px] max-h-[600px] bg-gradient-to-r from-primary/[0.03] to-accent/[0.03] rounded-full blur-3xl" />
       </div>
 
-      {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
+      {/* Top bar */}
+      <motion.header
+        initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="relative z-10 flex items-center justify-center pt-12 pb-4"
+        transition={{ duration: 0.5 }}
+        className="relative z-10 flex items-center justify-between px-5 pt-[max(env(safe-area-inset-top),12px)] pb-2"
       >
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-gradient-hero rounded-2xl flex items-center justify-center shadow-elegant">
-            <Heart className="w-6 h-6 text-white fill-current" />
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 bg-gradient-hero rounded-xl flex items-center justify-center shadow-elegant">
+            <Heart className="w-[18px] h-[18px] text-white fill-current" />
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground tracking-tight">LoveQuest</h1>
-            <p className="text-xs text-primary font-semibold tracking-wider uppercase">Premium Dating</p>
-          </div>
+          <span className="text-lg font-bold text-foreground tracking-tight">LoveQuest</span>
         </div>
-      </motion.div>
+        <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-primary/8 border border-primary/15">
+          <Crown className="w-3 h-3 text-primary" />
+          <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">Premium</span>
+        </div>
+      </motion.header>
 
-      {/* Main Content */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-12">
-        <div className="w-full max-w-md mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="mb-10"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-4 leading-[1.1]">
-              Find Your<br />
-              <span className="text-gradient">Perfect Match</span>
-            </h2>
-            <p className="text-muted-foreground text-base leading-relaxed max-w-sm mx-auto">
-              Connect with amazing people who share your vibe. Real connections, real relationships.
-            </p>
-          </motion.div>
+      {/* Main — flex-1 fills remaining space, justify-between distributes content */}
+      <main className="relative z-10 flex-1 flex flex-col justify-between px-5 py-3 min-h-0">
+        {/* Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="text-center"
+        >
+          <h2 className="text-[clamp(1.75rem,7vw,3rem)] font-extrabold text-foreground leading-[1.08] tracking-tight">
+            Find Your<br />
+            <span className="text-gradient">Perfect Match</span>
+          </h2>
+          <p className="text-muted-foreground text-sm leading-relaxed max-w-[280px] mx-auto mt-2">
+            Real connections with people who share your energy. Start your story today.
+          </p>
+        </motion.div>
 
-          {/* Feature Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="grid grid-cols-2 gap-3 mb-10"
-          >
-            {[
-              { icon: Shield, title: "Verified Profiles", sub: "Safe & secure" },
-              { icon: Heart, title: "Smart Matching", sub: "AI-powered" },
-              { icon: Users, title: "1M+ Members", sub: "Growing daily" },
-              { icon: MessageCircle, title: "Chat & Video", sub: "Stay connected" },
-            ].map((item, i) => (
-              <div key={i} className="bg-card/80 backdrop-blur-sm rounded-2xl p-4 shadow-card border border-border/50 hover:shadow-card-hover transition-all duration-300">
-                <div className="w-10 h-10 bg-gradient-glow rounded-xl flex items-center justify-center mx-auto mb-2">
-                  <item.icon className="w-5 h-5 text-primary" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">{item.title}</p>
-                <p className="text-xs text-muted-foreground">{item.sub}</p>
+        {/* Features */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="grid grid-cols-4 gap-2 my-3"
+        >
+          {[
+            { icon: Shield, label: "Verified" },
+            { icon: Heart, label: "AI Match" },
+            { icon: Users, label: "1M+ Users" },
+            { icon: MessageCircle, label: "Chat" },
+          ].map((item, i) => (
+            <div key={i} className="flex flex-col items-center gap-1.5 py-3 rounded-2xl bg-card/70 backdrop-blur-sm border border-border/40">
+              <div className="w-9 h-9 rounded-xl bg-gradient-glow flex items-center justify-center">
+                <item.icon className="w-4 h-4 text-primary" />
               </div>
+              <span className="text-[11px] font-semibold text-foreground">{item.label}</span>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.45 }}
+          className="space-y-2.5"
+        >
+          <Button
+            onClick={() => navigate("/signup")}
+            className="w-full bg-gradient-hero text-white font-semibold h-[52px] rounded-2xl shadow-elegant hover:opacity-90 transition-all active:scale-[0.98] text-[15px]"
+            size="lg"
+          >
+            Get Started Free
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </Button>
+
+          <Button
+            onClick={() => navigate("/login")}
+            variant="outline"
+            className="w-full border-2 border-border text-foreground font-semibold h-[52px] rounded-2xl text-[15px] hover:bg-muted/60"
+            size="lg"
+          >
+            <LogIn className="w-4 h-4 mr-2" />
+            Sign In
+          </Button>
+        </motion.div>
+
+        {/* Social proof */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="text-center space-y-1.5 pb-[max(env(safe-area-inset-bottom),8px)]"
+        >
+          <div className="flex items-center justify-center gap-0.5">
+            {[...Array(5)].map((_, i) => (
+              <Star key={i} className="w-3.5 h-3.5 text-yellow-400 fill-current" />
             ))}
-          </motion.div>
+            <span className="text-xs text-muted-foreground ml-1.5 font-medium">4.8 · 50K+ reviews</span>
+          </div>
+          <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
+            <span className="flex items-center gap-1"><Shield className="w-2.5 h-2.5" /> SSL Secure</span>
+            <span className="w-px h-2.5 bg-border" />
+            <span className="flex items-center gap-1"><Sparkles className="w-2.5 h-2.5" /> AI Matching</span>
+            <span className="w-px h-2.5 bg-border" />
+            <span className="flex items-center gap-1"><Users className="w-2.5 h-2.5" /> Verified</span>
+          </div>
+        </motion.div>
+      </main>
 
-          {/* Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="space-y-3"
-          >
-            <Button
-              onClick={() => navigate("/signup")}
-              className="w-full bg-gradient-hero text-white font-semibold py-6 rounded-2xl shadow-elegant hover:opacity-90 transition-all active:scale-[0.98] text-base"
-              size="lg"
-            >
-              Get Started Free
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+      {/* Bottom accent */}
+      <div className="relative z-10 h-0.5 bg-gradient-hero" />
 
-            <Button
-              onClick={() => navigate("/login")}
-              variant="outline"
-              className="w-full border-2 border-border text-foreground font-semibold py-6 rounded-2xl text-base hover:bg-muted"
-              size="lg"
-            >
-              <LogIn className="w-5 h-5 mr-2" />
-              Sign In
-            </Button>
-          </motion.div>
-
-          {/* Social proof */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.8 }}
-            className="mt-8 space-y-3"
-          >
-            <div className="flex items-center justify-center gap-1">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-              ))}
-              <span className="text-sm text-muted-foreground ml-2 font-medium">4.8 • 50K+ reviews</span>
-            </div>
-            <div className="flex items-center justify-center gap-4 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1"><Shield className="w-3 h-3" /> SSL Secure</span>
-              <span className="w-px h-3 bg-border" />
-              <span className="flex items-center gap-1"><Sparkles className="w-3 h-3" /> AI Matching</span>
-              <span className="w-px h-3 bg-border" />
-              <span className="flex items-center gap-1"><Users className="w-3 h-3" /> Verified</span>
-            </div>
-          </motion.div>
-
-          {process.env.NODE_ENV === "development" && (
-            <div className="mt-6 pt-4 border-t border-border/50">
-              <button onClick={handleBypass} className="text-xs text-muted-foreground hover:text-foreground underline">
-                Dev Mode – Skip Registration
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Bottom accent line */}
-      <div className="relative z-10 h-1 bg-gradient-hero" />
+      {/* Dev bypass — hidden in prod */}
+      {process.env.NODE_ENV === "development" && (
+        <button onClick={handleBypass} className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 text-[10px] text-muted-foreground/50 hover:text-foreground">
+          Dev Skip
+        </button>
+      )}
     </div>
   );
 };
