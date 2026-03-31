@@ -64,6 +64,7 @@ const AppWithNavigation = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />

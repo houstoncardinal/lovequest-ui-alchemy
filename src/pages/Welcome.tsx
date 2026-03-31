@@ -8,15 +8,11 @@ import heroImage from "@/assets/welcome-hero.jpg";
 
 const Welcome = () => {
   const navigate = useNavigate();
-  const { user, loading, bypassAuth } = useAuth();
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     if (!loading && user) navigate('/');
   }, [user, loading, navigate]);
-
-  const handleBypass = async () => {
-    try { await bypassAuth(); navigate("/"); } catch (error) { console.error("Bypass failed:", error); }
-  };
 
   return (
     <div className="h-[100dvh] bg-background flex flex-col relative overflow-hidden">
@@ -32,12 +28,9 @@ const Welcome = () => {
           width={768}
           height={1024}
         />
-        {/* Gradient overlay bottom fade */}
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        {/* Gradient overlay top for status bar */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent h-24" />
 
-        {/* Logo on top of image */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -57,9 +50,8 @@ const Welcome = () => {
         </motion.div>
       </div>
 
-      {/* Content section — remaining 55% */}
+      {/* Content section */}
       <div className="relative z-10 flex-1 flex flex-col justify-between px-6 -mt-4 min-h-0">
-        {/* Title & tagline */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -75,7 +67,6 @@ const Welcome = () => {
           </p>
         </motion.div>
 
-        {/* Trust indicators — compact row */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -96,7 +87,6 @@ const Welcome = () => {
           ))}
         </motion.div>
 
-        {/* CTAs */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -123,7 +113,6 @@ const Welcome = () => {
           </Button>
         </motion.div>
 
-        {/* Social proof footer */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -142,15 +131,7 @@ const Welcome = () => {
         </motion.div>
       </div>
 
-      {/* Bottom accent line */}
       <div className="relative z-10 h-0.5 bg-gradient-hero" />
-
-      {/* Dev bypass */}
-      {import.meta.env.DEV && (
-        <button onClick={handleBypass} className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 text-[10px] text-muted-foreground/50 hover:text-foreground">
-          Dev Skip
-        </button>
-      )}
     </div>
   );
 };
