@@ -229,11 +229,8 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
     }
   };
 
-  const displayName = post.profiles?.display_name || 
-    `${post.profiles?.first_name} ${post.profiles?.last_name}`.trim() || 
-    'Unknown User';
-
-  const initials = post.profiles?.first_name?.[0] + (post.profiles?.last_name?.[0] || '');
+  const displayName = post.profiles?.display_name || 'Unknown User';
+  const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2);
 
   const selectedMood = post.mood ? moods.find(mood => mood.id === post.mood) : null;
 
