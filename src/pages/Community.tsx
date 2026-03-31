@@ -13,6 +13,7 @@ import PostCard from "@/components/PostCard";
 import CommunityLoadingSkeleton from "@/components/CommunityLoadingSkeleton";
 import CommunityEmptyState from "@/components/CommunityEmptyState";
 import { Badge } from "@/components/ui/badge";
+import { DEMO_POSTS } from "@/data/demoData";
 
 interface Post {
   id: string;
