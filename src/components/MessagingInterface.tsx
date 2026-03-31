@@ -37,9 +37,7 @@ interface Match {
   matched_user?: {
     user_id: string;
     display_name: string;
-    avatar_url?: string;
-    first_name: string;
-    last_name: string;
+    photos?: string[];
   };
 }
 
