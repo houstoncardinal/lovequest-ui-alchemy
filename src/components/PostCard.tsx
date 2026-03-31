@@ -254,6 +254,10 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
                   </AvatarFallback>
                 </Avatar>
                 {(post.likes_count || 0) > 40 && (
+                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-primary rounded-full flex items-center justify-center">
+                    <div className="w-2 h-2 bg-background rounded-full"></div>
+                  </div>
+                )}
               </div>
               
               <div className="flex-1 min-w-0">
