@@ -88,7 +88,7 @@ const LikeYou = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

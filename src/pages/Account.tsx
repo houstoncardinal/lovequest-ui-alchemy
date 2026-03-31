@@ -656,7 +656,7 @@ const Account = () => {
           </button>
         </div>
 
-        <InteractiveMenu />
+        
       </div>
     </>
   );

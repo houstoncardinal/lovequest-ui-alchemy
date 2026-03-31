@@ -831,7 +831,7 @@ const Chat = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

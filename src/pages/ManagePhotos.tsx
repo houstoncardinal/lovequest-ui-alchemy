@@ -152,7 +152,7 @@ const ManagePhotos = () => {
         )}
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

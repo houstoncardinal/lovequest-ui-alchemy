@@ -190,7 +190,7 @@ const HelpSupport = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

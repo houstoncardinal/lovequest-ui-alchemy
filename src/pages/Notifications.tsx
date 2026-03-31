@@ -341,7 +341,7 @@ const Notifications = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

@@ -246,7 +246,7 @@ const PrivacySafety = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

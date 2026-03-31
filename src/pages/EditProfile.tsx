@@ -1306,7 +1306,7 @@ const EditProfile = () => {
         </Card>
         </div>
 
-        <InteractiveMenu />
+        
       </div>
     </>
   );

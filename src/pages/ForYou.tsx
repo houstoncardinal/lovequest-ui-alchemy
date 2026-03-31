@@ -128,7 +128,7 @@ const ForYou = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };
