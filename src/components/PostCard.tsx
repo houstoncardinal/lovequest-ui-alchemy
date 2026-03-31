@@ -286,7 +286,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
               </div>
             </div>
 
-            {currentUserId === post.user_id && (
+            {currentUserId === post.author_id && (
               <PostMenu
                 postId={post.id}
                 onEdit={() => onEdit(post)}
