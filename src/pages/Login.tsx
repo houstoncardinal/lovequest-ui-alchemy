@@ -133,14 +133,6 @@ const Login = () => {
             </button>
           </form>
 
-          {process.env.NODE_ENV === "development" && (
-            <div className="mt-4">
-              <button onClick={handleBypass}
-                className="w-full flex items-center justify-center gap-2 bg-muted hover:bg-muted/80 text-muted-foreground font-medium py-3 px-6 rounded-2xl border border-border transition-all">
-                <Zap className="w-5 h-5 text-yellow-500" /> Development Bypass
-              </button>
-            </div>
-          )}
 
           <div className="mt-6 text-center">
             <p className="text-muted-foreground">
