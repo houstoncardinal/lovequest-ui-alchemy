@@ -147,7 +147,7 @@ const PostDetailView = () => {
   }
 
   const displayName = post.profiles?.display_name || 'Unknown';
-  const initials = (post.profiles?.first_name?.[0] || '') + (post.profiles?.last_name?.[0] || '');
+  const initials = displayName.split(' ').map(n => n[0]).join('').slice(0, 2);
   const selectedMood = post.mood ? moods.find(m => m.id === post.mood) : null;
 
   return (
