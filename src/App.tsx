@@ -50,11 +50,9 @@ const AppWithNavigation = () => {
   // Pages where we don't want to show the bottom navigation
   const hideNavigationOn = ['/welcome', '/signup', '/login'];
   const showNavigation = !hideNavigationOn.includes(location.pathname);
+  const isAuthPage = hideNavigationOn.includes(location.pathname);
 
   return (
-    const isAuthPage = hideNavigationOn.includes(location.pathname);
-
-    return (
     <>
       {/* Desktop Navigation - only shown on desktop */}
       {showNavigation && <DesktopNavigation />}
