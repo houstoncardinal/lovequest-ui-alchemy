@@ -211,7 +211,7 @@ const Community = () => {
                   >
                     🔥 Trending
                     <Badge className={`text-xs ${activeTab === "trending" ? "bg-primary/15 text-primary" : "bg-primary/15 text-primary"}`}>
-                      {posts.filter(p => p.is_trending).length}
+                       {posts.filter(p => (p.likes_count || 0) > 40).length}
                     </Badge>
                   </button>
                   <button
