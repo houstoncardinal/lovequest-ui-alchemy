@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, MessageCircle, Phone, Mail, ChevronDown, Search } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 
 const HelpSupport = () => {
   const navigate = useNavigate();

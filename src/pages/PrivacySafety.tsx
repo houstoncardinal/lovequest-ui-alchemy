@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Shield, Eye, EyeOff, Users, Bell, Save, Loader2 } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 

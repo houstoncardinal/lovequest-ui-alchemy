@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, X } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import { usePhotoVerification } from "@/hooks/usePhotoVerification";
 import { Badge } from "@/components/ui/badge";
 
