@@ -407,46 +407,46 @@ const Chat = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col h-screen max-h-screen relative">
         {/* Chat Header */}
-        <div className="bg-card/80 backdrop-blur-sm border-b border-border px-4 py-4 shadow-sm flex-shrink-0">
+        <div className="bg-card/95 backdrop-blur-md border-b border-border/50 px-3 py-2.5 shadow-sm flex-shrink-0">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center gap-2.5">
               <button 
                 onClick={() => setSelectedChat(null)}
-                className="mr-4 p-2 rounded-full hover:bg-primary/10 transition-colors"
+                className="p-1.5 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <ArrowLeft className="w-6 h-6 text-primary" />
+                <ArrowLeft className="w-5 h-5 text-primary" />
               </button>
               
-                <div className="relative mr-3 sm:mr-4">
+              <div className="relative">
                 <img 
                   src={currentUser?.avatar_url || profile1} 
                   alt={currentUser?.display_name}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl object-cover ring-2 ring-primary/15"
+                  className="w-9 h-9 rounded-full object-cover ring-2 ring-primary/15"
                 />
-                <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-primary border-2 border-white rounded-full shadow-sm"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-primary border-[1.5px] border-card rounded-full"></div>
               </div>
               
-              <div className="flex-1">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-bold text-foreground text-lg">{currentUser?.display_name}</h3>
-                  <Crown className="w-4 h-4 text-amber-500 fill-current" />
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-semibold text-foreground text-sm leading-tight">{currentUser?.display_name}</h3>
+                  <Crown className="w-3.5 h-3.5 text-amber-500 fill-current" />
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground leading-tight">
                   {currentUser?.location}
                 </p>
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-1">
               <button 
                 onClick={handleVideoCall}
                 className="p-2 rounded-full hover:bg-primary/10 transition-colors"
                 title="Video Call"
               >
-                <Video className="w-6 h-6 text-primary" />
+                <Video className="w-5 h-5 text-primary" />
               </button>
               <button className="p-2 rounded-full hover:bg-primary/10 transition-colors">
-                <MoreHorizontal className="w-6 h-6 text-primary" />
+                <MoreHorizontal className="w-5 h-5 text-primary" />
               </button>
             </div>
           </div>
