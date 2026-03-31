@@ -92,13 +92,6 @@ const Notifications = () => {
       console.error('Error loading settings:', error);
     }
   };
-          vibrationEnabled: userSettings.vibration_enabled
-        }));
-      }
-    } catch (error) {
-      console.error('Error loading settings:', error);
-    }
-  };
 
   const saveSettings = async () => {
     if (!user) return;
