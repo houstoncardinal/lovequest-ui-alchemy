@@ -140,7 +140,7 @@ const AdminDashboard = () => {
     loadProfiles();
   };
 
-  const handleReportAction = async (reportId: string, status: string) => {
+  const handleReportAction = async (reportId: string, status: 'pending' | 'reviewed' | 'resolved' | 'dismissed') => {
     const { error } = await supabase.from('reports').update({ status }).eq('id', reportId);
     if (error) { toast({ title: "Error", description: error.message, variant: "destructive" }); return; }
     toast({ title: `Report ${status}` });
