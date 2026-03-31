@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, MoreHorizontal, Camera, Send, ArrowLeft, Crown, Mic, Smile, Video, Phone, Settings, Shield, HelpCircle, Heart, Lock, Sparkles, SlidersHorizontal } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import EmojiPicker from "@/components/EmojiPicker";
 import VoiceRecorder from "@/components/VoiceRecorder";
 import VideoCallModal from "@/components/VideoCallModal";
@@ -576,7 +576,6 @@ const Chat = () => {
           userImage={currentUser?.avatar_url || ""}
         />
 
-        <InteractiveMenu />
       </div>
     );
   }
@@ -832,7 +831,7 @@ const Chat = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

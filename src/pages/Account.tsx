@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, Edit3, Camera, Shield, Bell, Heart, Users, HelpCircle, LogOut, Key, Crown, Star, CreditCard, Calendar, ArrowRight } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import ApiKeyManager from "@/components/ApiKeyManager";
 import { Badge } from "@/components/ui/badge";
@@ -656,7 +656,7 @@ const Account = () => {
           </button>
         </div>
 
-        <InteractiveMenu />
+        
       </div>
     </>
   );

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Camera, Plus, X, Save, Loader2, User, Sparkles, Heart, MapPin, Briefcase, GraduationCap, Upload, Mic, Play, Pause, Star } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import { useAuth } from "@/contexts/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -1306,7 +1306,7 @@ const EditProfile = () => {
         </Card>
         </div>
 
-        <InteractiveMenu />
+        
       </div>
     </>
   );

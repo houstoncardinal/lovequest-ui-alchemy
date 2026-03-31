@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Heart, Star, Zap, Users, Brain, Music } from "lucide-react";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -128,7 +128,7 @@ const ForYou = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };

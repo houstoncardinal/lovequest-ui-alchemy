@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { MapPin, ArrowLeft, Star, Play, Pause, Volume2, Camera, Crown } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import InterestTag from "@/components/InterestTag";
 import { Badge } from "@/components/ui/badge";
 import NewMatchCelebration from "@/components/NewMatchCelebration";

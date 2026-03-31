@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SlidersHorizontal } from "lucide-react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import InteractiveMenu from "@/components/ui/modern-mobile-menu";
+
 import ProfileCard from "@/components/ProfileCard";
 import { Badge } from "@/components/ui/badge";
 import profile1 from "@/assets/profile-1.jpg";
@@ -88,7 +88,7 @@ const LikeYou = () => {
         </div>
       </div>
 
-      <InteractiveMenu />
+      
     </div>
   );
 };
