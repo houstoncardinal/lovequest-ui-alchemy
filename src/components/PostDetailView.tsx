@@ -169,7 +169,7 @@ const PostDetailView = () => {
           {/* Author */}
           <div className="flex items-center gap-3 mb-4">
             <Avatar className="ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
-              <AvatarImage src={post.profiles?.avatar_url} />
+              <AvatarImage src={post.profiles?.photos?.[0]} />
               <AvatarFallback className="bg-gradient-primary text-primary-foreground font-semibold">{initials}</AvatarFallback>
             </Avatar>
             <div className="flex-1">

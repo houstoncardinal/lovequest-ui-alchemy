@@ -433,7 +433,7 @@ const PostCard = ({ post, currentUserId, onLike, onEdit, onDelete, formatTimeAgo
             <div className="border rounded-lg p-4 bg-card">
               <div className="flex items-center gap-3 mb-3">
                 <Avatar>
-                  <AvatarImage src={post.profiles?.avatar_url} />
+                  <AvatarImage src={post.profiles?.photos?.[0]} />
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>
                 <div>
