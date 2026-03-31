@@ -195,8 +195,8 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
             <div className="flex items-start gap-4">
               <div className="relative">
                 <img 
-                  src={profile.avatar_url} 
-                  alt={`${profile.first_name}'s profile`}
+                  src={profile.photos?.[0] || '/placeholder.svg'} 
+                  alt={`${profile.display_name}'s profile`}
                   className="w-20 h-20 rounded-full object-cover"
                 />
                 {profile.is_verified && (
