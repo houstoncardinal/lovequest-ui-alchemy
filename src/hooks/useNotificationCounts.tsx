@@ -8,31 +8,28 @@ export const useNotificationCounts = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchCounts = async () => {
-    if (!user) {
+    if (!user?.id) {
       setCounts({ likeYou: 0, matches: 0, community: 0 });
       setLoading(false);
       return;
     }
 
     try {
-      // Unread messages count
-      const { count: msgCount } = await supabase
-        .from('messages')
-        .select('*', { count: 'exact', head: true })
-        .neq('sender_id', user.id)
+      // Count unread notifications by type
+      const { data: notifications } = await supabase
+        .from('notifications')
+        .select('type')
+        .eq('user_id', user.id)
         .eq('is_read', false);
 
-      // Community posts with engagement
-      const { count: communityCount } = await supabase
-        .from('posts')
-        .select('*', { count: 'exact', head: true })
-        .eq('author_id', user.id)
-        .gt('likes_count', 0);
+      const likeCount = (notifications || []).filter(n => n.type === 'like' || n.type === 'superlike').length;
+      const matchMsgCount = (notifications || []).filter(n => n.type === 'match' || n.type === 'message').length;
+      const communityCount = (notifications || []).filter(n => n.type === 'community').length;
 
       setCounts({
-        likeYou: 0,
-        matches: msgCount || 0,
-        community: communityCount || 0,
+        likeYou: likeCount,
+        matches: matchMsgCount,
+        community: communityCount,
       });
     } catch (error) {
       console.error('Error fetching notification counts:', error);
@@ -46,7 +43,7 @@ export const useNotificationCounts = () => {
     fetchCounts();
     const interval = setInterval(fetchCounts, 30000);
     return () => clearInterval(interval);
-  }, [user]);
+  }, [user?.id]);
 
   return { counts, loading, refetch: fetchCounts };
 };
