@@ -463,11 +463,33 @@ const Settings = () => {
               variant="outline" 
               className="w-full justify-start" 
               size="sm"
-              onClick={() => {
-                toast({
-                  title: "Data export",
-                  description: "Data export feature will be implemented soon.",
-                });
+              onClick={async () => {
+                if (!user) return;
+                try {
+                  const { data: profile } = await supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle();
+                  const { data: matches } = await supabase.from('matches').select('*').or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
+                  const { data: likes } = await supabase.from('likes').select('*').eq('liker_id', user.id);
+                  
+                  const exportData = {
+                    email: user.email,
+                    profile,
+                    matches_count: matches?.length || 0,
+                    likes_sent: likes?.length || 0,
+                    exported_at: new Date().toISOString(),
+                  };
+                  
+                  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'lovequest-data-export.json';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  
+                  toast({ title: "Data exported", description: "Your data has been downloaded." });
+                } catch (error) {
+                  toast({ title: "Error", description: "Failed to export data.", variant: "destructive" });
+                }
               }}
             >
               <Download className="h-4 w-4 mr-2" />
