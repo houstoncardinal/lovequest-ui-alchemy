@@ -33,9 +33,7 @@ interface VerificationRequest {
 }
 
 interface Profile {
-  can_access_app: boolean;
-  verification_level: string;
-  is_verified: boolean;
+  is_verified: boolean | null;
 }
 
 const Verification = () => {
