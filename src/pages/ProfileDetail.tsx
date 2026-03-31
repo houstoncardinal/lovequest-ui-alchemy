@@ -272,28 +272,37 @@ const ProfileDetail = () => {
         {renderTabContent()}
       </div>
 
-      {/* Action Bar — sits above the mobile bottom nav */}
-      <div className="fixed bottom-20 md:bottom-0 left-0 right-0 bg-background/95 backdrop-blur-md border-t border-border/30 py-3 px-4 z-40">
-        <div className="flex items-center justify-center gap-5 max-w-lg mx-auto">
+      {/* Action Bar — floating above the mobile bottom nav */}
+      <div className="fixed bottom-20 md:bottom-0 left-0 right-0 py-4 px-4 z-40 pointer-events-none">
+        <div className="flex items-center justify-center gap-6 max-w-lg mx-auto pointer-events-auto">
           <motion.button
             onClick={() => navigate(-1)}
             whileTap={{ scale: 0.85 }}
-            className="w-14 h-14 rounded-full bg-card border border-border shadow-md flex items-center justify-center transition-all hover:shadow-lg hover:border-destructive/30"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="w-12 h-12 rounded-full bg-card/80 backdrop-blur-lg border border-border/40 shadow-lg flex items-center justify-center transition-all hover:shadow-xl hover:bg-destructive/10 hover:border-destructive/30 active:bg-destructive/20"
           >
-            <span className="text-xl text-muted-foreground">✕</span>
+            <span className="text-base font-semibold text-muted-foreground">✕</span>
           </motion.button>
           <motion.button
             onClick={handlePassAction}
             whileTap={{ scale: 0.85 }}
-            className="w-[4.5rem] h-[4.5rem] rounded-full bg-primary shadow-lg flex items-center justify-center transition-all hover:shadow-xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            className="w-16 h-16 rounded-full bg-primary shadow-xl shadow-primary/30 flex items-center justify-center transition-all hover:shadow-2xl hover:shadow-primary/40 hover:scale-105"
           >
-            <span className="text-3xl">❤️</span>
+            <span className="text-2xl">❤️</span>
           </motion.button>
           <motion.button
             whileTap={{ scale: 0.85 }}
-            className="w-14 h-14 rounded-full bg-card border border-border shadow-md flex items-center justify-center transition-all hover:shadow-lg hover:border-amber-400/30"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="w-12 h-12 rounded-full bg-card/80 backdrop-blur-lg border border-border/40 shadow-lg flex items-center justify-center transition-all hover:shadow-xl hover:bg-amber-500/10 hover:border-amber-400/30 active:bg-amber-500/20"
           >
-            <Star className="w-6 h-6 text-amber-500" />
+            <Star className="w-5 h-5 text-amber-500" />
           </motion.button>
         </div>
       </div>
