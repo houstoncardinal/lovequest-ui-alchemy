@@ -128,7 +128,7 @@ const CreatePostModal = ({ open, onOpenChange, onPostCreated }: CreatePostModalP
           image_url: imageUrl,
           hashtags: hashtags,
           mood: selectedMood,
-          user_id: user.id,
+          author_id: user.id,
         });
 
       if (error) throw error;
