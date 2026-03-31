@@ -407,46 +407,46 @@ const Chat = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/30 flex flex-col h-screen max-h-screen relative">
         {/* Chat Header */}
-        <div className="bg-card/80 backdrop-blur-sm border-b border-border px-4 py-4 shadow-sm flex-shrink-0">
+        <div className="bg-card/95 backdrop-blur-md border-b border-border/50 px-3 py-2.5 shadow-sm flex-shrink-0">
           <div className="flex items-center justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center gap-2.5">
               <button 
                 onClick={() => setSelectedChat(null)}
-                className="mr-4 p-2 rounded-full hover:bg-primary/10 transition-colors"
+                className="p-1.5 rounded-full hover:bg-primary/10 transition-colors"
               >
-                <ArrowLeft className="w-6 h-6 text-primary" />
+                <ArrowLeft className="w-5 h-5 text-primary" />
               </button>
               
-                <div className="relative mr-3 sm:mr-4">
+              <div className="relative">
                 <img 
                   src={currentUser?.avatar_url || profile1} 
                   alt={currentUser?.display_name}
-                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl object-cover ring-2 ring-primary/15"
+                  className="w-9 h-9 rounded-full object-cover ring-2 ring-primary/15"
                 />
-                <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-4 sm:h-4 bg-primary border-2 border-white rounded-full shadow-sm"></div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-primary border-[1.5px] border-card rounded-full"></div>
               </div>
               
-              <div className="flex-1">
-                <div className="flex items-center space-x-2">
-                  <h3 className="font-bold text-foreground text-lg">{currentUser?.display_name}</h3>
-                  <Crown className="w-4 h-4 text-amber-500 fill-current" />
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <h3 className="font-semibold text-foreground text-sm leading-tight">{currentUser?.display_name}</h3>
+                  <Crown className="w-3.5 h-3.5 text-amber-500 fill-current" />
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground leading-tight">
                   {currentUser?.location}
                 </p>
               </div>
             </div>
             
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center gap-1">
               <button 
                 onClick={handleVideoCall}
                 className="p-2 rounded-full hover:bg-primary/10 transition-colors"
                 title="Video Call"
               >
-                <Video className="w-6 h-6 text-primary" />
+                <Video className="w-5 h-5 text-primary" />
               </button>
               <button className="p-2 rounded-full hover:bg-primary/10 transition-colors">
-                <MoreHorizontal className="w-6 h-6 text-primary" />
+                <MoreHorizontal className="w-5 h-5 text-primary" />
               </button>
             </div>
           </div>
@@ -494,10 +494,9 @@ const Chat = () => {
 
         {/* Message Input */}
         <div
-          className="bg-card/90 backdrop-blur-sm border-t-2 border-border px-4 py-4 fixed bottom-0 left-0 w-full z-50 shadow-lg"
+          className="bg-card/95 backdrop-blur-md border-t border-border/50 px-3 py-2 fixed bottom-0 left-0 w-full z-50"
           style={{
-            // Increase this value if the input is still hidden on your device
-            paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 6rem)'
+            paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 4.5rem)'
           }}
         >
           {/* Voice Recorder */}
@@ -516,13 +515,13 @@ const Chat = () => {
             />
           )}
           
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center gap-2">
             <button 
               onClick={() => setShowVoiceRecorder(!showVoiceRecorder)}
-              className={`p-3 rounded-full transition-colors ${
+              className={`p-2 rounded-full transition-colors flex-shrink-0 ${
                 showVoiceRecorder 
-                  ? 'bg-primary text-white' 
-                  : 'bg-primary/10 hover:bg-primary/15 text-primary'
+                  ? 'bg-primary text-primary-foreground' 
+                  : 'hover:bg-primary/10 text-primary'
               }`}
               title="Voice Message"
             >
@@ -530,40 +529,40 @@ const Chat = () => {
             </button>
             
             <button 
-              className="p-3 rounded-full bg-primary/10 hover:bg-primary/15 transition-colors"
+              className="p-2 rounded-full hover:bg-primary/10 transition-colors flex-shrink-0"
               title="Camera"
             >
               <Camera className="w-5 h-5 text-primary" />
             </button>
             
-            <div className="flex-1 relative">
+            <div className="flex-1 relative flex items-center">
               <input
                 type="text"
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 placeholder="Type a message..."
-                className="w-full px-4 py-3 pr-12 bg-primary/10 rounded-2xl border border-border focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-border transition-colors"
+                className="w-full px-4 py-2 pr-10 bg-muted/60 rounded-full border-none focus:outline-none focus:ring-1 focus:ring-primary/30 transition-colors text-sm placeholder:text-muted-foreground"
               />
               <button
                 onClick={() => setShowEmojiPicker(!showEmojiPicker)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-primary/15 rounded-full transition-colors"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 p-0.5 hover:bg-primary/10 rounded-full transition-colors"
                 title="Emojis"
               >
-                <Smile className="w-5 h-5 text-primary" />
+                <Smile className="w-4.5 h-4.5 text-muted-foreground" />
               </button>
             </div>
             
             <button 
               onClick={handleSendMessage}
-              className={`p-3 rounded-full transition-all duration-200 ${
+              className={`p-2.5 rounded-full transition-all duration-200 flex-shrink-0 ${
                 newMessage.trim() 
-                  ? 'bg-gradient-to-br from-primary to-primary shadow-lg hover:shadow-xl' 
+                  ? 'bg-primary shadow-md hover:shadow-lg' 
                   : 'bg-muted'
               }`}
               disabled={!newMessage.trim()}
             >
-              <Send className="w-5 h-5 text-white" />
+              <Send className="w-4 h-4 text-primary-foreground" />
             </button>
           </div>
         </div>
