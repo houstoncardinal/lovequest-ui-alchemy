@@ -66,12 +66,8 @@ const Settings = () => {
       if (profileError) throw profileError;
       setUserProfile(profileData);
 
-      // Fetch user settings
-      const { data: settingsData, error: settingsError } = await supabase
-        .from('user_settings')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
+      // user_settings table not yet created - use defaults
+      setUserSettings(null);
 
       if (settingsError && settingsError.code !== 'PGRST116') throw settingsError;
       

@@ -301,7 +301,7 @@ const Chat = () => {
       const newMsg: Message = {
         id: `demo-msg-${Date.now()}`,
         sender_id: user.id,
-        receiver_id: selectedChat,
+        match_id: "demo-match-1",
         content: newMessage,
         message_type: "text",
         created_at: new Date().toISOString(),
