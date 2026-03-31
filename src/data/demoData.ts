@@ -378,16 +378,13 @@ export interface DemoPost {
   location?: string;
   hashtags?: string[];
   mood?: string;
-  is_trending: boolean;
   likes_count: number;
   comments_count: number;
   created_at: string;
-  user_id: string;
+  author_id: string;
   profiles: {
     display_name: string;
-    avatar_url: string;
-    first_name: string;
-    last_name: string;
+    photos?: string[];
   };
   user_liked: boolean;
 }

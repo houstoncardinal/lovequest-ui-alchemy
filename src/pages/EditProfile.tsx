@@ -153,9 +153,9 @@ const EditProfile = () => {
           coreValues: []
         });
         
-        // Check if there's a voice note in the avatar_url (temporary solution)
-        if (data.avatar_url && data.avatar_url.includes('voice-note')) {
-          setAudioUrl(data.avatar_url);
+        // Voice note placeholder
+        if (data.photos?.[0]) {
+          // placeholder for future voice note feature
         }
       }
     } catch (error) {
