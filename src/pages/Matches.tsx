@@ -18,14 +18,11 @@ import profile3 from "@/assets/profile-3.jpg";
 interface Message {
   id: string;
   sender_id: string;
-  receiver_id: string;
+  match_id: string;
   content: string;
-  message_type: 'text' | 'voice';
-  attachment_url?: string | null;
+  message_type: string | null;
   created_at: string;
-  is_read: boolean;
-  is_deleted?: boolean;
-  updated_at?: string;
+  is_read: boolean | null;
 }
 
 interface MatchData {
