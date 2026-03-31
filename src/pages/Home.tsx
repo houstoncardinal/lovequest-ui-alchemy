@@ -75,8 +75,59 @@ const Home = () => {
     if (!user) return;
     try {
       setLoading(true);
-      // Use demo profiles as the primary source for now
-      setProfiles(DEMO_PROFILES as MatchProfile[]);
+
+      // Get blocked user IDs
+      const { data: blocks } = await supabase
+        .from('blocks')
+        .select('blocked_id')
+        .eq('blocker_id', user.id);
+      const blockedIds = blocks?.map(b => b.blocked_id) || [];
+
+      // Get already-liked user IDs to skip
+      const { data: liked } = await supabase
+        .from('likes')
+        .select('liked_id')
+        .eq('liker_id', user.id);
+      const likedIds = liked?.map(l => l.liked_id) || [];
+
+      const excludeIds = [...blockedIds, ...likedIds, user.id];
+
+      // Fetch real profiles
+      const { data: realProfiles, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .limit(50);
+
+      if (error) throw error;
+
+      const filtered = (realProfiles || []).filter(p => !excludeIds.includes(p.user_id));
+
+      if (filtered.length > 0) {
+        const mapped: MatchProfile[] = filtered.map(p => ({
+          user_id: p.user_id,
+          first_name: p.display_name?.split(' ')[0] || 'User',
+          last_name: p.display_name?.split(' ').slice(1).join(' ') || '',
+          display_name: p.display_name || 'User',
+          age: p.age || 25,
+          gender: p.gender || '',
+          location: p.location || 'Nearby',
+          bio: p.bio || '',
+          avatar_url: p.photos?.[0] || '/placeholder.svg',
+          education_level: p.education || '',
+          career_field: p.occupation || '',
+          marital_status: '',
+          smoking_status: p.smoking || '',
+          has_children: false,
+          children_preference: '',
+          is_verified: p.is_verified || false,
+          interests: p.interests || [],
+          match_score: Math.floor(Math.random() * 20) + 80,
+        }));
+        setProfiles(mapped);
+      } else {
+        // Demo fallback
+        setProfiles(DEMO_PROFILES as MatchProfile[]);
+      }
       setCurrentProfileIndex(0);
       setNoMoreProfiles(false);
     } catch {

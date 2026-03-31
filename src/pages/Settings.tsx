@@ -194,9 +194,6 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Email</p>
                 <p className="text-sm text-gray-500">{user?.email || "No email provided"}</p>
               </div>
-              <Button variant="outline" size="sm" disabled>
-                Change
-              </Button>
             </div>
             
             <div className="flex items-center justify-between">
@@ -204,7 +201,18 @@ const Settings = () => {
                 <p className="font-medium text-gray-900">Password</p>
                 <p className="text-sm text-gray-500">••••••••</p>
               </div>
-              <Button variant="outline" size="sm" disabled>
+              <Button variant="outline" size="sm" onClick={async () => {
+                if (!user?.email) return;
+                try {
+                  const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+                    redirectTo: `${window.location.origin}/reset-password`,
+                  });
+                  if (error) throw error;
+                  toast({ title: "Check your email", description: "Password reset link sent." });
+                } catch (err: any) {
+                  toast({ title: "Error", description: err.message, variant: "destructive" });
+                }
+              }}>
                 Change
               </Button>
             </div>
@@ -455,11 +463,33 @@ const Settings = () => {
               variant="outline" 
               className="w-full justify-start" 
               size="sm"
-              onClick={() => {
-                toast({
-                  title: "Data export",
-                  description: "Data export feature will be implemented soon.",
-                });
+              onClick={async () => {
+                if (!user) return;
+                try {
+                  const { data: profile } = await supabase.from('profiles').select('*').eq('user_id', user.id).maybeSingle();
+                  const { data: matches } = await supabase.from('matches').select('*').or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`);
+                  const { data: likes } = await supabase.from('likes').select('*').eq('liker_id', user.id);
+                  
+                  const exportData = {
+                    email: user.email,
+                    profile,
+                    matches_count: matches?.length || 0,
+                    likes_sent: likes?.length || 0,
+                    exported_at: new Date().toISOString(),
+                  };
+                  
+                  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = 'lovequest-data-export.json';
+                  a.click();
+                  URL.revokeObjectURL(url);
+                  
+                  toast({ title: "Data exported", description: "Your data has been downloaded." });
+                } catch (error) {
+                  toast({ title: "Error", description: "Failed to export data.", variant: "destructive" });
+                }
               }}
             >
               <Download className="h-4 w-4 mr-2" />

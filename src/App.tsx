@@ -39,6 +39,7 @@ import EnhancedMatching from "./pages/EnhancedMatching";
 import AdminDashboard from "./pages/AdminDashboard";
 import Messages from "./pages/Messages";
 import PhotoManager from "./pages/PhotoManager";
+import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
 import PostDetailView from "./components/PostDetailView";
 
@@ -63,6 +64,7 @@ const AppWithNavigation = () => {
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="/home" element={<ProtectedRoute><Home /></ProtectedRoute>} />

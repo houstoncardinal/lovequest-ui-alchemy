@@ -147,6 +147,21 @@ const Chat = () => {
   const fetchMatches = async () => {
     if (!user?.id) return;
     try {
+      // Get blocked user IDs
+      const { data: blocks } = await supabase
+        .from('blocks')
+        .select('blocked_id')
+        .eq('blocker_id', user.id);
+      const blockedIds = blocks?.map(b => b.blocked_id) || [];
+
+      // Also get users who blocked me
+      const { data: blockedBy } = await supabase
+        .from('blocks')
+        .select('blocker_id')
+        .eq('blocked_id', user.id);
+      const blockedByIds = blockedBy?.map(b => b.blocker_id) || [];
+      const allBlockedIds = [...new Set([...blockedIds, ...blockedByIds])];
+
       const { data: matchesData, error } = await supabase
         .from('matches')
         .select('*')
@@ -159,14 +174,26 @@ const Chat = () => {
         return;
       }
 
+      // Filter out blocked users
+      const filteredMatches = matchesData.filter(m => {
+        const otherId = m.user1_id === user.id ? m.user2_id : m.user1_id;
+        return !allBlockedIds.includes(otherId);
+      });
+
+      if (filteredMatches.length === 0) {
+        setMatches(demoMatches);
+        setLoading(false);
+        return;
+      }
+
       // Get the other user's profile for each match
-      const otherUserIds = matchesData.map(m => m.user1_id === user.id ? m.user2_id : m.user1_id);
+      const otherUserIds = filteredMatches.map(m => m.user1_id === user.id ? m.user2_id : m.user1_id);
       const { data: profiles } = await supabase
         .from('profiles')
         .select('*')
         .in('user_id', otherUserIds);
 
-      const formattedMatches: MatchData[] = matchesData.map(match => {
+      const formattedMatches: MatchData[] = filteredMatches.map(match => {
         const otherUserId = match.user1_id === user.id ? match.user2_id : match.user1_id;
         const profile = profiles?.find(p => p.user_id === otherUserId);
         return {
