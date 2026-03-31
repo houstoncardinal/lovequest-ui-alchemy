@@ -26,21 +26,15 @@ interface MatchInsight {
 
 interface Profile {
   user_id: string;
-  first_name: string;
-  last_name: string;
-  age: number;
-  location: string;
-  bio: string;
-  avatar_url: string;
-  religion_level: string;
-  prayer_frequency: string;
-  education_level: string;
-  career_field: string;
-  marital_status: string;
-  smoking_status: string;
-  has_children: boolean;
-  children_preference: string;
-  is_verified: boolean;
+  display_name: string | null;
+  age: number | null;
+  location: string | null;
+  bio: string | null;
+  photos: string[] | null;
+  education: string | null;
+  occupation: string | null;
+  religion: string | null;
+  is_verified: boolean | null;
 }
 
 interface MatchInsightsProps {
