@@ -66,46 +66,8 @@ const Settings = () => {
       if (profileError) throw profileError;
       setUserProfile(profileData);
 
-      // user_settings table not yet created - use defaults
+      // Settings and notification preferences stored locally until tables are created
       setUserSettings(null);
-
-      if (settingsError && settingsError.code !== 'PGRST116') throw settingsError;
-      
-      if (settingsData) {
-        setUserSettings(settingsData);
-        setPrivacy({
-          profileVisibility: settingsData.profile_visibility || "everyone",
-          showOnlineStatus: settingsData.show_active_status || true,
-          showLastSeen: settingsData.show_distance || false,
-          allowMessages: "matched", // Default since this isn't in schema
-          locationSharing: "approximate", // Default since this isn't in schema
-        });
-        setAppSettings(prev => ({
-          ...prev,
-          soundEffects: settingsData.sound_enabled || true,
-          hapticFeedback: settingsData.vibration_enabled || true,
-        }));
-      }
-
-      // Fetch notification preferences
-      const { data: notificationData, error: notificationError } = await supabase
-        .from('notification_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (notificationError && notificationError.code !== 'PGRST116') throw notificationError;
-      
-      if (notificationData) {
-        setNotifications({
-          newMatches: notificationData.new_matches || true,
-          messages: notificationData.new_messages || true,
-          likes: notificationData.super_likes || true,
-          events: false, // Not in schema
-          safety: true, // Default
-          marketing: notificationData.marketing_emails || false,
-        });
-      }
     } catch (error) {
       console.error('Error fetching user data:', error);
       toast({
