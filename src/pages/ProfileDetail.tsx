@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { MapPin, ArrowLeft, Star, Play, Pause, Crown } from "lucide-react";
+import { MapPin, ArrowLeft, Star, Play, Pause, Crown, Heart } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import InterestTag from "@/components/InterestTag";
