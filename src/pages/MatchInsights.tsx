@@ -34,6 +34,8 @@ interface Profile {
   education: string | null;
   occupation: string | null;
   religion: string | null;
+  smoking: string | null;
+  children: string | null;
   is_verified: boolean | null;
 }
 
