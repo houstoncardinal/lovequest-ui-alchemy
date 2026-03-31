@@ -95,7 +95,7 @@ const Community = () => {
         // Combine posts with profiles and like status
         const postsWithProfiles = postsData?.map(post => ({
           ...post,
-          profiles: profilesData?.find(profile => profile.user_id === post.user_id) || null,
+          profiles: profilesData?.find(profile => profile.user_id === post.author_id) || null,
           user_liked: userLikes.includes(post.id)
         })) || [];
 
