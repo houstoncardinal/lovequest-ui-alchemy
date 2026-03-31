@@ -184,7 +184,7 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
           <div>
             <h1 className="text-2xl font-bold text-foreground">Match Insights</h1>
             <p className="text-muted-foreground">
-              Detailed compatibility analysis with {profile.first_name}
+              Detailed compatibility analysis with {profile.display_name}
             </p>
           </div>
         </div>
