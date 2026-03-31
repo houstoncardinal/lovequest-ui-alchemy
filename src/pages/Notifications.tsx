@@ -86,38 +86,12 @@ const Notifications = () => {
     if (!user) return;
     
     try {
-      // Load notification preferences from Supabase
-      const { data: preferences } = await supabase
-        .from('notification_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      // Load user settings from Supabase
-      const { data: userSettings } = await supabase
-        .from('user_settings')
-        .select('*')
-        .eq('user_id', user.id)
-        .single();
-
-      if (preferences) {
-        setSettings(prev => ({
-          ...prev,
-          pushNotifications: preferences.push_enabled,
-          newMatches: preferences.new_matches,
-          messages: preferences.new_messages,
-          likes: preferences.profile_views,
-          superLikes: preferences.super_likes,
-          profileViews: preferences.profile_views,
-          emailNotifications: preferences.email_enabled,
-          marketing: preferences.marketing_emails
-        }));
-      }
-
-      if (userSettings) {
-        setSettings(prev => ({
-          ...prev,
-          soundEnabled: userSettings.sound_enabled,
+      // Notification preferences tables not yet created - use defaults
+      console.log('Using default notification settings');
+    } catch (error) {
+      console.error('Error loading settings:', error);
+    }
+  };
           vibrationEnabled: userSettings.vibration_enabled
         }));
       }

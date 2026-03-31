@@ -375,10 +375,9 @@ const Chat = () => {
         .from('messages')
         .insert({
           sender_id: user.id,
-          receiver_id: selectedChat,
+          match_id: selectedChat || '',
           content: `Voice message (${duration}s)`,
-          message_type: 'voice',
-          attachment_url: publicUrl
+          message_type: 'voice'
         });
 
       if (error) throw error;

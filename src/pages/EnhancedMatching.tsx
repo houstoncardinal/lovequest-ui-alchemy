@@ -73,10 +73,11 @@ const EnhancedMatching = () => {
       // Like the profile
       try {
         const { error } = await supabase
-          .from('user_likes')
+          .from('likes')
           .insert({
-            liker_id: user?.id,
-            liked_id: profileId
+            liker_id: user?.id || '',
+            liked_id: profileId,
+            like_type: 'like' as const
           });
 
         if (error) throw error;

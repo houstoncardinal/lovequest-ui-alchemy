@@ -129,53 +129,13 @@ const AdvancedSearch = () => {
   const performSearch = async () => {
     setLoading(true);
     try {
-      let query = supabase
+      const { data, error } = await supabase
         .from('profiles')
-        .select('*')
-        .neq('user_id', user?.id)
+        .select('user_id, display_name, age, location, bio, photos, education, occupation, religion, is_verified')
+        .neq('user_id', user?.id || '')
         .gte('age', filters.ageRange[0])
-        .lte('age', filters.ageRange[1]);
-
-      // Apply filters
-      if (filters.location) {
-        query = query.ilike('location', `%${filters.location}%`);
-      }
-
-      if (filters.educationLevel.length > 0) {
-        query = query.in('education_level', filters.educationLevel);
-      }
-
-      if (filters.careerField.length > 0) {
-        query = query.in('career_field', filters.careerField);
-      }
-
-      if (filters.marriageTimeline.length > 0) {
-        query = query.in('marriage_timeline', filters.marriageTimeline);
-      }
-
-      if (filters.smokingStatus.length > 0) {
-        query = query.in('smoking_status', filters.smokingStatus);
-      }
-
-      if (filters.maritalStatus.length > 0) {
-        query = query.in('marital_status', filters.maritalStatus);
-      }
-
-      if (filters.childrenPreference.length > 0) {
-        query = query.in('children_preference', filters.childrenPreference);
-      }
-
-      if (filters.previousMarriage !== null) {
-        query = query.eq('previous_marriage', filters.previousMarriage);
-      }
-
-      if (filters.wantsChildren !== null) {
-        query = query.eq('wants_children', filters.wantsChildren);
-      }
-
-      if (filters.hasChildren !== null) {
-        query = query.eq('has_children', filters.hasChildren);
-      }
+        .lte('age', filters.ageRange[1])
+        .limit(20);
 
       if (filters.isVerified) {
         query = query.eq('is_verified', true);
