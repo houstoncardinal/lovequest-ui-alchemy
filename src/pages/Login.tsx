@@ -133,20 +133,23 @@ const Login = () => {
             </button>
           </form>
 
-          {process.env.NODE_ENV === "development" && (
-            <div className="mt-4">
-              <button onClick={handleBypass}
-                className="w-full flex items-center justify-center gap-2 bg-muted hover:bg-muted/80 text-muted-foreground font-medium py-3 px-6 rounded-2xl border border-border transition-all">
-                <Zap className="w-5 h-5 text-yellow-500" /> Development Bypass
-              </button>
-            </div>
-          )}
 
-          <div className="mt-8 text-center">
+          <div className="mt-6 text-center">
             <p className="text-muted-foreground">
               Don't have an account?{" "}
               <button onClick={() => navigate("/signup")} className="text-primary hover:text-primary/80 font-semibold">Sign up</button>
             </p>
+          </div>
+
+          {/* Developer Bypass for Admin Testing */}
+          <div className="mt-4 pt-4 border-t border-border/50">
+            <button
+              onClick={handleBypass}
+              className="w-full flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted text-muted-foreground font-medium py-2.5 px-4 rounded-xl border border-border/50 transition-all text-sm"
+            >
+              <Zap className="w-4 h-4 text-yellow-500" />
+              Developer Bypass (Admin)
+            </button>
           </div>
         </motion.div>
       </div>
