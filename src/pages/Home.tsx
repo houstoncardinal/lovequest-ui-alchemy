@@ -98,7 +98,7 @@ const Home = () => {
         return;
       }
       try {
-        const { error } = await supabase.from('user_likes').insert({ liker_id: user.id, liked_id: currentProfile.user_id });
+        const { error } = await supabase.from('likes').insert({ liker_id: user.id, liked_id: currentProfile.user_id, like_type: 'like' as const });
         if (!error) {
           recordLike();
           setIsLiking(true);

@@ -541,7 +541,7 @@ const AdvancedSearch = () => {
                     age={profile.age}
                     location={profile.location}
                     bio={profile.bio}
-                    image={profile.avatar_url}
+                    image={profile.photos?.[0] || ''}
                     verified={profile.is_verified}
                     matchScore={85} // This would be calculated
                     badges={[]}

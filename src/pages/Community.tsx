@@ -265,7 +265,7 @@ const Community = () => {
                     <span className="font-bold text-primary">{posts.length}</span> posts shared
                   </div>
                   <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
-                    <span className="font-bold text-blue-600">{posts.filter(p => p.is_trending).length}</span> trending now
+                    <span className="font-bold text-blue-600">{posts.filter(p => (p.likes_count || 0) > 40).length}</span> trending now
                   </div>
                   <div className="text-sm text-muted-foreground bg-card/60 px-4 py-2 rounded-xl border border-border">
                     <span className="font-bold text-purple-600">{new Set(posts.flatMap(p => p.hashtags || [])).size}</span> topics discussed
