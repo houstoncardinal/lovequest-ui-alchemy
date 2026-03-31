@@ -209,9 +209,9 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="text-xl font-semibold">
-                    {profile.first_name} {profile.last_name}
+                    {profile.display_name}
                   </h3>
-                  <span className="text-muted-foreground">• {profile.age}</span>
+                  {profile.age && <span className="text-muted-foreground">• {profile.age}</span>}
                 </div>
                 
                 <p className="text-sm text-muted-foreground mb-3">{profile.location}</p>
