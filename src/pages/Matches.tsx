@@ -320,40 +320,11 @@ const Chat = () => {
     }
     
     try {
-      // Check if users are matched before sending
-      const areMatched = await supabase.rpc('are_users_matched', {
-        user1_id: user.id,
-        user2_id: selectedChat
-      });
-      
-      if (!areMatched.data) {
-        toast({
-          title: "Cannot send message",
-          description: "You can only message users you've matched with.",
-          variant: "destructive",
-        });
-        return;
-      }
-
-      // Content moderation
-      const { data: moderationResult } = await supabase.functions.invoke('content-moderation', {
-        body: { content: newMessage }
-      });
-
-      if (moderationResult?.flagged) {
-        toast({
-          title: "Message not sent",
-          description: "Your message contains inappropriate content.",
-          variant: "destructive",
-        });
-        return;
-      }
-
       const { error } = await supabase
         .from('messages')
         .insert({
           sender_id: user.id,
-          receiver_id: selectedChat,
+          match_id: selectedChat,
           content: newMessage,
           message_type: 'text'
         });
