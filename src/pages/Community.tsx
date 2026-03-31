@@ -74,10 +74,10 @@ const Community = () => {
         })));
       } else {
         // Fetch profiles separately for now
-        const userIds = postsData?.map(post => post.user_id) || [];
+        const userIds = postsData?.map(post => post.author_id) || [];
         const { data: profilesData } = await supabase
           .from('profiles')
-          .select('user_id, display_name, avatar_url, first_name, last_name')
+          .select('user_id, display_name, photos')
           .in('user_id', userIds);
 
         // Check which posts current user has liked
