@@ -66,46 +66,8 @@ const Settings = () => {
       if (profileError) throw profileError;
       setUserProfile(profileData);
 
-      // user_settings table not yet created - use defaults
+      // Settings and notification preferences stored locally until tables are created
       setUserSettings(null);
-
-      if (settingsError && settingsError.code !== 'PGRST116') throw settingsError;
-      
-      if (settingsData) {
-        setUserSettings(settingsData);
-        setPrivacy({
-          profileVisibility: settingsData.profile_visibility || "everyone",
-          showOnlineStatus: settingsData.show_active_status || true,
-          showLastSeen: settingsData.show_distance || false,
-          allowMessages: "matched", // Default since this isn't in schema
-          locationSharing: "approximate", // Default since this isn't in schema
-        });
-        setAppSettings(prev => ({
-          ...prev,
-          soundEffects: settingsData.sound_enabled || true,
-          hapticFeedback: settingsData.vibration_enabled || true,
-        }));
-      }
-
-      // Fetch notification preferences
-      const { data: notificationData, error: notificationError } = await supabase
-        .from('notification_preferences')
-        .select('*')
-        .eq('user_id', user.id)
-        .maybeSingle();
-
-      if (notificationError && notificationError.code !== 'PGRST116') throw notificationError;
-      
-      if (notificationData) {
-        setNotifications({
-          newMatches: notificationData.new_matches || true,
-          messages: notificationData.new_messages || true,
-          likes: notificationData.super_likes || true,
-          events: false, // Not in schema
-          safety: true, // Default
-          marketing: notificationData.marketing_emails || false,
-        });
-      }
     } catch (error) {
       console.error('Error fetching user data:', error);
       toast({
@@ -121,34 +83,12 @@ const Settings = () => {
     
     setLoading(true);
     try {
-      // Save user settings
-      const { error: settingsError } = await supabase
-        .from('user_settings')
-        .upsert({
-          user_id: user.id,
-          profile_visibility: privacy.profileVisibility,
-          show_active_status: privacy.showOnlineStatus,
-          show_distance: privacy.showLastSeen,
-          sound_enabled: appSettings.soundEffects,
-          vibration_enabled: appSettings.hapticFeedback,
-          updated_at: new Date().toISOString()
-        });
-
-      if (settingsError) throw settingsError;
-
-      // Save notification preferences
-      const { error: notificationError } = await supabase
-        .from('notification_preferences')
-        .upsert({
-          user_id: user.id,
-          new_matches: notifications.newMatches,
-          new_messages: notifications.messages,
-          super_likes: notifications.likes,
-          marketing_emails: notifications.marketing,
-          updated_at: new Date().toISOString()
-        });
-
-      if (notificationError) throw notificationError;
+      // Save settings locally until dedicated tables are created
+      localStorage.setItem('userSettings', JSON.stringify({
+        privacy,
+        notifications,
+        appSettings,
+      }));
 
       toast({
         title: "Settings saved",
@@ -187,9 +127,11 @@ const Settings = () => {
     if (confirm("Are you sure you want to permanently delete your account? This action cannot be undone.")) {
       try {
         // Call the delete account function
-        const { error } = await supabase.rpc('delete_user_account', {
-          target_user_id: user?.id
-        });
+        // Delete user profile data
+        const { error } = await supabase
+          .from('profiles')
+          .delete()
+          .eq('user_id', user?.id ?? '');
         
         if (error) throw error;
         

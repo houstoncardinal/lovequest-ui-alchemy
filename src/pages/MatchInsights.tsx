@@ -34,6 +34,8 @@ interface Profile {
   education: string | null;
   occupation: string | null;
   religion: string | null;
+  smoking: string | null;
+  children: string | null;
   is_verified: boolean | null;
 }
 
@@ -184,7 +186,7 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
           <div>
             <h1 className="text-2xl font-bold text-foreground">Match Insights</h1>
             <p className="text-muted-foreground">
-              Detailed compatibility analysis with {profile.first_name}
+              Detailed compatibility analysis with {profile.display_name}
             </p>
           </div>
         </div>
@@ -195,8 +197,8 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
             <div className="flex items-start gap-4">
               <div className="relative">
                 <img 
-                  src={profile.avatar_url} 
-                  alt={`${profile.first_name}'s profile`}
+                  src={profile.photos?.[0] || '/placeholder.svg'} 
+                  alt={`${profile.display_name}'s profile`}
                   className="w-20 h-20 rounded-full object-cover"
                 />
                 {profile.is_verified && (
@@ -209,17 +211,16 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h3 className="text-xl font-semibold">
-                    {profile.first_name} {profile.last_name}
+                    {profile.display_name}
                   </h3>
-                  <span className="text-muted-foreground">• {profile.age}</span>
+                  {profile.age && <span className="text-muted-foreground">• {profile.age}</span>}
                 </div>
                 
                 <p className="text-sm text-muted-foreground mb-3">{profile.location}</p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <ProfileBadge type="marital_status" value={profile.marital_status} compact />
-                  <ProfileBadge type="smoking_status" value={profile.smoking_status} compact />
-                  <ProfileBadge type="children_status" value={profile.has_children} compact />
+                  {profile.smoking && <ProfileBadge type="smoking_status" value={profile.smoking} compact />}
+                  {profile.children && <ProfileBadge type="children_status" value={profile.children} compact />}
                   {profile.is_verified && (
                     <ProfileBadge type="verification" value={profile.is_verified} compact />
                   )}
@@ -289,27 +290,23 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
             <div className="grid md:grid-cols-2 gap-4">
               <div>
                 <h4 className="font-semibold text-sm text-muted-foreground mb-1">Education</h4>
-                <p className="text-sm">{profile.education_level || 'Not specified'}</p>
+                <p className="text-sm">{profile.education || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Career</h4>
-                <p className="text-sm">{profile.career_field || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Occupation</h4>
+                <p className="text-sm">{profile.occupation || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Religion Level</h4>
-                <p className="text-sm">{profile.religion_level || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Religion</h4>
+                <p className="text-sm">{profile.religion || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Prayer Frequency</h4>
-                <p className="text-sm">{profile.prayer_frequency || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Children</h4>
+                <p className="text-sm capitalize">{profile.children?.replace('_', ' ') || 'Not specified'}</p>
               </div>
               <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Children Preference</h4>
-                <p className="text-sm capitalize">{profile.children_preference?.replace('_', ' ') || 'Not specified'}</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Smoking Status</h4>
-                <p className="text-sm capitalize">{profile.smoking_status?.replace('_', ' ') || 'Not specified'}</p>
+                <h4 className="font-semibold text-sm text-muted-foreground mb-1">Smoking</h4>
+                <p className="text-sm capitalize">{profile.smoking?.replace('_', ' ') || 'Not specified'}</p>
               </div>
             </div>
             

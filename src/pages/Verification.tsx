@@ -33,9 +33,7 @@ interface VerificationRequest {
 }
 
 interface Profile {
-  can_access_app: boolean;
-  verification_level: string;
-  is_verified: boolean;
+  is_verified: boolean | null;
 }
 
 const Verification = () => {
@@ -55,31 +53,18 @@ const Verification = () => {
 
   const loadVerificationData = async () => {
     try {
-      // Load verification request
-      const { data: verificationData, error: verificationError } = await supabase
-        .from('verification_requests')
-        .select('*')
-        .eq('user_id', user?.id)
-        .eq('verification_type', 'identity')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (verificationError && verificationError.code !== 'PGRST116') {
-        throw verificationError;
-      }
-
-      setVerificationRequest(verificationData as VerificationRequest | null);
+      // Verification requests table not yet created — use profile is_verified
+      setVerificationRequest(null);
 
       // Load profile data
       const { data: profileData, error: profileError } = await supabase
         .from('profiles')
-        .select('can_access_app, verification_level, is_verified')
-        .eq('user_id', user?.id)
+        .select('is_verified')
+        .eq('user_id', user?.id ?? '')
         .single();
 
       if (profileError) throw profileError;
-      setProfile(profileData);
+      setProfile(profileData as Profile);
 
     } catch (error) {
       console.error('Error loading verification data:', error);
@@ -206,26 +191,26 @@ const Verification = () => {
             
             {/* Access Status */}
             <div className={`p-4 rounded-lg border ${
-              profile?.can_access_app 
+              profile?.is_verified 
                 ? 'bg-green-50 border-green-200' 
                 : 'bg-amber-50 border-amber-200'
             }`}>
               <div className="flex items-start gap-2">
-                {profile?.can_access_app ? (
+                {profile?.is_verified ? (
                   <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                 ) : (
                   <AlertCircle className="w-5 h-5 text-amber-600 mt-0.5" />
                 )}
                 <div>
                   <p className={`font-medium ${
-                    profile?.can_access_app ? 'text-green-800' : 'text-amber-800'
+                    profile?.is_verified ? 'text-green-800' : 'text-amber-800'
                   }`}>
-                    {profile?.can_access_app ? 'Full Access Granted' : 'Limited Access'}
+                    {profile?.is_verified ? 'Full Access Granted' : 'Limited Access'}
                   </p>
                   <p className={`text-sm ${
-                    profile?.can_access_app ? 'text-green-700' : 'text-amber-700'
+                    profile?.is_verified ? 'text-green-700' : 'text-amber-700'
                   }`}>
-                    {profile?.can_access_app 
+                    {profile?.is_verified 
                       ? 'You can access all app features including messaging and matching.'
                       : 'You can browse profiles but cannot send messages until verified.'
                     }
