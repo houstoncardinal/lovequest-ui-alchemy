@@ -217,9 +217,8 @@ const MatchInsights = ({ matchId, onBack }: MatchInsightsProps) => {
                 <p className="text-sm text-muted-foreground mb-3">{profile.location}</p>
                 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <ProfileBadge type="marital_status" value={profile.marital_status} compact />
-                  <ProfileBadge type="smoking_status" value={profile.smoking_status} compact />
-                  <ProfileBadge type="children_status" value={profile.has_children} compact />
+                  {profile.smoking && <ProfileBadge type="smoking_status" value={profile.smoking} compact />}
+                  {profile.children && <ProfileBadge type="children_status" value={profile.children} compact />}
                   {profile.is_verified && (
                     <ProfileBadge type="verification" value={profile.is_verified} compact />
                   )}
