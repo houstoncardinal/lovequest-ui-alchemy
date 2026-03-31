@@ -272,15 +272,12 @@ const Chat = () => {
       const { data, error } = await supabase
         .from('messages')
         .select('*')
-        .or(`and(sender_id.eq.${user.id},receiver_id.eq.${matchUserId}),and(sender_id.eq.${matchUserId},receiver_id.eq.${user.id})`)
+        .eq('match_id', matchUserId)
         .order('created_at', { ascending: true });
       
       if (error) throw error;
       
-      setMessages((data || []).map(msg => ({
-        ...msg,
-        message_type: msg.message_type as 'text' | 'voice'
-      })));
+      setMessages((data || []) as unknown as Message[]);
     } catch (error) {
       console.error('Error fetching messages:', error);
     }
