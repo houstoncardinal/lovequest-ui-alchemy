@@ -142,6 +142,7 @@ const Home = () => {
   const handleSwipe = async (direction: 'left' | 'right') => {
     if (!user || !currentProfile) return;
     setSwipeDirection(direction);
+    // 'right' = like (swipe up), 'left' = pass (swipe down)
     if (direction === 'right') {
       if (!likesUsage.canLike && !likesUsage.isUnlimited) {
         setShowLimitModal(true);
@@ -170,8 +171,9 @@ const Home = () => {
 
   const handleDragEnd = (_: any, info: PanInfo) => {
     const threshold = 100;
-    if (info.offset.x > threshold) handleSwipe('right');
-    else if (info.offset.x < -threshold) handleSwipe('left');
+    // Swipe UP = like, swipe DOWN = pass
+    if (info.offset.y < -threshold) handleSwipe('right');
+    else if (info.offset.y > threshold) handleSwipe('left');
   };
 
   const handleRewind = () => {
@@ -242,14 +244,14 @@ const Home = () => {
             <motion.div
               key={currentProfile.user_id}
               className="absolute inset-0 rounded-3xl overflow-hidden shadow-card cursor-grab active:cursor-grabbing"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
+              drag="y"
+              dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={0.8}
               onDragEnd={handleDragEnd}
               animate={
-                swipeDirection === 'right' ? { x: 400, rotate: 15, opacity: 0 }
-                : swipeDirection === 'left' ? { x: -400, rotate: -15, opacity: 0 }
-                : { x: 0, rotate: 0, opacity: 1 }
+                swipeDirection === 'right' ? { y: -600, opacity: 0, scale: 0.9 }
+                : swipeDirection === 'left' ? { y: 600, opacity: 0, scale: 0.9 }
+                : { y: 0, opacity: 1, scale: 1 }
               }
               initial={{ scale: 0.95, opacity: 0 }}
               exit={{ scale: 0.9, opacity: 0 }}
