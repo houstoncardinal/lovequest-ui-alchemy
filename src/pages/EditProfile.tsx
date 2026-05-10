@@ -1305,6 +1305,8 @@ const EditProfile = () => {
             </p>
           </div>
         </Card>
+
+        <FavoritesEditor />
         </div>
 
         
