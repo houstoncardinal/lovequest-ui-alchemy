@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import BottomNavigation from "@/components/BottomNavigation";
 import DesktopNavigation from "@/components/DesktopNavigation";
+import ThemeToggle from "@/components/ThemeToggle";
 import Home from "./pages/Home";
 import LikeYou from "./pages/LikeYou";
 import ForYou from "./pages/ForYou";
