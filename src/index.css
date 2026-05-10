@@ -16,37 +16,42 @@
     /* Warm Rose / Coral Luxury Dating Theme */
     --primary: 346 77% 55%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 346 90% 68%;
     --accent: 24 95% 60%;
     --accent-foreground: 0 0% 100%;
-    --secondary: 240 5% 96%;
+    --secondary: 340 30% 97%;
     --secondary-foreground: 240 6% 10%;
-    --muted: 240 5% 96%;
+    --muted: 340 20% 96%;
     --muted-foreground: 240 4% 46%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
+    --border: 340 20% 92%;
+    --input: 340 20% 92%;
     --ring: 346 77% 55%;
-    --radius: 1rem;
+    --radius: 1.25rem;
 
     /* Extended palette tokens */
     --rose: 346 77% 55%;
     --coral: 24 95% 60%;
-    --gold: 45 93% 58%;
+    --gold: 42 88% 60%;
+    --champagne: 38 60% 88%;
     --violet: 270 60% 58%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(346, 77%, 55%), hsl(24, 95%, 60%));
-    --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted) / 0.3));
-    --gradient-glow: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--accent) / 0.08));
-    --gradient-hero: linear-gradient(135deg, hsl(346, 77%, 55%), hsl(340, 65%, 48%), hsl(24, 95%, 60%));
+    --gradient-primary: linear-gradient(135deg, hsl(346 77% 55%), hsl(24 95% 60%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(340 40% 99%));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(340 30% 97%));
+    --gradient-glow: linear-gradient(135deg, hsl(var(--primary) / 0.14), hsl(var(--accent) / 0.10));
+    --gradient-hero: linear-gradient(135deg, hsl(346 77% 55%) 0%, hsl(330 70% 50%) 45%, hsl(24 95% 60%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(42 88% 60%), hsl(38 92% 72%));
+    --gradient-luxe: linear-gradient(135deg, hsl(346 80% 60%), hsl(310 60% 55%), hsl(24 95% 62%));
 
     /* Shadows */
-    --shadow-elegant: 0 4px 24px -4px hsl(346 77% 55% / 0.18);
-    --shadow-glow: 0 0 40px hsl(346 77% 55% / 0.15);
-    --shadow-card: 0 1px 3px 0 hsl(240 10% 6% / 0.08), 0 1px 2px 0 hsl(240 10% 6% / 0.04);
-    --shadow-card-hover: 0 8px 24px -4px hsl(240 10% 6% / 0.12), 0 4px 8px -2px hsl(240 10% 6% / 0.06);
+    --shadow-elegant: 0 10px 30px -10px hsl(346 77% 55% / 0.35);
+    --shadow-glow: 0 0 50px hsl(346 90% 68% / 0.35);
+    --shadow-gold: 0 8px 24px -6px hsl(42 88% 60% / 0.4);
+    --shadow-card: 0 1px 3px 0 hsl(240 10% 6% / 0.06), 0 8px 24px -8px hsl(346 77% 55% / 0.10);
+    --shadow-card-hover: 0 12px 32px -6px hsl(346 77% 55% / 0.22);
 
     --component-inactive-color: var(--muted-foreground);
     --component-bg: var(--card);
@@ -57,25 +62,38 @@
   }
 
   .dark {
-    --background: 240 10% 4%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 6%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 6%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 346 77% 55%;
+    --background: 340 25% 5%;
+    --foreground: 340 20% 96%;
+    --card: 340 20% 8%;
+    --card-foreground: 340 20% 96%;
+    --popover: 340 20% 8%;
+    --popover-foreground: 340 20% 96%;
+    --primary: 346 85% 62%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 65%;
-    --accent: 24 95% 60%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 63% 31%;
+    --primary-glow: 346 95% 75%;
+    --secondary: 340 15% 14%;
+    --secondary-foreground: 340 20% 96%;
+    --muted: 340 12% 14%;
+    --muted-foreground: 340 10% 68%;
+    --accent: 24 95% 65%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 70% 50%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 4% 16%;
-    --input: 240 4% 16%;
-    --ring: 346 77% 55%;
+    --border: 340 15% 18%;
+    --input: 340 15% 18%;
+    --ring: 346 85% 62%;
+    --gold: 42 92% 65%;
+    --champagne: 38 50% 78%;
+
+    --gradient-card: linear-gradient(135deg, hsl(340 20% 9%), hsl(340 18% 11%));
+    --gradient-subtle: linear-gradient(180deg, hsl(340 25% 5%), hsl(340 22% 8%));
+    --gradient-glow: linear-gradient(135deg, hsl(346 85% 62% / 0.18), hsl(24 95% 65% / 0.12));
+    --gradient-hero: linear-gradient(135deg, hsl(346 85% 55%) 0%, hsl(310 60% 45%) 50%, hsl(24 95% 60%) 100%);
+
+    --shadow-elegant: 0 12px 40px -10px hsl(346 90% 50% / 0.55);
+    --shadow-glow: 0 0 60px hsl(346 95% 70% / 0.4);
+    --shadow-card: 0 1px 3px 0 hsl(0 0% 0% / 0.4), 0 8px 24px -8px hsl(346 80% 40% / 0.25);
+
     --component-inactive-color: var(--muted-foreground);
     --component-bg: var(--card);
     --component-shadow: var(--border);
@@ -139,6 +157,59 @@
   }
   .bg-gradient-glow {
     background: var(--gradient-glow);
+  }
+  .bg-gradient-gold {
+    background: var(--gradient-gold);
+  }
+  .bg-gradient-luxe {
+    background: var(--gradient-luxe);
+  }
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+  .glass-card {
+    background: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border: 1px solid hsl(var(--border) / 0.6);
+  }
+  .luxe-border {
+    position: relative;
+  }
+  .luxe-border::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-luxe);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .text-shimmer {
+    background: linear-gradient(90deg,
+      hsl(var(--primary)) 0%,
+      hsl(var(--gold)) 50%,
+      hsl(var(--primary)) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: textShimmer 3s linear infinite;
+  }
+  @keyframes textShimmer {
+    to { background-position: 200% center; }
+  }
+  .sparkle::after {
+    content: " ✦";
+    color: hsl(var(--gold));
   }
   .bg-gradient-hero {
     background: var(--gradient-hero);
