@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import InterestTag from "@/components/InterestTag";
 import { Badge } from "@/components/ui/badge";
 import NewMatchCelebration from "@/components/NewMatchCelebration";
+import FavoritesDisplay from "@/components/FavoritesDisplay";
 import { getDemoProfileDetail } from "@/data/demoData";
 
 const ProfileDetail = () => {
