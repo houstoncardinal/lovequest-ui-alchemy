@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import InterestTag from "@/components/InterestTag";
 import { Badge } from "@/components/ui/badge";
 import NewMatchCelebration from "@/components/NewMatchCelebration";
+import FavoritesDisplay from "@/components/FavoritesDisplay";
 import { getDemoProfileDetail } from "@/data/demoData";
 
 const ProfileDetail = () => {
@@ -29,7 +30,7 @@ const ProfileDetail = () => {
     );
   }
 
-  const tabs = ["About", "Photos", "Voice", "Lifestyle"];
+  const tabs = ["About", "Favorites", "Photos", "Voice", "Lifestyle"];
 
   const playVoiceNote = async (voiceNoteId: string) => {
     if (playingVoiceNote === voiceNoteId) {
@@ -120,6 +121,12 @@ const ProfileDetail = () => {
                 ))}
               </div>
             </div>
+          </motion.div>
+        );
+      case "Favorites":
+        return (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            <FavoritesDisplay profileUserId={id || ""} />
           </motion.div>
         );
       case "Photos":
