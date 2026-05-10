@@ -56,6 +56,7 @@ const AppWithNavigation = () => {
 
   return (
     <>
+      <ThemeToggle />
       {/* Desktop Navigation - only shown on desktop */}
       {showNavigation && <DesktopNavigation />}
       
