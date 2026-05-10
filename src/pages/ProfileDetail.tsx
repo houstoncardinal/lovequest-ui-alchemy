@@ -30,7 +30,7 @@ const ProfileDetail = () => {
     );
   }
 
-  const tabs = ["About", "Photos", "Voice", "Lifestyle"];
+  const tabs = ["About", "Favorites", "Photos", "Voice", "Lifestyle"];
 
   const playVoiceNote = async (voiceNoteId: string) => {
     if (playingVoiceNote === voiceNoteId) {
