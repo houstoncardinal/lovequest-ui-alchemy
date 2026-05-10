@@ -266,6 +266,39 @@ export type Database = {
         }
         Relationships: []
       }
+      profile_favorites: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          image_url: string | null
+          position: number
+          subtitle: string | null
+          title: string
+          user_id: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          position?: number
+          subtitle?: string | null
+          title: string
+          user_id: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          position?: number
+          subtitle?: string | null
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           age: number | null
