@@ -123,6 +123,12 @@ const ProfileDetail = () => {
             </div>
           </motion.div>
         );
+      case "Favorites":
+        return (
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            <FavoritesDisplay profileUserId={id || ""} />
+          </motion.div>
+        );
       case "Photos":
         return (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid grid-cols-1 gap-3">
