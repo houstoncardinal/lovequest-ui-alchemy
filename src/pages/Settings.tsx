@@ -376,17 +376,8 @@ const Settings = () => {
                 checked={appSettings.darkMode}
                 onCheckedChange={(checked) => {
                   setAppSettings(prev => ({ ...prev, darkMode: checked }));
-                  
-                  // Toggle dark mode class on document
-                  if (checked) {
-                    document.documentElement.classList.add('dark');
-                  } else {
-                    document.documentElement.classList.remove('dark');
-                  }
-                  
-                  // Store preference
-                  localStorage.setItem('darkMode', checked.toString());
-                  
+                  document.documentElement.classList.toggle('dark', checked);
+                  localStorage.setItem('lq-theme', checked ? 'dark' : 'light');
                   toast({
                     title: "Theme updated",
                     description: `Switched to ${checked ? 'dark' : 'light'} mode.`,
