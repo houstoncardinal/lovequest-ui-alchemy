@@ -16,37 +16,42 @@
     /* Warm Rose / Coral Luxury Dating Theme */
     --primary: 346 77% 55%;
     --primary-foreground: 0 0% 100%;
+    --primary-glow: 346 90% 68%;
     --accent: 24 95% 60%;
     --accent-foreground: 0 0% 100%;
-    --secondary: 240 5% 96%;
+    --secondary: 340 30% 97%;
     --secondary-foreground: 240 6% 10%;
-    --muted: 240 5% 96%;
+    --muted: 340 20% 96%;
     --muted-foreground: 240 4% 46%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
+    --border: 340 20% 92%;
+    --input: 340 20% 92%;
     --ring: 346 77% 55%;
-    --radius: 1rem;
+    --radius: 1.25rem;
 
     /* Extended palette tokens */
     --rose: 346 77% 55%;
     --coral: 24 95% 60%;
-    --gold: 45 93% 58%;
+    --gold: 42 88% 60%;
+    --champagne: 38 60% 88%;
     --violet: 270 60% 58%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(346, 77%, 55%), hsl(24, 95%, 60%));
-    --gradient-card: linear-gradient(135deg, hsl(var(--card)), hsl(var(--card)));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted) / 0.3));
-    --gradient-glow: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--accent) / 0.08));
-    --gradient-hero: linear-gradient(135deg, hsl(346, 77%, 55%), hsl(340, 65%, 48%), hsl(24, 95%, 60%));
+    --gradient-primary: linear-gradient(135deg, hsl(346 77% 55%), hsl(24 95% 60%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(340 40% 99%));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(340 30% 97%));
+    --gradient-glow: linear-gradient(135deg, hsl(var(--primary) / 0.14), hsl(var(--accent) / 0.10));
+    --gradient-hero: linear-gradient(135deg, hsl(346 77% 55%) 0%, hsl(330 70% 50%) 45%, hsl(24 95% 60%) 100%);
+    --gradient-gold: linear-gradient(135deg, hsl(42 88% 60%), hsl(38 92% 72%));
+    --gradient-luxe: linear-gradient(135deg, hsl(346 80% 60%), hsl(310 60% 55%), hsl(24 95% 62%));
 
     /* Shadows */
-    --shadow-elegant: 0 4px 24px -4px hsl(346 77% 55% / 0.18);
-    --shadow-glow: 0 0 40px hsl(346 77% 55% / 0.15);
-    --shadow-card: 0 1px 3px 0 hsl(240 10% 6% / 0.08), 0 1px 2px 0 hsl(240 10% 6% / 0.04);
-    --shadow-card-hover: 0 8px 24px -4px hsl(240 10% 6% / 0.12), 0 4px 8px -2px hsl(240 10% 6% / 0.06);
+    --shadow-elegant: 0 10px 30px -10px hsl(346 77% 55% / 0.35);
+    --shadow-glow: 0 0 50px hsl(346 90% 68% / 0.35);
+    --shadow-gold: 0 8px 24px -6px hsl(42 88% 60% / 0.4);
+    --shadow-card: 0 1px 3px 0 hsl(240 10% 6% / 0.06), 0 8px 24px -8px hsl(346 77% 55% / 0.10);
+    --shadow-card-hover: 0 12px 32px -6px hsl(346 77% 55% / 0.22);
 
     --component-inactive-color: var(--muted-foreground);
     --component-bg: var(--card);
